@@ -1,0 +1,4092 @@
+HEADER <OPSW_DEVELOP_5_17>
+&   <unit_test\testscripts\opsw\source\mio_service\fcp_b\aom_a429_output_monitoring_1.ptu >,
+&   <PD1000006058_SDD_OPSW_A350_SFCC current 10.3>,
+&   <sourcecode\opsw\source\mio_service\fcp_b\aom_a429_output_monitoring.c >
+#/******************************************************************************/
+#/*                                                                            */
+#/* Copyright by     :   Diehl Aerospace GmbH Ueberlingen                      */
+#/*                                                                            */
+#/* Module Name      :    aom_a429_output_monitoring_1.ptu                     */
+#/*                                                                            */
+#/* Created By       :    Saurabh K                                            */
+#/*                                                                            */
+#/* Copyright:                                                                 */
+#/*     This document contains Proprietary Information of                      */
+#/*     Diehl Aerospace GmbH and may only be used by the recipient for         */
+#/*     the prescribed purposes and may neither be reproduced in any form nor  */
+#/*     the document itself or its content divulged to third parties without   */
+#/*     the expressed prior written permission of                              */
+#/*     Diehl Aerospace GmbH. All rights reserved.                             */
+#/*                                                                            */
+#/* Export Compliance:                                                         */
+#/*                                                                            */
+#/*     Transferred in accordance with Community General Export Authorisation  */
+#/*     No. EU001, dated June 22, 2000.                                        */
+#/*     Export license No. D329939                                             */
+#/*                                                                            */
+#/******************************************************************************/
+--------------------------------------------------------------------------------
+--
+-- TESTED FILE INCLUDE DIRECTIVES
+--
+--------------------------------------------------------------------------------
+#  /* IMPORTED MODULES */
+##include "AWM_A429_Word_Management.h"
+##include "DML_Data_Manager_Config.h"
+##include "DMA_Data_Manager.h"
+##include "TYP_SFCC_Types.h"
+##include "PUC_Power_Up_Coding_Detection.h"
+##include "FSE_Failure_Status_Exchange.h"
+##include "bit_operations.h"
+##include "LIB_Library_Functions.h"
+##include "AGE_A429_Group_Management_Extension.h"
+##include "DPR_Handler.h"
+##include "DPX_DPR_Exchange.h"
+##include "ctp_com_target_pos_determine.h"
+##include "DOR_Discrete_Out.h"
+##include "AOM_A429_Output_Monitoring.h"
+--------------------------------------------------------------------------------
+--
+-- TESTED FILE DECLARATIONS
+--
+--------------------------------------------------------------------------------
+
+-- Declarations of the global variables of the tested file
+   
+--------------------------------------------------------------------------------
+   
+BEGIN
+-- To obtain the starting address in the DPRAM
+#const DAB_A_to_B_Type   * const DPR_Ptr_From_A  = (DAB_A_to_B_Type *) HWC_DPR_START_ADDRESS_A_TO_B;
+#DAB_A_to_B_Type *PTU_ptr_DPR_Ptr_From_A;
+
+--------------------------------------------------------------------------------
+--
+-- STUB DECLARATIONS OF THE TESTED OR INTEGRATED UNITS
+--
+--------------------------------------------------------------------------------
+DEFINE STUB aom_a429_output_monitoring_c
+   
+   -- Following functions has been integrated
+   --  #int32 LIB_Abs_Int32(int32 _in Value); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\other\lib_library_functions.h */
+   --  #int32 LIB_Limit(int32 _in Min_Value,int32 _in Max_Value,int32 _in Value); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\other\lib_library_functions.h */
+   --  #uint32 BIT_Field_Normalised(uint32 _in Word,uint16x _in Lower_Bit_Nr,uint16x _in Higher_Bit_Nr); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\other\bit_operations.h */
+   --  #int32 BIT_Field_Normalised_Signed(uint32 _in Word,uint16x _in Lower_Bit_Nr,uint16x _in Higher_Bit_Nr); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\other\bit_operations.h */
+   --  #void BIT_Assign(uint32 _inout Word,uint16x _in Bit_Nr,boolean _in Value); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\other\bit_operations.h */
+   --  #boolean BIT_Is_Set(uint32 _in Word,uint16x _in Bit_Nr); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\other\bit_operations.h */
+   
+   #AWM_SW_A429_Word_Type AGE_Get_AC_ADIRU_L011_Flap_Surface_Bool(void); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\mio_service\fcp_b\age_a429_group_management_extension.h */
+   #void FSE_Store_Failure_Event_DPRAM(DFE_FseType _in Event,TYP_Failure_Status_Type _in Failure_Status); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\os_service\fcp_b\fse_failure_status_exchange.h */
+   #TYP_PPU_Pos_Type CTP_Get_CTPRHOB(void); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\appli\fcp_b\ctp_com_target_pos_determine.h */
+   #TYP_PPU_Pos_Type CTP_Get_CTPLHOB(void); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\appli\fcp_b\ctp_com_target_pos_determine.h */
+   #boolean CTP_Get_CTPVal(void); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\appli\fcp_b\ctp_com_target_pos_determine.h  */
+   #TYP_PPU_Pos_Type CTP_Get_CTP(void); /* V:\\A350_SFCC_SW\\sourcecode\\source\appli\fcp_b\ctp_com_target_pos_determine.h  */
+   #boolean DPX_Get_S4ppuRhVal(); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\os_service\fcp_b\dpx_dpr_exchange.h */
+   #boolean DPX_Get_S4ppuLhVal(); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\os_service\fcp_b\dpx_dpr_exchange.h */
+   #boolean DPX_Get_S2ppuRhVal(); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\os_service\fcp_b\dpx_dpr_exchange.h */
+   #boolean DPX_Get_S2ppuLhVal(); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\os_service\fcp_b\dpx_dpr_exchange.h */
+   #boolean DPX_Get_DfppuRhVal(); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\os_service\fcp_b\dpx_dpr_exchange.h */
+   #boolean DPX_Get_DfppuLhVal(); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\os_service\fcp_b\dpx_dpr_exchange.h */
+   #boolean DPX_Get_AppuRhVal(); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\os_service\fcp_b\dpx_dpr_exchange.h */
+   #boolean DPX_Get_AppuLhVal(); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\os_service\fcp_b\dpx_dpr_exchange.h */
+   #boolean DPX_Get_FPPUVal(); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\os_service\fcp_b\dpx_dpr_exchange.h */
+   #AWM_SW_A429_Word_Type AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num(void); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\mio_service\fcp_b\age_a429_group_management_extension.h */
+   #AWM_SW_A429_Word_Type AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num(void); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\mio_service\fcp_b\age_a429_group_management_extension.h */
+   #AWM_SW_A429_Word_Type AGE_Get_AC_L021_Flap_Comm_Surface_Num(void); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\mio_service\fcp_b\age_a429_group_management_extension.h */
+   #AWM_SW_A429_Word_Type AGE_Get_AC_L017_Flap_RHOB_Surface_Num(void); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\mio_service\fcp_b\age_a429_group_management_extension.h */
+   #AWM_SW_A429_Word_Type AGE_Get_AC_L015_Flap_LHOB_Surface_Num(void); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\mio_service\fcp_b\age_a429_group_management_extension.h */
+   #AWM_SW_A429_Word_Type AGE_Get_AC_L215_Flap_Status_Discr_2(void); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\mio_service\fcp_b\age_a429_group_management_extension.h */
+   #AWM_SW_A429_Word_Type AGE_Get_AC_L01x_Surface_Num(void); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\mio_service\fcp_b\age_a429_group_management_extension.h */
+   #AWM_SW_A429_Word_Type AGE_Get_AC_L01x_Surface_Bool(void); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\mio_service\fcp_b\age_a429_group_management_extension.h */
+   #TYP_Slat_Or_Flap_Type PUC_Get_Chid(void); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\mio_service\fcp_b\age_a429_group_management_extension.c */
+   #TYP_Aircraft_Type PUC_Get_OpMode(void);/* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\mio_service\fcp_b\age_a429_group_management_extension.c */
+   #void DOR_Put_Output(DOR_Output_Type _in Output_Name,boolean _in Output_Value); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\mio_service\fcp_b\age_a429_group_management_extension.c */
+   #DMA_Entry_Type DMA_Database[DML_NUM_ENTRIES];/* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\os_service\dma_data_manager.h*/
+END DEFINE
+
+DEFINE STUB aom_a429_output_monitoring_c 25
+   #void DMA_Set(DML_Index_Type _in Index,int32 _in Value); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\os_service\dma_data_manager.h*/
+END DEFINE
+--------------------------------------------------------------------------------
+--
+-- ENVIRONMENTS DECLARATIONS
+--
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+-- TESTED FILE ENVIRONNEMENT
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--
+-- SERVICES DECLARATIONS
+--
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+-- Declaration of the service AOM_OtherACA429_Output_Monitoring
+--------------------------------------------------------------------------------
+SERVICE AOM_OtherACA429_Output_Monitoring
+SERVICE_TYPE extern
+
+   ENVIRONMENT ENV_AOM_OtherACA429_Output_Monitoring
+
+      ARRAY DMA_Database[0..DML_NUM_ENTRIES-1].Data,
+      &                                                   init = 0,
+      &                                                                       ev = init
+   END ENVIRONMENT -- ENV_AOM_OtherACA429_Output_Monitoring
+   USE ENV_AOM_OtherACA429_Output_Monitoring
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.1
+   FAMILY nominal
+
+      ELEMENT
+
+         -- Don't Care Stubs
+         STUB DOR_Put_Output(DOR_A429_TX_OTHERAC_EN,TRUE)
+         STUB DOR_Put_Output(DOR_A429_TX_ADIRU_EN,TRUE)
+         STUB DMA_Set( DML_OD_INT_OTHERAC_ENABLE,TRUE )
+         STUB DMA_Set( DML_OD_INT_ADIRU_ENABLE,TRUE )
+
+         #AOM_Init_Monitoring();
+
+      END ELEMENT
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = FALSE,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 120,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 134,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 1134,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() FALSE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         STUB DPX_Get_S4ppuLhVal() TRUE
+         STUB DPX_Get_S4ppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,FALSE)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,-20)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,-20)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.1
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.2
+   FAMILY nominal
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = FALSE,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 120,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 134,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 1134,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() FALSE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         STUB DPX_Get_S4ppuLhVal() TRUE
+         STUB DPX_Get_S4ppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,0)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,TRUE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,248)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,279)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.2
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.7
+   FAMILY nominal
+
+      ELEMENT
+
+         -- Don't Care Stubs
+         STUB DOR_Put_Output(DOR_A429_TX_OTHERAC_EN,TRUE)
+         STUB DOR_Put_Output(DOR_A429_TX_ADIRU_EN,TRUE)
+         STUB DMA_Set( DML_OD_INT_OTHERAC_ENABLE,TRUE )
+         STUB DMA_Set( DML_OD_INT_ADIRU_ENABLE,TRUE )
+
+         #AOM_Init_Monitoring();
+
+      END ELEMENT
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = FALSE,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 120,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 132,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 1134,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() FALSE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         STUB DPX_Get_S4ppuLhVal() TRUE
+         STUB DPX_Get_S4ppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,FALSE)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,-20)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,-20)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.7
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.8
+   FAMILY nominal
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = FALSE,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 120,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 132,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 1134,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() FALSE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         STUB DPX_Get_S4ppuLhVal() TRUE
+         STUB DPX_Get_S4ppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,0)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,TRUE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,248)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,275)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.8
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.9
+   FAMILY nominal
+
+      ELEMENT
+
+         -- Don't Care Stubs
+         STUB DOR_Put_Output(DOR_A429_TX_OTHERAC_EN,TRUE)
+         STUB DOR_Put_Output(DOR_A429_TX_ADIRU_EN,TRUE)
+         STUB DMA_Set( DML_OD_INT_OTHERAC_ENABLE,TRUE )
+         STUB DMA_Set( DML_OD_INT_ADIRU_ENABLE,TRUE )
+
+         #AOM_Init_Monitoring();
+
+      END ELEMENT
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = FALSE,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 120,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 136,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 1134,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB DPX_Get_S4ppuLhVal() FALSE
+         STUB DPX_Get_S4ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,FALSE)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,-20)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,-20)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.9
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.10
+   FAMILY nominal
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = FALSE,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 120,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 136,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 1134,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB DPX_Get_S4ppuLhVal() FALSE
+         STUB DPX_Get_S4ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,298)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,298)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,298)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.10
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.11
+   FAMILY nominal
+
+      ELEMENT
+
+         -- Don't Care Stubs
+         STUB DOR_Put_Output(DOR_A429_TX_OTHERAC_EN,TRUE)
+         STUB DOR_Put_Output(DOR_A429_TX_ADIRU_EN,TRUE)
+         STUB DMA_Set( DML_OD_INT_OTHERAC_ENABLE,TRUE )
+         STUB DMA_Set( DML_OD_INT_ADIRU_ENABLE,TRUE )
+
+         #AOM_Init_Monitoring();
+
+      END ELEMENT
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = FALSE,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 120,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 134,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 1134,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() FALSE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB DPX_Get_S4ppuLhVal() FALSE
+         STUB DPX_Get_S4ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,FALSE)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,-20)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,-20)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.11
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.12
+   FAMILY nominal
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = FALSE,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 120,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 134,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 1134,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() FALSE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB DPX_Get_S4ppuLhVal() FALSE
+         STUB DPX_Get_S4ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,0)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,248)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,279)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.12
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.13
+   FAMILY nominal
+
+      ELEMENT
+
+         -- Don't Care Stubs
+         STUB DOR_Put_Output(DOR_A429_TX_OTHERAC_EN,TRUE)
+         STUB DOR_Put_Output(DOR_A429_TX_ADIRU_EN,TRUE)
+         STUB DMA_Set( DML_OD_INT_OTHERAC_ENABLE,TRUE )
+         STUB DMA_Set( DML_OD_INT_ADIRU_ENABLE,TRUE )
+
+         #AOM_Init_Monitoring();
+
+      END ELEMENT
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = FALSE,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 120,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 136,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 1133,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB DPX_Get_S4ppuLhVal() FALSE
+         STUB DPX_Get_S4ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,FALSE)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,-20)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,-20)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.13
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.14
+   FAMILY nominal
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = FALSE,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 120,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 136,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 1133,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB DPX_Get_S4ppuLhVal() FALSE
+         STUB DPX_Get_S4ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,TRUE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,298)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,TRUE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,298)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,298)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.14
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.15
+   FAMILY nominal
+
+      ELEMENT
+
+         -- Don't Care Stubs
+         STUB DOR_Put_Output(DOR_A429_TX_OTHERAC_EN,TRUE)
+         STUB DOR_Put_Output(DOR_A429_TX_ADIRU_EN,TRUE)
+         STUB DMA_Set( DML_OD_INT_OTHERAC_ENABLE,TRUE )
+         STUB DMA_Set( DML_OD_INT_ADIRU_ENABLE,TRUE )
+
+         #AOM_Init_Monitoring();
+
+      END ELEMENT
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = FALSE,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 120,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 136,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 1132,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB DPX_Get_S4ppuLhVal() FALSE
+         STUB DPX_Get_S4ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,FALSE)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,-20)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,-20)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.15
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.16
+   FAMILY nominal
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = FALSE,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 120,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 136,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 1132,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB DPX_Get_S4ppuLhVal() FALSE
+         STUB DPX_Get_S4ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,TRUE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,298)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,TRUE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,298)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,298)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.16
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.17
+   FAMILY nominal
+
+      ELEMENT
+
+         -- Don't Care Stubs
+         STUB DOR_Put_Output(DOR_A429_TX_OTHERAC_EN,TRUE)
+         STUB DOR_Put_Output(DOR_A429_TX_ADIRU_EN,TRUE)
+         STUB DMA_Set( DML_OD_INT_OTHERAC_ENABLE,TRUE )
+         STUB DMA_Set( DML_OD_INT_ADIRU_ENABLE,TRUE )
+
+         #AOM_Init_Monitoring();
+
+      END ELEMENT
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = FALSE,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 120,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 136,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 1134,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB DPX_Get_S4ppuLhVal() FALSE
+         STUB DPX_Get_S4ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,FALSE)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,-20)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,-20)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.17
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.18
+   FAMILY nominal
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = FALSE,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 120,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 136,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 1134,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB DPX_Get_S4ppuLhVal() FALSE
+         STUB DPX_Get_S4ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,298)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,298)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,298)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.18
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.19
+   FAMILY nominal
+
+      ELEMENT
+
+         -- Don't Care Stubs
+         STUB DOR_Put_Output(DOR_A429_TX_OTHERAC_EN,TRUE)
+         STUB DOR_Put_Output(DOR_A429_TX_ADIRU_EN,TRUE)
+         STUB DMA_Set( DML_OD_INT_OTHERAC_ENABLE,TRUE )
+         STUB DMA_Set( DML_OD_INT_ADIRU_ENABLE,TRUE )
+
+         #AOM_Init_Monitoring();
+
+      END ELEMENT
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = FALSE,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 120,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 136,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 1132,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB DPX_Get_S4ppuLhVal() FALSE
+         STUB DPX_Get_S4ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,FALSE)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,-20)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,-20)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.19
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.20
+   FAMILY nominal
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 120,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 136,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 1132,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB DPX_Get_S4ppuLhVal() FALSE
+         STUB DPX_Get_S4ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,0)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,248)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,283)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.20
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.21
+   FAMILY nominal
+
+      ELEMENT
+
+         -- Don't Care Stubs
+         STUB DOR_Put_Output(DOR_A429_TX_OTHERAC_EN,TRUE)
+         STUB DOR_Put_Output(DOR_A429_TX_ADIRU_EN,TRUE)
+         STUB DMA_Set( DML_OD_INT_OTHERAC_ENABLE,TRUE )
+         STUB DMA_Set( DML_OD_INT_ADIRU_ENABLE,TRUE )
+
+         #AOM_Init_Monitoring();
+
+      END ELEMENT
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0x4000,      ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 120,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 136,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 1132,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB DPX_Get_S4ppuLhVal() FALSE
+         STUB DPX_Get_S4ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,FALSE)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,-20)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,-20)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.21
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.22
+   FAMILY nominal
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0xFFFF7FFF,  ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 120,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 136,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 1132,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB DPX_Get_S4ppuLhVal() FALSE
+         STUB DPX_Get_S4ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,0)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,248)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,283)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.22
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.23
+   FAMILY nominal
+
+      ELEMENT
+
+         -- Don't Care Stubs
+         STUB DOR_Put_Output(DOR_A429_TX_OTHERAC_EN,TRUE)
+         STUB DOR_Put_Output(DOR_A429_TX_ADIRU_EN,TRUE)
+         STUB DMA_Set( DML_OD_INT_OTHERAC_ENABLE,TRUE )
+         STUB DMA_Set( DML_OD_INT_ADIRU_ENABLE,TRUE )
+
+         #AOM_Init_Monitoring();
+
+      END ELEMENT
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = TRUE,        ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 120,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 136,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 1132,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB DPX_Get_S4ppuLhVal() FALSE
+         STUB DPX_Get_S4ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,FALSE)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,-20)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,-20)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.23
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.24
+   FAMILY nominal
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 120,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 136,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 1132,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB DPX_Get_S4ppuLhVal() FALSE
+         STUB DPX_Get_S4ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,0)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,248)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,283)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.24
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.25
+   FAMILY nominal
+
+      ELEMENT
+
+         -- Don't Care Stubs
+         STUB DOR_Put_Output(DOR_A429_TX_OTHERAC_EN,TRUE)
+         STUB DOR_Put_Output(DOR_A429_TX_ADIRU_EN,TRUE)
+         STUB DMA_Set( DML_OD_INT_OTHERAC_ENABLE,TRUE )
+         STUB DMA_Set( DML_OD_INT_ADIRU_ENABLE,TRUE )
+
+         #AOM_Init_Monitoring();
+
+      END ELEMENT
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 120,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 136,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 1132,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() FALSE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB DPX_Get_S4ppuLhVal() FALSE
+         STUB DPX_Get_S4ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,FALSE)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,-20)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,-20)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.25
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.26
+   FAMILY nominal
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 120,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 136,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 1132,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB DPX_Get_S4ppuLhVal() FALSE
+         STUB DPX_Get_S4ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,TRUE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,298)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,298)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,283)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.26
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.27
+   FAMILY nominal
+
+      ELEMENT
+
+         -- Don't Care Stubs
+         STUB DOR_Put_Output(DOR_A429_TX_OTHERAC_EN,TRUE)
+         STUB DOR_Put_Output(DOR_A429_TX_ADIRU_EN,TRUE)
+         STUB DMA_Set( DML_OD_INT_OTHERAC_ENABLE,TRUE )
+         STUB DMA_Set( DML_OD_INT_ADIRU_ENABLE,TRUE )
+
+         #AOM_Init_Monitoring();
+
+      END ELEMENT
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 120,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 136,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 1132,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() FALSE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB DPX_Get_S4ppuLhVal() FALSE
+         STUB DPX_Get_S4ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,FALSE)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,-20)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,-20)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.27
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.28
+   FAMILY nominal
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 120,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 136,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 1132,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB DPX_Get_S4ppuLhVal() FALSE
+         STUB DPX_Get_S4ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,TRUE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,298)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,248)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,298)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.28
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.29
+   FAMILY nominal
+
+      ELEMENT
+
+         -- Don't Care Stubs
+         STUB DOR_Put_Output(DOR_A429_TX_OTHERAC_EN,TRUE)
+         STUB DOR_Put_Output(DOR_A429_TX_ADIRU_EN,TRUE)
+         STUB DMA_Set( DML_OD_INT_OTHERAC_ENABLE,TRUE )
+         STUB DMA_Set( DML_OD_INT_ADIRU_ENABLE,TRUE )
+
+         #AOM_Init_Monitoring();
+
+      END ELEMENT
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 120,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 136,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 1132,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() FALSE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB DPX_Get_S4ppuLhVal() FALSE
+         STUB DPX_Get_S4ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,FALSE)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,-20)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,-20)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.29
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.30
+   FAMILY nominal
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 120,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 136,         ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 1132,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB DPX_Get_S4ppuLhVal() FALSE
+         STUB DPX_Get_S4ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,0)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,248)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,283)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.30
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.31
+   FAMILY nominal
+
+      ELEMENT
+
+         -- Don't Care Stubs
+         STUB DOR_Put_Output(DOR_A429_TX_OTHERAC_EN,TRUE)
+         STUB DOR_Put_Output(DOR_A429_TX_ADIRU_EN,TRUE)
+         STUB DMA_Set( DML_OD_INT_OTHERAC_ENABLE,TRUE )
+         STUB DMA_Set( DML_OD_INT_ADIRU_ENABLE,TRUE )
+
+         #AOM_Init_Monitoring();
+
+      END ELEMENT
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 10864,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() FALSE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         STUB DPX_Get_S4ppuLhVal() TRUE
+         STUB DPX_Get_S4ppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,FALSE)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,-20)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,-20)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.31
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.32
+   FAMILY nominal
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 1294,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 1294,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 10864,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         STUB DPX_Get_S4ppuLhVal() TRUE
+         STUB DPX_Get_S4ppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,0)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,TRUE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,TRUE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,2881)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,2881)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.32
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.33
+   FAMILY nominal
+
+      ELEMENT
+
+         -- Don't Care Stubs
+         STUB DOR_Put_Output(DOR_A429_TX_OTHERAC_EN,TRUE)
+         STUB DOR_Put_Output(DOR_A429_TX_ADIRU_EN,TRUE)
+         STUB DMA_Set( DML_OD_INT_OTHERAC_ENABLE,TRUE )
+         STUB DMA_Set( DML_OD_INT_ADIRU_ENABLE,TRUE )
+
+         #AOM_Init_Monitoring();
+
+      END ELEMENT
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 1296,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 1296,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 10864,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() FALSE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         STUB DPX_Get_S4ppuLhVal() TRUE
+         STUB DPX_Get_S4ppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,FALSE)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,-20)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,-20)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.33
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.34
+   FAMILY nominal
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 1294,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 1294,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 10864,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() FALSE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         STUB DPX_Get_S4ppuLhVal() TRUE
+         STUB DPX_Get_S4ppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,0)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,TRUE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,TRUE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,2883)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,2883)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.34
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.35
+   FAMILY nominal
+
+      ELEMENT
+
+         -- Don't Care Stubs
+         STUB DOR_Put_Output(DOR_A429_TX_OTHERAC_EN,TRUE)
+         STUB DOR_Put_Output(DOR_A429_TX_ADIRU_EN,TRUE)
+         STUB DMA_Set( DML_OD_INT_OTHERAC_ENABLE,TRUE )
+         STUB DMA_Set( DML_OD_INT_ADIRU_ENABLE,TRUE )
+
+         #AOM_Init_Monitoring();
+
+      END ELEMENT
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 1294,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 1294,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 10864,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() FALSE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         STUB DPX_Get_S4ppuLhVal() TRUE
+         STUB DPX_Get_S4ppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,FALSE)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,-20)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,-20)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.35
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.36
+   FAMILY nominal
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 10864,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() FALSE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         STUB DPX_Get_S4ppuLhVal() TRUE
+         STUB DPX_Get_S4ppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,0)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,2879)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,2879)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.36
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.37
+   FAMILY nominal
+
+      ELEMENT
+
+         -- Don't Care Stubs
+         STUB DOR_Put_Output(DOR_A429_TX_OTHERAC_EN,TRUE)
+         STUB DOR_Put_Output(DOR_A429_TX_ADIRU_EN,TRUE)
+         STUB DMA_Set( DML_OD_INT_OTHERAC_ENABLE,TRUE )
+         STUB DMA_Set( DML_OD_INT_ADIRU_ENABLE,TRUE )
+
+         #AOM_Init_Monitoring();
+
+      END ELEMENT
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 10864,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         STUB DPX_Get_S4ppuLhVal() TRUE
+         STUB DPX_Get_S4ppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,FALSE)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,-20)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,-20)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.37
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.38
+   FAMILY nominal
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 10864,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() FALSE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         STUB DPX_Get_S4ppuLhVal() TRUE
+         STUB DPX_Get_S4ppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,2911)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,2911)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,2911)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.38
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.39
+   FAMILY nominal
+
+      ELEMENT
+
+         -- Don't Care Stubs
+         STUB DOR_Put_Output(DOR_A429_TX_OTHERAC_EN,TRUE)
+         STUB DOR_Put_Output(DOR_A429_TX_ADIRU_EN,TRUE)
+         STUB DMA_Set( DML_OD_INT_OTHERAC_ENABLE,TRUE )
+         STUB DMA_Set( DML_OD_INT_ADIRU_ENABLE,TRUE )
+
+         #AOM_Init_Monitoring();
+
+      END ELEMENT
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 10864,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() FALSE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         STUB DPX_Get_S4ppuLhVal() TRUE
+         STUB DPX_Get_S4ppuRhVal() FALSE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,FALSE)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,-20)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,-20)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.39
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.40
+   FAMILY nominal
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 10864,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() FALSE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         STUB DPX_Get_S4ppuLhVal() TRUE
+         STUB DPX_Get_S4ppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,0)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,2881)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,2881)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.40
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.41
+   FAMILY nominal
+
+      ELEMENT
+
+         -- Don't Care Stubs
+         STUB DOR_Put_Output(DOR_A429_TX_OTHERAC_EN,TRUE)
+         STUB DOR_Put_Output(DOR_A429_TX_ADIRU_EN,TRUE)
+         STUB DMA_Set( DML_OD_INT_OTHERAC_ENABLE,TRUE )
+         STUB DMA_Set( DML_OD_INT_ADIRU_ENABLE,TRUE )
+
+         #AOM_Init_Monitoring();
+
+      END ELEMENT
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 10864,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() FALSE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         STUB DPX_Get_S4ppuLhVal() FALSE
+         STUB DPX_Get_S4ppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,FALSE)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,-20)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,-20)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.41
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.42
+   FAMILY nominal
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 10864,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() FALSE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         STUB DPX_Get_S4ppuLhVal() TRUE
+         STUB DPX_Get_S4ppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,0)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,2881)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,2881)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.42
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.43
+   FAMILY nominal
+
+      ELEMENT
+
+         -- Don't Care Stubs
+         STUB DOR_Put_Output(DOR_A429_TX_OTHERAC_EN,TRUE)
+         STUB DOR_Put_Output(DOR_A429_TX_ADIRU_EN,TRUE)
+         STUB DMA_Set( DML_OD_INT_OTHERAC_ENABLE,TRUE )
+         STUB DMA_Set( DML_OD_INT_ADIRU_ENABLE,TRUE )
+
+         #AOM_Init_Monitoring();
+
+      END ELEMENT
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 10865,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         STUB DPX_Get_S4ppuLhVal() TRUE
+         STUB DPX_Get_S4ppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,FALSE)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,-20)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,-20)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.43
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.44
+   FAMILY nominal
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 10864,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         STUB DPX_Get_S4ppuLhVal() TRUE
+         STUB DPX_Get_S4ppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,TRUE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,TRUE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,2911)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,TRUE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,TRUE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,2911)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,2911)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.44
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.45
+   FAMILY nominal
+
+      ELEMENT
+
+         -- Don't Care Stubs
+         STUB DOR_Put_Output(DOR_A429_TX_OTHERAC_EN,TRUE)
+         STUB DOR_Put_Output(DOR_A429_TX_ADIRU_EN,TRUE)
+         STUB DMA_Set( DML_OD_INT_OTHERAC_ENABLE,TRUE )
+         STUB DMA_Set( DML_OD_INT_ADIRU_ENABLE,TRUE )
+
+         #AOM_Init_Monitoring();
+
+      END ELEMENT
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 10864,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         STUB DPX_Get_S4ppuLhVal() FALSE
+         STUB DPX_Get_S4ppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,FALSE)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,-20)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,-20)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.45
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.46
+   FAMILY nominal
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 10865,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         STUB DPX_Get_S4ppuLhVal() TRUE
+         STUB DPX_Get_S4ppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,2911)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,2911)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,2911)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.46
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.47
+   FAMILY nominal
+
+      ELEMENT
+
+         -- Don't Care Stubs
+         STUB DOR_Put_Output(DOR_A429_TX_OTHERAC_EN,TRUE)
+         STUB DOR_Put_Output(DOR_A429_TX_ADIRU_EN,TRUE)
+         STUB DMA_Set( DML_OD_INT_OTHERAC_ENABLE,TRUE )
+         STUB DMA_Set( DML_OD_INT_ADIRU_ENABLE,TRUE )
+
+         #AOM_Init_Monitoring();
+
+      END ELEMENT
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 10866,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         STUB DPX_Get_S4ppuLhVal() FALSE
+         STUB DPX_Get_S4ppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,FALSE)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,-20)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,-20)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.47
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.48
+   FAMILY nominal
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 10864,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         STUB DPX_Get_S4ppuLhVal() TRUE
+         STUB DPX_Get_S4ppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,TRUE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,TRUE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,2912)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,TRUE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,TRUE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,2912)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,2912)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.48
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.49
+   FAMILY nominal
+
+      ELEMENT
+
+         -- Don't Care Stubs
+         STUB DOR_Put_Output(DOR_A429_TX_OTHERAC_EN,TRUE)
+         STUB DOR_Put_Output(DOR_A429_TX_ADIRU_EN,TRUE)
+         STUB DMA_Set( DML_OD_INT_OTHERAC_ENABLE,TRUE )
+         STUB DMA_Set( DML_OD_INT_ADIRU_ENABLE,TRUE )
+
+         #AOM_Init_Monitoring();
+
+      END ELEMENT
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 10865,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() FALSE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         STUB DPX_Get_S4ppuLhVal() FALSE
+         STUB DPX_Get_S4ppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,FALSE)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,-20)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,-20)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.49
+
+   TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.50
+   FAMILY nominal
+
+      -- obtain the starting address in the DPRAM( From FCP_A)
+      #PTU_ptr_DPR_Ptr_From_A=(DAB_A_to_B_Type *)DPR_Ptr_From_A;
+
+      ELEMENT
+
+         VAR DMA_Database[DML_FLAPFPPUDISCFAIL].Data,     init = FALSE,       ev = init
+         VAR DMA_Database[DML_FLAPSYSTEMASYMMETRY].Data,  init = TRUE,        ev = init
+         VAR DMA_Database[DML_RL111_XCC].Data,            init = 0,           ev = init
+         VAR DMA_Database[DML_XCCL111VAL].Data,           init = TRUE,        ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuLh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_4ms2ms.S4ppuRh,    init = 1295,        ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.Fppu,       init = 10864,       ev = init
+
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuLh,    init = 0,           ev = init
+         VAR PTU_ptr_DPR_Ptr_From_A->x_2ms0ms.DfppuRh,    init = 0,           ev = init
+
+         STUB PUC_Get_Chid() FLAP_TYPE
+         STUB PUC_Get_OpMode() A350_900
+
+         STUB DPX_Get_FPPUVal() TRUE
+         STUB DPX_Get_DfppuLhVal() TRUE
+         STUB DPX_Get_DfppuRhVal() TRUE
+
+         STUB DPX_Get_S4ppuLhVal() TRUE
+         STUB DPX_Get_S4ppuRhVal() TRUE
+
+         -- Don't Care Stubs
+         STUB DPX_Get_S2ppuLhVal() FALSE
+         STUB DPX_Get_S2ppuRhVal() FALSE
+         STUB CTP_Get_CTP() 0
+         STUB CTP_Get_CTPVal() FALSE
+         STUB CTP_Get_CTPLHOB() 0
+         STUB CTP_Get_CTPRHOB() 0
+         STUB AGE_Get_AC_L01x_Surface_Bool() 0
+         STUB AGE_Get_AC_L01x_Surface_Num() 0
+         STUB AGE_Get_AC_L015_Flap_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L017_Flap_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L021_Flap_Comm_Surface_Num() 0
+         STUB AGE_Get_AC_L023_Flap_Comm_LHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L025_Flap_Comm_RHOB_Surface_Num() 0
+         STUB AGE_Get_AC_L215_Flap_Status_Discr_2() 0
+
+         -- Don't Care Stubs
+         STUB DMA_Set 1=>(DML_INTFLAPIBRETRACT,FALSE)
+         STUB DMA_Set 2=>(DML_INTFLAPIBGTOREQC1F_DFS,FALSE)
+         STUB DMA_Set 3=>(DML_INTFLAPIBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 4=>(DML_INTFLAPIBGTOREQC2,FALSE)
+         STUB DMA_Set 5=>(DML_INTFLAPIBGTOREQC3,FALSE)
+         STUB DMA_Set 6=>(DML_INTFLAPIBGTOREQFULL,FALSE)
+         STUB DMA_Set 7=>(DML_INTFLAPIBSURFANGLE,0)
+         STUB DMA_Set 8=>(DML_INTFLAPIBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 9=>(DML_INTFLAPCOMMSURFANGLE,FALSE)
+
+         -- FlapOBRetract
+         STUB DMA_Set 11=>(DML_INTFLAPOBGTOREQC1F_ALT,FALSE)
+         STUB DMA_Set 12=>(DML_INTFLAPOBGTOREQC1F_DFS,FALSE)
+
+         -- Don't Care Stubs
+         STUB DMA_Set 10=>(DML_INTFLAPOBRETRACT,FALSE)
+         STUB DMA_Set 13=>(DML_INTFLAPOBGTOREQC2,FALSE)
+         STUB DMA_Set 14=>(DML_INTFLAPOBGTOREQC3,FALSE)
+         STUB DMA_Set 15=>(DML_INTFLAPOBGTOREQFULL,FALSE)
+         STUB DMA_Set 16=>(DML_INTFLAPLHOBSURFANGLE,2881)
+         STUB DMA_Set 17=>(DML_INTFLAPRHOBSURFANGLE,2881)
+         STUB DMA_Set 18=>(DML_INTFLAPOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 19=>(DML_INTFLAPLHOBSURFANGLEVAL,FALSE)
+         STUB DMA_Set 20=>(DML_INTFLAPRHOBSURFANGLEVAL,TRUE)
+         STUB DMA_Set 21=>(DML_INTFLAPCOMMLHOBSURFANGLE,FALSE)
+         STUB DMA_Set 22=>(DML_INTFLAPCOMMRHOBSURFANGLE,FALSE)
+         STUB DMA_Set 23=>(DML_ACA429FAIL,FALSE )
+
+         #AOM_Get_Flap_Inputs();
+         #AOM_OtherACA429_Output_Monitoring();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5670.Standard_Coupling.50
+
+END SERVICE -- AOM_OtherACA429_Output_Monitoring
+

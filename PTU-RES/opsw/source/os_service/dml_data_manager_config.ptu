@@ -1,0 +1,98 @@
+HEADER <OPSW_DEVELOP_5_17>
+&   <unit_test\testscripts\opsw\source\os_service\dml_data_manager_config.ptu >,
+&   <PD1000006058_SDD_OPSW_A350_SFCC current 10.3>,
+&   <sourcecode\opsw\source\os_service\dml_data_manager_config.c>
+#/******************************************************************************/
+#/*                                                                            */
+#/* Copyright by     :   Diehl Aerospace GmbH Ueberlingen                      */
+#/*                                                                            */
+#/* Module Name      :   dml_data_manager_config.ptu                           */
+#/*                                                                            */
+#/* Created By       :   Champa K                                              */
+#/*                                                                            */
+#/* Copyright:                                                                 */
+#/*     This document contains Proprietary Information of                      */
+#/*     Diehl Aerospace GmbH and may only be used by the recipient for         */
+#/*     the prescribed purposes and may neither be reproduced in any form nor  */
+#/*     the document itself or its content divulged to third parties without   */
+#/*     the expressed prior written permission of                              */
+#/*     Diehl Aerospace GmbH. All rights reserved.                             */
+#/*                                                                            */
+#/* Export Compliance:                                                         */
+#/*                                                                            */
+#/*     Transferred in accordance with Community General Export Authorisation  */
+#/*     No. EU001, dated June 22, 2000.                                        */
+#/*     Export license No. D329939                                             */
+#/*                                                                            */
+#/******************************************************************************/
+--------------------------------------------------------------------------------
+--
+-- TESTED FILE INCLUDE DIRECTIVES
+--
+--------------------------------------------------------------------------------
+#  /* IMPORTED MODULES */
+##include "DML_Data_Manager_Config.h"
+##include "DMA_Data_Manager.h"
+--------------------------------------------------------------------------------
+--
+-- TESTED FILE DECLARATIONS
+--
+--------------------------------------------------------------------------------
+
+-- Declarations of the global variables of the tested file
+
+--------------------------------------------------------------------------------
+
+BEGIN
+
+--------------------------------------------------------------------------------
+--
+-- STUB DECLARATIONS OF THE TESTED OR INTEGRATED UNITS
+--
+--------------------------------------------------------------------------------
+
+DEFINE STUB dml_data_manager_config_c
+    #void DMA_Set(DML_Index_Type  _in Index, int32  _in Value); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\\os_service/DMA_Data_Manager.h */
+END DEFINE
+
+--------------------------------------------------------------------------------
+--
+-- ENVIRONMENTS DECLARATIONS
+--
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+-- TESTED FILE ENVIRONNEMENT
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--
+-- SERVICES DECLARATIONS
+--
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+-- Declaration of the service DML_Reset_Permanent_Data
+--------------------------------------------------------------------------------
+   SERVICE DML_Reset_Permanent_Data
+   SERVICE_TYPE extern
+
+   TEST MTS_OPSW_P1-IVVP-5100.Standard_Coupling.1
+   FAMILY nominal
+
+      ELEMENT
+
+      STUB DMA_Set(DML_SSAMMAINTENANCEMSG,9)
+      STUB DMA_Set(DML_FSAMMAINTENANCEMSG,7)
+      STUB DMA_Set(DML_WTBTESTREQUIREDNVM, TRUE)
+      STUB DMA_Set(DML_OD_AFDX_ENABLE, TRUE)
+
+      #DML_Reset_Permanent_Data();
+
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-5100.Standard_Coupling.1
+
+   END SERVICE -- DML_Reset_Permanent_Data
+
+
+

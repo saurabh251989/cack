@@ -1,0 +1,193 @@
+VE 3.0e CCOV CMCDC #i5 7.0.0.0
+FC "DML_DATA_MANAGER_CONFIG.C" "E:\\A350_SFCC_SW\\UNIT_TEST\\TMP_N2\\"
+FD 1470815619
+TC AP BS BT BI BL CO CC
+AP 0 "DML_Reset_Permanent_Data" "DMA_Set" 29 29
+AP 1 "DML_Reset_Permanent_Data" "DMA_Set" 30 30
+AP 2 "DML_Reset_Permanent_Data" "DMA_Set" 31 31
+AP 3 "DML_Reset_Permanent_Data" "DMA_Set" 32 32
+BL 0 simple "DML_Reset_Permanent_Data" / 28 33
+DC 1095330043
+@RIK
+  ENCODING="System"
+  TOKEN="CCOV CMCDC"
+  SRC="DML_DATA_MANAGER_CONFIG.C"
+  DIR="E:\A350_SFCC_SW\UNIT_TEST\TMP_N2\"
+  DATE=1470815619
+  CHECKSUM=1095330043
+  SUMS
+   ("&Functions",
+    "-&Exits",
+    "Functions and exits"),
+   ("&Calls"=10),
+   ("Statement &blocks"=20,
+    "-&Implicit blocks"=21,
+    "Decisions"=20+21,
+    "&Loops"=22),
+   ("Basic &conditions"=30,
+    "&Modified conditions"=31,
+    "M&ultiple conditions"=32)
+  ERRORS
+    32="a source object was not linked with the right runtime object (check instrumentation mode)",
+    49="a composition of conditions evaluates in an unexpected result, contact your vendor",
+    50="a composition of conditions reached with an unexpected input vector, contact your vendor"
+NODE TYPE=FILE NAME="DML_DATA_MANAGER_CONFIG.C"@@COMMENT@/******************************************************************************/@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/* Copyright by     :   Diehl Aerospace GmbH Ueberlingen                      */@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/* File Name        :   DML_Data_Manager_Config.c                             */@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/* Author           :   R. Khan                                               */@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/******************************************************************************/@/COMMENT@
+
+@COMMENT@/* IMPORTED MODULES */@/COMMENT@
+@COMMENT@#include "DML_Data_Manager_Config.h"@/COMMENT@
+@COMMENT@#include "DMA_Data_Manager.h"@/COMMENT@
+
+
+@COMMENT@/* CONSTANTS */@/COMMENT@
+@COMMENT@/* None */@/COMMENT@
+
+@COMMENT@/* DATA TYPES */@/COMMENT@
+@COMMENT@/* None */@/COMMENT@
+
+@COMMENT@/* MODULE DATA */@/COMMENT@
+@COMMENT@/* None */@/COMMENT@
+
+@COMMENT@/* ROUTINES */@/COMMENT@
+
+void @NODE TYPE=FUNCTION NAME="DML_Reset_Permanent_Data"@@LINK NAME="DML_Reset_Permanent_Data"@DML_Reset_Permanent_Data(void)
+@BRANCH MARK=TB ID=0 SUM=20@{
+   @BRANCH MARK=TA ID=0 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@(DML_SSAMMAINTENANCEMSG    , 9)@/BRANCH@;
+   @BRANCH MARK=TA ID=1 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@(DML_FSAMMAINTENANCEMSG    , 7)@/BRANCH@;
+   @BRANCH MARK=TA ID=2 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@(DML_WTBTESTREQUIREDNVM    , TRUE)@/BRANCH@;
+   @BRANCH MARK=TA ID=3 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@(DML_OD_AFDX_ENABLE        , TRUE)@/BRANCH@;
+}@/BRANCH@@/NODE@
+
+@/NODE /RIK@
+VE 3.0e CCOV CMCDC #i5 7.0.0.0
+FC "DMA_DATA_MANAGER.H" "E:\\A350_SFCC_SW\\SOURCECODE\\OPSW\\SOURCE\\OS_SERVICE\\"
+FD 1471524304
+TC AP BS BT BI BL CO CC
+BL 0 simple "DMA_Get" / 69 72
+DC 608847228
+@RIK
+  ENCODING="System"
+  TOKEN="CCOV CMCDC"
+  SRC="DMA_DATA_MANAGER.H"
+  DIR="E:\A350_SFCC_SW\SOURCECODE\OPSW\SOURCE\OS_SERVICE\"
+  DATE=1471524304
+  CHECKSUM=608847228
+  SUMS
+   ("&Functions",
+    "-&Exits",
+    "Functions and exits"),
+   ("&Calls"=10),
+   ("Statement &blocks"=20,
+    "-&Implicit blocks"=21,
+    "Decisions"=20+21,
+    "&Loops"=22),
+   ("Basic &conditions"=30,
+    "&Modified conditions"=31,
+    "M&ultiple conditions"=32)
+  ERRORS
+    32="a source object was not linked with the right runtime object (check instrumentation mode)",
+    49="a composition of conditions evaluates in an unexpected result, contact your vendor",
+    50="a composition of conditions reached with an unexpected input vector, contact your vendor"
+NODE TYPE=FILE NAME="DMA_DATA_MANAGER.H"@@COMMENT@/******************************************************************************/@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/* Copyright by     :   Diehl Aerospace GmbH Ueberlingen                      */@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/* File name        :   DMA_Data_Manager.h                                    */@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/* Author           :   R. Khan                                               */@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/******************************************************************************/@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/*                      Module Specification                                  */@/COMMENT@
+@COMMENT@/*                      ====================                                  */@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/*  Module overview                                                           */@/COMMENT@
+@COMMENT@/*  ---------------                                                           */@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/*  The module contains the database and functions for accessing the          */@/COMMENT@
+@COMMENT@/*  database.                                                                 */@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/*  Requirements references                                                   */@/COMMENT@
+@COMMENT@/*  -----------------------                                                   */@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/*  SDD_OPSW-CI-008                                                           */@/COMMENT@
+@COMMENT@/*  SDD_OPSW-CI-430                                                           */@/COMMENT@
+@COMMENT@/*  SDD_OPSW-CI-431                                                           */@/COMMENT@
+@COMMENT@/*  SDD_OPSW-CI-432                                                           */@/COMMENT@
+@COMMENT@/*  SDD_OPSW-CI-011                                                           */@/COMMENT@
+@COMMENT@/*  SDD_OPSW-CI-012                                                           */@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+
+@COMMENT@#ifndef DMA_DATA_MANAGER@/COMMENT@
+@COMMENT@#define DMA_DATA_MANAGER@/COMMENT@
+
+@COMMENT@/* IMPORTED MODULES */@/COMMENT@
+@COMMENT@#include "STD_Standard_Types.h"@/COMMENT@
+@COMMENT@#include "DML_Data_Manager_Config.h"@/COMMENT@
+
+
+@COMMENT@/* CONSTANTS */@/COMMENT@
+@COMMENT@/* None */@/COMMENT@
+
+
+@COMMENT@/* DATA TYPES */@/COMMENT@
+typedef struct
+{
+   int32 Data;             @COMMENT@/* Data in the database.                                     */@/COMMENT@
+   uint16 Is_Manipulated;  @COMMENT@/* Indication, that Data is being manipulated by IPA.        */@/COMMENT@
+   uint16 Mapping;         @COMMENT@/* It contains the number of entry of the manipulation list, */@/COMMENT@
+}
+DMA_Entry_Type;
+
+@COMMENT@/* Because of the inlining of function DMA_Get(), the DB has to be defined in the H-file,     */@/COMMENT@
+@COMMENT@/* which makes the DB visible outside the module. However It is forbidden to access directly  */@/COMMENT@
+@COMMENT@/* the DB, only get and set functions can be used to access the DB.                           */@/COMMENT@
+@COMMENT@/* SCS_11 (D.Global_Data) : justified, extern required for inline of DMA_Get() */@/COMMENT@
+extern DMA_Entry_Type DMA_Database[DML_NUM_ENTRIES];
+@COMMENT@/* QA C (0612) : Since the variables in database must be handled, it is neccessary to have such a great buffer */@/COMMENT@
+
+@COMMENT@/* EXPORTED ROUTINES */@/COMMENT@
+
+void DMA_Init(void);
+
+@COMMENT@/* The function DMA_Get() is inlined to increase the performance.                        */@/COMMENT@
+@COMMENT@/* As the code is linear, it doesn't impact the source code to object code traceability. */@/COMMENT@
+inline int32 @NODE TYPE=FUNCTION NAME="DMA_Get"@@LINK NAME="DMA_Get"@DMA_Get(
+          @COMMENT@/* IN    */@/COMMENT@ DML_Index_Type Index)
+@BRANCH MARK=TB ID=0 SUM=20@{
+   @COMMENT@/* Return value from database. */@/COMMENT@
+   return DMA_Database[Index].Data;@SHORTCUT MARK=TB ID=0@
+}@/BRANCH@@/NODE@
+@COMMENT@/* SCS_1 (C.Justification): Deviation to the SCS as inlining is not ANSI-C, used to improve the run-time. */@/COMMENT@
+
+boolean DMA_Get_Single_Bit(
+            @COMMENT@/* IN    */@/COMMENT@ DML_Index_Type Index,
+            @COMMENT@/* IN    */@/COMMENT@ uint8          Bit_Position);
+
+@COMMENT@@COMMENT@#ifdef OPSW_FCP_A@/COMMENT@
+@COMMENT@/* SCS_7 (G.Conditional_Compilation) : LCRAM alignment on FCP_A (Module common for FCP_A, FCP B and ARE). */@/COMMENT@
+@COMMENT@   #pragma alignfunc (8)@/COMMENT@
+   @COMMENT@/* SCS_8 (G.Pragma) : Supersede linker action, pragma used to ensure that function is aligned on an eight byte boundary, which */@/COMMENT@
+   @COMMENT@/* ensures the best alignment for run-time performance, as core processor reads two 32-bit fetches per clock (8 bytes).        */@/COMMENT@
+@/COMMENT@@COMMENT@#endif@/COMMENT@
+void DMA_Set(
+         @COMMENT@/* IN    */@/COMMENT@ DML_Index_Type Index,
+         @COMMENT@/* IN    */@/COMMENT@ int32 Value);
+
+void DMA_IPA_Manipulate(
+         @COMMENT@/* IN    */@/COMMENT@ DML_Index_Type Index,
+         @COMMENT@/* IN    */@/COMMENT@ int32 Value);
+
+void DMA_Restore_Manipulation(void);
+
+@COMMENT@#endif@/COMMENT@
+@/NODE /RIK@

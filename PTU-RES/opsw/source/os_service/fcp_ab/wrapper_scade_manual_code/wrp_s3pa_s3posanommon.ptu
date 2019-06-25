@@ -1,0 +1,2745 @@
+HEADER <OPSW_DEVELOP_5_17>
+&   <unit_test\testscripts\opsw\source\os_service\fcp_ab\wrapper_scade_manual_code\wrp_s3pa_s3posanommon.ptu >,
+&   <PD1000006058_SDD_OPSW_A350_SFCC current 10.3>,
+&   <sourcecode\opsw\source\os_service\fcp_ab\wrapper_scade_manual_code\wrp_s3pa_s3posanommon.c >
+#/******************************************************************************/
+#/*                                                                            */
+#/* Copyright by     :   Diehl Aerospace GmbH Ueberlingen                      */
+#/*                                                                            */
+#/* Module Name      :    wrp_s3pa_s3posanommon.ptu                            */
+#/*                                                                            */
+#/* Created By       :    Champa Kulkarni                                      */
+#/*                                                                            */
+#/* Copyright:                                                                 */
+#/*     This document contains Proprietary Information of                      */
+#/*     Diehl Aerospace GmbH and may only be used by the recipient for         */
+#/*     the prescribed purposes and may neither be reproduced in any form nor  */
+#/*     the document itself or its content divulged to third parties without   */
+#/*     the expressed prior written permission of                              */
+#/*     Diehl Aerospace GmbH. All rights reserved.                             */
+#/*                                                                            */
+#/* Export Compliance:                                                         */
+#/*                                                                            */
+#/*     Transferred in accordance with Community General Export Authorisation  */
+#/*     No. EU001, dated June 22, 2000.                                        */
+#/*     Export license No. D329939                                             */
+#/*                                                                            */
+#/******************************************************************************/
+--------------------------------------------------------------------------------
+--
+-- TESTED FILE INCLUDE DIRECTIVES 
+--
+--------------------------------------------------------------------------------
+#/* IMPORTED MODULES */
+##include "scade_types.h"
+##include "DML_Data_Manager_Config.h"
+##include "DMA_Data_Manager.h"
+##include "DME_Data_Manager_Extension.h"
+##include "AWM_A429_Word_Management.h"           /* used to decode the right bits*/
+##include "BIT_Operations.h"                     /* used for BIT Access */
+##include "DFE_Dpram_Fse_Exchange.h"
+##include "FSE_Failure_Status_Exchange.h"
+##include "tpc_target_position_configuration.h"
+##include "PUC_power_up_coding_detection.h"
+##include "s3pa_s3posanommon.h"
+##include "wrp_s3pa_s3posanommon.h"
+--------------------------------------------------------------------------------
+--
+-- TESTED FILE DECLARATIONS 
+--
+--------------------------------------------------------------------------------
+
+-- Declarations of the global variables of the tested file
+
+--------------------------------------------------------------------------------
+--Variable to store minimum of int16
+#int16 PTU_MIN_INT16 = MIN_INT16;
+
+--Variable to store minimum of int32
+#int32 PTU_MIN_INT32 = MIN_INT32;
+
+--Variable to store maximum of uint32
+#uint32 PTU_MAX_UINT32 = MAX_UINT32;
+
+--Variable to store maximum of int16
+#int16 PTU_MAX_INT16 = MAX_INT16;
+
+BEGIN
+
+--------------------------------------------------------------------------------
+--
+-- STUB DECLARATIONS OF THE TESTED OR INTEGRATED UNITS
+--
+--------------------------------------------------------------------------------
+
+DEFINE STUB wrp_s3pa_s3posanommon_c 60
+    #void BIT_Assign(uint32 _inout Word, uint16x _in Bit_Nr, boolean _in Value); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\\other/bit_operations.h */
+    #void FSE_Store_Failure_Event_DPRAM(DFE_FseType _in Event, TYP_Failure_Status_Type _in Failure_Status); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\\os_service\\fcp_a/fse_failure_status_exchange.h */
+    #void DME_Set_Latch(DML_Index_Type _in Index, int32 _in Value); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\\os_service\\fcp_ab/DME_Data_Manager_Extension.h */
+    #void S3PA_S3PosAnomMon(_C_S3PA_S3PosAnomMon _inout p1); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\\scade_appli/s3pa_s3posanommon.h */
+    #TYP_Angle_Type tpc_getFlapConf3PS_OB(void); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\\other/tpc_target_position_configuration.h */
+    #TYP_PPU_Pos_Type tpc_getFlapCtpConf1PFHLDALTN_IB(void);/* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\\other/tpc_target_position_configuration.h */
+    #TYP_PPU_Pos_Type tpc_getFlapCtpConf1PFTO_IB(void); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\\other/tpc_target_position_configuration.h */
+    #TYP_PPU_Pos_Type tpc_getFlapCtpConf2_IB(void);/* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\\other/tpc_target_position_configuration.h */
+    #void tpc_getFlapCtpConfFULL(TYP_PPU_Pos_Type  _inout ib, TYP_PPU_Pos_Type  _inout ob); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\\other/tpc_target_position_configuration.h */
+    #TYP_PPU_Pos_Type tpc_getFlapCtpConf3_IB(void); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\\other/tpc_target_position_configuration.h */
+    #void tpc_getFlapCtpConf3PS(TYP_PPU_Pos_Type  _inout ib, TYP_PPU_Pos_Type  _inout ob); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\\other/tpc_target_position_configuration.h */
+    #TYP_Aircraft_Type PUC_Get_OpMode(void); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\\os_service\\fcp_ab/PUC_power_up_coding_detection.h */
+    #boolean BIT_Is_Set(uint32 _in Word, uint16x _in Bit_Nr); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\\other/bit_operations.h */   
+    #TYP_SFCC_Nr_Type PUC_Get_InstMode(void); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\\os_service\\fcp_ab/PUC_Power_Up_Coding_Detection.h */
+    #void DMA_Set(DML_Index_Type _in Index, int32 _in Value); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\\os_service/DMA_Data_Manager.h */
+    #void S3PA_S3PosAnomMon_init(_C_S3PA_S3PosAnomMon _inout p1); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\\scade_appli/s3pa_s3posanommon.h */
+    #DMA_Entry_Type DMA_Database[DML_NUM_ENTRIES ]; /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\\os_service/DMA_Data_Manager.h */
+END DEFINE
+
+--------------------------------------------------------------------------------
+--
+-- ENVIRONMENTS DECLARATIONS
+--
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+-- TESTED FILE ENVIRONNEMENT
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--
+-- SERVICES DECLARATIONS
+--
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+-- Declaration of the service wrp_call_s3pa_init
+--------------------------------------------------------------------------------
+SERVICE wrp_call_s3pa_init
+SERVICE_TYPE extern
+
+   ENVIRONMENT ENV_wrp_call_s3pa_init
+   
+      ARRAY DMA_Database[0..DML_NUM_ENTRIES-1].Data,
+      &                                                             init = 0x0,
+      &                                                                                        ev = init
+   END ENVIRONMENT
+  
+   USE ENV_wrp_call_s3pa_init 
+
+    
+    TEST MTS_OPSW_P2-IVVP-5769.Wrapper_Init.3
+    FAMILY nominal
+
+        ELEMENT
+        
+            VAR DMA_Database[DML_DS3LHSKEWFAILS3PAMNVM].Data,             init = FALSE, ev = init
+            VAR DMA_Database[DML_DS3RHSKEWFAILS3PAMNVM].Data,             init = FALSE, ev = init   
+            
+            STUB S3PA_S3PosAnomMon_init 1..2 => (({ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            &                                       0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            &                                       0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            &                                       0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            &                                       0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+            &                                       {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            &                                       0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            &                                       0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            &                                       0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            &                                       0,0,0,0,0,0,0,0,0,0,0,0,0,0}))
+            
+        #wrp_call_s3pa_init();
+        END ELEMENT
+
+    END TEST -- TEST MTS_OPSW_P2-IVVP-5769.Wrapper_Init.3    
+
+END SERVICE -- wrp_call_s3pa_init
+
+--------------------------------------------------------------------------------
+-- Declaration of the service wrp_call_s3pa
+--------------------------------------------------------------------------------
+SERVICE wrp_call_s3pa
+SERVICE_TYPE extern
+
+    -- To initialize the counter.
+   #int count=0;
+   --To provide the value to database index.
+   #int TCTFarray[10];
+   
+ENVIRONMENT ENV_wrp_call_s3pa
+
+      --PRECONDITION
+      
+      VAR DMA_Database[DML_DS3LHSKEWFAILS3PAMNVM].Data,             init = FALSE,   ev = init
+      VAR DMA_Database[DML_DS3RHSKEWFAILS3PAMNVM].Data,             init = FALSE,   ev = init  
+      
+      -- FUNCTION UNDER TEST
+      VAR DMA_Database[DML_RL111_XCC].Data,                 init = 111,             ev = init
+      VAR DMA_Database[DML_RL113_XCC].Data,                 init = 113,             ev = init
+      VAR DMA_Database[DML_XCCL111VAL].Data,                init = 1111,            ev = init
+      VAR DMA_Database[DML_XCCL113VAL].Data,                init = 1113,            ev = init
+      VAR DMA_Database[DML_FPPU].Data,                      init = 100,             ev = init
+      VAR DMA_Database[DML_FPPUVAL].Data,                   init = 1,               ev = init
+      VAR DMA_Database[DML_DFPPULH].Data,                   init = 2,               ev = init
+      VAR DMA_Database[DML_DFPPULHVAL].Data,                init = 3,               ev = init
+      VAR DMA_Database[DML_DFPPURH].Data,                   init = 200,             ev = init
+      VAR DMA_Database[DML_DFPPURHVAL].Data,                init = 300,             ev = init      
+      VAR DMA_Database[DML_CTP_MA].Data,                    init = 6,               ev = init
+      VAR DMA_Database[DML_CTPACTIVE_F3PF].Data,            init = 7,               ev = init
+      VAR DMA_Database[DML_DFSCOMMANDLT].Data,              init = 8,               ev = init
+      VAR DMA_Database[DML_ENGINESOFF].Data,                init = 9,               ev = init
+      VAR DMA_Database[DML_CONSOLIDATEDCAS].Data,           init = 10,              ev = init
+      VAR DMA_Database[DML_CASVAL].Data,                    init = 11,              ev = init
+      VAR DMA_Database[DML_CONSOLIDATEDCASAVG].Data,        init = 12,              ev = init
+      VAR DMA_Database[DML_ACONGND].Data,                   init = 13,              ev = init
+      VAR DMA_Database[DML_FLRESELECTIONCTR].Data,          init = 14,              ev = init
+      VAR DMA_Database[DML_POBOPEN].Data,                   init = 15,              ev = init
+      VAR DMA_Database[DML_ADGBLHPOBOPEN].Data,             init = 16,              ev = init
+      VAR DMA_Database[DML_WTBLHOPEN].Data,                 init = 17,              ev = init
+      VAR DMA_Database[DML_ADGBRHPOBOPEN].Data,             init = 160,             ev = init
+      VAR DMA_Database[DML_WTBRHOPEN].Data,                 init = 170,             ev = init      
+      VAR DMA_Database[DML_S3PPULH].Data,                   init = 27,              ev = init
+      VAR DMA_Database[DML_S3PPULHVAL].Data,                init = 28,              ev = init
+      VAR DMA_Database[DML_S3PPURH].Data,                   init = 270,             ev = init
+      VAR DMA_Database[DML_S3PPURHVAL].Data,                init = 280,             ev = init
+      VAR DMA_Database[DML_S3PPULHCASNVM].Data,             init = 32,              ev = init
+      VAR DMA_Database[DML_S3PPULHPOSFLTNVM].Data,          init = 33,              ev = init
+      VAR DMA_Database[DML_S3PPULHPOSGNDNVM].Data,          init = 34,              ev = init
+      VAR DMA_Database[DML_S3PPULHFLTMSMTC3VALNVM].Data,    init = 35,              ev = init
+      VAR DMA_Database[DML_S3PPULHFLTMSMTC4VALNVM].Data,    init = 36,              ev = init
+      VAR DMA_Database[DML_S3PPULHGNDMSMTVALNVM].Data,      init = 37,              ev = init
+      VAR DMA_Database[DML_S3POSANOMMONLH].Data,            init = 38,              ev = init
+      VAR DMA_Database[DML_FLAPSKEWVALLHOB].Data,           init = 39,              ev = init 
+      VAR DMA_Database[DML_S3PPURHCASNVM].Data,             init = 320,             ev = init
+      VAR DMA_Database[DML_S3PPURHPOSFLTNVM].Data,          init = 330,             ev = init
+      VAR DMA_Database[DML_S3PPURHPOSGNDNVM].Data,          init = 340,             ev = init
+      VAR DMA_Database[DML_S3PPURHFLTMSMTC3VALNVM].Data,    init = 350,             ev = init
+      VAR DMA_Database[DML_S3PPURHFLTMSMTC4VALNVM].Data,    init = 360,             ev = init
+      VAR DMA_Database[DML_S3PPURHGNDMSMTVALNVM].Data,      init = 370,             ev = init
+      VAR DMA_Database[DML_S3POSANOMMONRH].Data,            init = 380,             ev = init
+      VAR DMA_Database[DML_FLAPSKEWVALRHOB].Data,           init = 390,             ev = init
+      VAR DMA_Database[DML_STRUT3RHDISCSKEWNVM].Data,       init = 391,             ev = init
+      VAR DMA_Database[DML_S3PPURHGNDMSMTC3FAILNVM].Data,   init = 392,             ev = init
+      VAR DMA_Database[DML_S3PPURHGNDMSMTC4FAILNVM].Data,   init = 393,             ev = init
+      VAR DMA_Database[DML_CTPACTIVE_FLR].Data,             init = 394,             ev = init
+      VAR DMA_Database[DML_CTPVAL].Data,                    init = 395,             ev = init    
+      VAR DMA_Database[DML_STRUT3LHDISCSKEWNVM].Data,       init = 396,             ev = init
+      VAR DMA_Database[DML_S3PPULHGNDMSMTC3FAILNVM].Data,   init = 397,             ev = init
+      VAR DMA_Database[DML_S3PPULHGNDMSMTC4FAILNVM].Data,   init = 398,             ev = init
+      
+
+   END ENVIRONMENT
+   USE ENV_wrp_call_s3pa
+
+    TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.1
+    FAMILY nominal
+
+        ELEMENT      
+
+        STUB S3PA_S3PosAnomMon_init 1..2 => ((  {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                       0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                       0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                       0,0,0,0,0,0,
+        &                                       0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                       0,0,0,0,0,0},
+        &                                       {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                       0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                       0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                       0,0,0,0,0,0,        
+        &                                       0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                       555,0,0,0,0,0}))
+        
+        #wrp_call_s3pa_init();
+        
+        VAR DMA_Database[DML_DS3LHSKEWFAILS3PAMNVM].Data,       init = TRUE,               ev = init
+        VAR DMA_Database[DML_DS3RHSKEWFAILS3PAMNVM].Data,       init = TRUE,               ev = init
+        VAR DMA_Database[DML_S3LHANOMFAILUNCONF].Data,          init = TRUE,               ev = init
+        VAR DMA_Database[DML_S3RHANOMFAILUNCONF].Data,          init = TRUE,               ev = init       
+        
+        STUB PUC_Get_OpMode()A350_1000
+                
+        STUB BIT_Is_Set 1 => (113,AWM_DATA_POBOPEN)FALSE
+        STUB BIT_Is_Set 2 => (113,AWM_DATA_ADGBLHPOBOPEN)FALSE
+        STUB BIT_Is_Set 3 => (113,AWM_DATA_WTBLHOPEN)FALSE
+        STUB BIT_Is_Set 4 => (113,AWM_DATA_S3PPULHVAL)FALSE
+        STUB BIT_Is_Set 5 => (111,AWM_DATA_FLAPSKEWLHOB)FALSE
+
+        STUB BIT_Is_Set 6 => (113,AWM_DATA_ADGBRHPOBOPEN)FALSE
+        STUB BIT_Is_Set 7 => (113,AWM_DATA_WTBRHOPEN)FALSE
+        STUB BIT_Is_Set 8 => (113,AWM_DATA_S3PPURHVAL)FALSE
+        STUB BIT_Is_Set 9 => (111,AWM_DATA_FLAPSKEWRHOB)FALSE        
+        
+        
+        STUB PUC_Get_InstMode 1..2 => ()SFCC_NR_1
+        
+        STUB tpc_getFlapCtpConf3_IB 1..2 => ()0
+        
+        STUB tpc_getFlapCtpConf3PS 1..2 => ((0,0),(0,0))
+        
+        STUB tpc_getFlapCtpConfFULL 1..2 => ((0,0),(0,0))
+        
+        STUB tpc_getFlapConf3PS_OB 1..2 => ()0
+
+        STUB tpc_getFlapCtpConf1PFHLDALTN_IB 1..2 => () 0
+        
+        STUB tpc_getFlapCtpConf1PFTO_IB 1..2 => () 0
+        
+        STUB tpc_getFlapCtpConf2_IB 1..2 => () 0        
+        
+        STUB S3PA_S3PosAnomMon 1=> (({ 100,1,2,3,6,7,8,9,10,11,12,13,14,15,
+        &                            16,17,FALSE,FALSE,FALSE,1113,FALSE,27,28,FALSE,1111,SFCC_NR_1,
+        &                            32,33,34,35,36,37,39,TRUE,TRUE,0,0,0,0,0,0,TYP_ETT_FLAP_100,FALSE,
+        &                            397,398,394,0,0,0,395,396,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            40,41,42,43,44,45,46,47,FALSE,FALSE,FS_NO_FAILURE_DETECTED,FS_NO_FAILURE_DETECTED,48,49,50,51,
+        &                            52,53,54,55,56,57,58,59,60,61,62})) 
+        
+        STUB S3PA_S3PosAnomMon 2=> (({ 100,1,200,300,6,7,8,9,10,11,12,13,14,15,
+        &                            160,170,FALSE,FALSE,FALSE,1113,FALSE,270,280,FALSE,1111,SFCC_NR_1,
+        &                            320,330,340,350,360,370,390,TRUE,TRUE,0,0,0,0,0,0,TYP_ETT_FLAP_100,TRUE,
+        &                            392,393,394,0,0,0,395,391,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            58,59,60,61,62,63,64,65,FALSE,FALSE,FS_NO_FAILURE_DETECTED,FS_NO_FAILURE_DETECTED,66,67,68,69,
+        &                            70,71,72,73,74,75,76,77,78,79,80}))     
+        
+        STUB DMA_Set (DML_STRUT3LHDISCSKEW,40)
+        STUB DMA_Set (DML_FLAPSKEWLHOB,41)
+        
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC3VALNVM,42)
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC4VALNVM,43)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTVALNVM,44)
+        
+        STUB DMA_Set (DML_S3PPULHPOSFLTNVM,45)
+        STUB DMA_Set (DML_S3PPULHPOSGNDNVM,46)
+        STUB DMA_Set (DML_S3PPULHCASNVM,47)
+        
+        STUB DME_Set_Latch (DML_DS3LHSKEWFAILS3PAMNVM,FALSE)
+        
+        STUB DME_Set_Latch (DML_S3LHANOMFAILUNCONF,FALSE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWCONF_FAILURE_STATUS,FS_NO_FAILURE_DETECTED)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWUNCONF_FAILURE_STATUS,FS_NO_FAILURE_DETECTED)
+        
+        STUB DMA_Set (DML_CMDC3LHGND,48)     
+        STUB DMA_Set (DML_CMDC3LHFLT,49)     
+        STUB DMA_Set (DML_CMDC4LH,50)     
+        STUB DMA_Set (DML_DETCONDLH,51)     
+        STUB DMA_Set (DML_DETCONDFLTC3LH,52)
+        STUB DMA_Set (DML_DETCONDFLTC4LH,53)
+        STUB DMA_Set (DML_DETCONDGNDC3LH,54)
+        STUB DMA_Set (DML_DETCONDGNDC4LH,55)
+        STUB DMA_Set (DML_S3PPULHPOSAVG,56)
+        STUB DMA_Set (DML_S3POSANOMMONLH,57)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC3FAILNVM,58)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC4FAILNVM,59) 
+        STUB DME_Set_Latch (DML_STRUT3LHDISCSKEWNVM,60)        
+
+        STUB DMA_Set (DML_STRUT3RHDISCSKEW,58)
+        STUB DMA_Set (DML_FLAPSKEWRHOB,59)
+        
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC3VALNVM,60)
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC4VALNVM,61)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTVALNVM,62)
+        
+        STUB DMA_Set (DML_S3PPURHPOSFLTNVM,63)
+        STUB DMA_Set (DML_S3PPURHPOSGNDNVM,64)
+        STUB DMA_Set (DML_S3PPURHCASNVM,65)   
+        
+        STUB DME_Set_Latch (DML_DS3RHSKEWFAILS3PAMNVM,FALSE)
+        
+        STUB DME_Set_Latch (DML_S3RHANOMFAILUNCONF,FALSE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWCONF_FAILURE_STATUS,FS_NO_FAILURE_DETECTED)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWUNCONF_FAILURE_STATUS,FS_NO_FAILURE_DETECTED)
+        
+        STUB DMA_Set (DML_CMDC3RHGND,66)     
+        STUB DMA_Set (DML_CMDC3RHFLT,67)     
+        STUB DMA_Set (DML_CMDC4RH,68)     
+        STUB DMA_Set (DML_DETCONDRH,69)     
+        STUB DMA_Set (DML_DETCONDFLTC3RH,70)
+        STUB DMA_Set (DML_DETCONDFLTC4RH,71)
+        STUB DMA_Set (DML_DETCONDGNDC3RH,72)
+        STUB DMA_Set (DML_DETCONDGNDC4RH,73)
+        STUB DMA_Set (DML_S3PPURHPOSAVG,74)
+        STUB DMA_Set (DML_S3POSANOMMONRH,75) 
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC3FAILNVM,76)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC4FAILNVM,77)        
+        STUB DME_Set_Latch (DML_STRUT3RHDISCSKEWNVM,78) 
+
+        STUB DMA_Set (DML_S3PAMGNDMSMTC3REQUIRED,1)
+        STUB DMA_Set (DML_S3PAMGNDMSMTCFREQUIRED,1)      
+        
+        #wrp_call_s3pa();
+        END ELEMENT
+
+    END TEST -- TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.1
+    
+
+    TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.2
+    FAMILY nominal
+
+        ELEMENT      
+
+        STUB S3PA_S3PosAnomMon_init 1 => (({0,0,0,0,0,0,0,0,0,0,0,
+        &                                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                   40,41,42,43,44,45,46,47,FALSE,FALSE,FS_NO_FAILURE_DETECTED,FS_NO_FAILURE_DETECTED,48,49,50,51,
+        &                                   52,53,54,55,56,57,58,59,60,61,62},
+        &                                   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                   0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                   0,0,0,0,0,0,        
+        &                                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                   555,0,0,0,0,0}))
+        
+        STUB S3PA_S3PosAnomMon_init 2 => (({0,0,0,0,0,0,0,0,0,0,0,
+        &                                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                   58,59,60,61,62,63,64,65,FALSE,FALSE,FS_NO_FAILURE_DETECTED,FS_NO_FAILURE_DETECTED,66,67,68,69,
+        &                                   70,71,72,73,74,75,76,77,78,79,80},
+        &                                   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                   0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                   0,0,0,0,0,0,        
+        &                                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                   555,0,0,0,0,0}))
+                
+        #wrp_call_s3pa_init();
+        
+        VAR DMA_Database[DML_DS3LHSKEWFAILS3PAMNVM].Data,       init = TRUE,               ev = init
+        VAR DMA_Database[DML_DS3RHSKEWFAILS3PAMNVM].Data,       init = TRUE,               ev = init
+        VAR DMA_Database[DML_S3LHANOMFAILUNCONF].Data,          init = TRUE,               ev = init
+        VAR DMA_Database[DML_S3RHANOMFAILUNCONF].Data,          init = TRUE,               ev = init       
+        
+        STUB PUC_Get_OpMode()A350_1000
+                
+        STUB BIT_Is_Set 1 => (113,AWM_DATA_POBOPEN)FALSE
+        STUB BIT_Is_Set 2 => (113,AWM_DATA_ADGBLHPOBOPEN)FALSE
+        STUB BIT_Is_Set 3 => (113,AWM_DATA_WTBLHOPEN)FALSE
+        STUB BIT_Is_Set 4 => (113,AWM_DATA_S3PPULHVAL)FALSE
+        STUB BIT_Is_Set 5 => (111,AWM_DATA_FLAPSKEWLHOB)FALSE
+
+        STUB BIT_Is_Set 6 => (113,AWM_DATA_ADGBRHPOBOPEN)FALSE
+        STUB BIT_Is_Set 7 => (113,AWM_DATA_WTBRHOPEN)FALSE
+        STUB BIT_Is_Set 8 => (113,AWM_DATA_S3PPURHVAL)FALSE
+        STUB BIT_Is_Set 9 => (111,AWM_DATA_FLAPSKEWRHOB)FALSE        
+        
+        
+        STUB PUC_Get_InstMode 1..2 => ()SFCC_NR_1
+        
+        STUB tpc_getFlapCtpConf3_IB 1..2 => ()0
+        
+        STUB tpc_getFlapCtpConf3PS 1..2 => ((0,0),(0,0))
+        
+        STUB tpc_getFlapCtpConfFULL 1..2 => ((0,0),(0,0))
+        
+        STUB tpc_getFlapConf3PS_OB 1..2 => ()0    
+
+        STUB tpc_getFlapCtpConf1PFHLDALTN_IB 1..2 => () 0
+        
+        STUB tpc_getFlapCtpConf1PFTO_IB 1..2 => () 0
+        
+        STUB tpc_getFlapCtpConf2_IB 1..2 => () 0  
+        
+        STUB S3PA_S3PosAnomMon 1=> (({100,1,2,3,6,7,8,9,10,11,12,13,14,15,
+        &                            16,17,FALSE,FALSE,FALSE,1113,FALSE,27,28,FALSE,1111,SFCC_NR_1,
+        &                            32,33,34,35,36,37,39,TRUE,TRUE,0,0,0,0,0,0,TYP_ETT_FLAP_100,FALSE,
+        &                            397,398,394,0,0,0,395,396,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,PTU_MIN_INT16,PTU_MIN_INT16,FALSE,FALSE,FS_DETECTED_FAILURE,FS_DETECTED_FAILURE,TRUE,TRUE,TRUE,TRUE,
+        &                            TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE})) 
+        
+        STUB S3PA_S3PosAnomMon 2=> (({100,1,200,300,6,7,8,9,10,11,12,13,14,15,
+        &                            160,170,FALSE,FALSE,FALSE,1113,FALSE,270,280,FALSE,1111,SFCC_NR_1,
+        &                            320,330,340,350,360,370,390,TRUE,TRUE,0,0,0,0,0,0,TYP_ETT_FLAP_100,TRUE,
+        &                            392,393,394,0,0,0,395,391,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,PTU_MIN_INT16,PTU_MIN_INT16,FALSE,FALSE,FS_DETECTED_FAILURE,FS_DETECTED_FAILURE,TRUE,TRUE,TRUE,TRUE,
+        &                            TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE}))              
+                
+        STUB DMA_Set (DML_STRUT3LHDISCSKEW,TRUE)
+        STUB DMA_Set (DML_FLAPSKEWLHOB,TRUE)
+        
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC3VALNVM,TRUE)
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC4VALNVM,TRUE)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTVALNVM,TRUE)
+        
+        STUB DMA_Set (DML_S3PPULHPOSFLTNVM,TRUE)
+        STUB DMA_Set (DML_S3PPULHPOSGNDNVM,PTU_MIN_INT16)
+        STUB DMA_Set (DML_S3PPULHCASNVM,PTU_MIN_INT16)
+        
+        STUB DME_Set_Latch (DML_DS3LHSKEWFAILS3PAMNVM,FALSE)
+        
+        STUB DME_Set_Latch (DML_S3LHANOMFAILUNCONF,FALSE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWCONF_FAILURE_STATUS,FS_DETECTED_FAILURE)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWUNCONF_FAILURE_STATUS,FS_DETECTED_FAILURE)
+        
+        STUB DMA_Set (DML_CMDC3LHGND,TRUE)     
+        STUB DMA_Set (DML_CMDC3LHFLT,TRUE)     
+        STUB DMA_Set (DML_CMDC4LH,TRUE)     
+        STUB DMA_Set (DML_DETCONDLH,TRUE)     
+        STUB DMA_Set (DML_DETCONDFLTC3LH,TRUE)
+        STUB DMA_Set (DML_DETCONDFLTC4LH,TRUE)
+        STUB DMA_Set (DML_DETCONDGNDC3LH,TRUE)
+        STUB DMA_Set (DML_DETCONDGNDC4LH,TRUE)
+        STUB DMA_Set (DML_S3PPULHPOSAVG,TRUE)
+        STUB DMA_Set (DML_S3POSANOMMONLH,TRUE)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC3FAILNVM,TRUE)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC4FAILNVM,TRUE) 
+        STUB DME_Set_Latch (DML_STRUT3LHDISCSKEWNVM,TRUE)         
+
+        STUB DMA_Set (DML_STRUT3RHDISCSKEW,TRUE)
+        STUB DMA_Set (DML_FLAPSKEWRHOB,TRUE)
+        
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC3VALNVM,TRUE)
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC4VALNVM,TRUE)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTVALNVM,TRUE)
+        
+        STUB DMA_Set (DML_S3PPURHPOSFLTNVM,TRUE)
+        STUB DMA_Set (DML_S3PPURHPOSGNDNVM,PTU_MIN_INT16)
+        STUB DMA_Set (DML_S3PPURHCASNVM,PTU_MIN_INT16)
+        
+        STUB DME_Set_Latch (DML_DS3RHSKEWFAILS3PAMNVM,FALSE)
+        
+        STUB DME_Set_Latch (DML_S3RHANOMFAILUNCONF,FALSE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWCONF_FAILURE_STATUS,FS_DETECTED_FAILURE)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWUNCONF_FAILURE_STATUS,FS_DETECTED_FAILURE)
+        
+        STUB DMA_Set (DML_CMDC3RHGND,TRUE)     
+        STUB DMA_Set (DML_CMDC3RHFLT,TRUE)     
+        STUB DMA_Set (DML_CMDC4RH,TRUE)     
+        STUB DMA_Set (DML_DETCONDRH,TRUE)     
+        STUB DMA_Set (DML_DETCONDFLTC3RH,TRUE)
+        STUB DMA_Set (DML_DETCONDFLTC4RH,TRUE)
+        STUB DMA_Set (DML_DETCONDGNDC3RH,TRUE)
+        STUB DMA_Set (DML_DETCONDGNDC4RH,TRUE)
+        STUB DMA_Set (DML_S3PPURHPOSAVG,TRUE)
+        STUB DMA_Set (DML_S3POSANOMMONRH,TRUE) 
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC3FAILNVM,TRUE)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC4FAILNVM,TRUE)        
+        STUB DME_Set_Latch (DML_STRUT3RHDISCSKEWNVM,TRUE) 
+
+        STUB DMA_Set (DML_S3PAMGNDMSMTC3REQUIRED,TRUE)
+        STUB DMA_Set (DML_S3PAMGNDMSMTCFREQUIRED,TRUE)          
+                
+        #wrp_call_s3pa();
+        END ELEMENT
+
+    END TEST -- TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.2    
+     
+
+    TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.3 LOOP 9
+    FAMILY nominal
+
+      ELEMENT
+                                                                                     
+        ARRAY TCTFarray,
+         &                                                    init = FALSE,             ev ==
+      END ELEMENT
+
+      ELEMENT   
+
+        VAR TCTFarray[count],                                 init = TRUE,              ev ==
+
+        VAR DMA_Database[DML_RL111_XCC].Data,                 init = 0,                 ev = init
+        VAR DMA_Database[DML_RL113_XCC].Data,                 init = 0,                 ev = init
+        VAR DMA_Database[DML_XCCL111VAL].Data,                init = TRUE,              ev = init
+        VAR DMA_Database[DML_XCCL113VAL].Data,                init = TRUE,              ev = init
+        VAR DMA_Database[DML_FPPU].Data,                      init = PTU_MIN_INT16,     ev = init
+        VAR DMA_Database[DML_FPPUVAL].Data,                   init = TRUE,              ev = init
+        VAR DMA_Database[DML_DFPPULH].Data,                   init = -16384,            ev = init
+        VAR DMA_Database[DML_DFPPULHVAL].Data,                init = TRUE,              ev = init
+        VAR DMA_Database[DML_DFPPURH].Data,                   init = -16384,            ev = init
+        VAR DMA_Database[DML_DFPPURHVAL].Data,                init = TRUE,              ev = init      
+        VAR DMA_Database[DML_CTP_MA].Data,                    init = PTU_MIN_INT16,     ev = init
+        VAR DMA_Database[DML_CTPACTIVE_F3PF].Data,            init = TRUE,              ev = init
+        VAR DMA_Database[DML_DFSCOMMANDLT].Data,              init = PTU_MIN_INT16,     ev = init
+        VAR DMA_Database[DML_ENGINESOFF].Data,                init = TRUE,              ev = init
+        VAR DMA_Database[DML_CONSOLIDATEDCAS].Data,           init = -16384,            ev = init
+        VAR DMA_Database[DML_CASVAL].Data,                    init = TRUE,              ev = init
+        VAR DMA_Database[DML_CONSOLIDATEDCASAVG].Data,        init = -16384,            ev = init
+        VAR DMA_Database[DML_ACONGND].Data,                   init = TRUE,              ev = init
+        VAR DMA_Database[DML_FLRESELECTIONCTR].Data,          init = 0,                 ev = init
+        VAR DMA_Database[DML_POBOPEN].Data,                   init = TRUE,              ev = init
+        VAR DMA_Database[DML_ADGBLHPOBOPEN].Data,             init = TRUE,              ev = init
+        VAR DMA_Database[DML_WTBLHOPEN].Data,                 init = TRUE,              ev = init
+        VAR DMA_Database[DML_ADGBRHPOBOPEN].Data,             init = TRUE,              ev = init
+        VAR DMA_Database[DML_WTBRHOPEN].Data,                 init = TRUE,              ev = init      
+        VAR DMA_Database[DML_S3PPULH].Data,                   init = PTU_MIN_INT16,     ev = init
+        VAR DMA_Database[DML_S3PPULHVAL].Data,                init = TRUE,              ev = init
+        VAR DMA_Database[DML_S3PPURH].Data,                   init = PTU_MIN_INT16,     ev = init
+        VAR DMA_Database[DML_S3PPURHVAL].Data,                init = TRUE,              ev = init
+        VAR DMA_Database[DML_S3PPULHCASNVM].Data,             init = -16384,            ev = init
+        VAR DMA_Database[DML_S3PPULHPOSFLTNVM].Data,          init = PTU_MIN_INT16,     ev = init
+        VAR DMA_Database[DML_S3PPULHPOSGNDNVM].Data,          init = PTU_MIN_INT16,     ev = init
+        VAR DMA_Database[DML_S3PPULHFLTMSMTC3VALNVM].Data,    init = TRUE,              ev = init
+        VAR DMA_Database[DML_S3PPULHFLTMSMTC4VALNVM].Data,    init = TRUE,              ev = init
+        VAR DMA_Database[DML_S3PPULHGNDMSMTVALNVM].Data,      init = TRUE,              ev = init
+        VAR DMA_Database[DML_S3POSANOMMONLH].Data,            init = TRUE,              ev = init
+        VAR DMA_Database[DML_FLAPSKEWVALLHOB].Data,           init = TRUE,              ev = init 
+        VAR DMA_Database[DML_S3PPURHCASNVM].Data,             init = -16384,            ev = init
+        VAR DMA_Database[DML_S3PPURHPOSFLTNVM].Data,          init = PTU_MIN_INT16,     ev = init
+        VAR DMA_Database[DML_S3PPURHPOSGNDNVM].Data,          init = PTU_MIN_INT16,     ev = init
+        VAR DMA_Database[DML_S3PPURHFLTMSMTC3VALNVM].Data,    init = TRUE,              ev = init
+        VAR DMA_Database[DML_S3PPURHFLTMSMTC4VALNVM].Data,    init = TRUE,              ev = init
+        VAR DMA_Database[DML_S3PPURHGNDMSMTVALNVM].Data,      init = TRUE,              ev = init
+        VAR DMA_Database[DML_S3POSANOMMONRH].Data,            init = TRUE,              ev = init
+        VAR DMA_Database[DML_FLAPSKEWVALRHOB].Data,           init = TRUE,              ev = init   
+        VAR DMA_Database[DML_STRUT3RHDISCSKEWNVM].Data,       init = 391,             ev = init
+        VAR DMA_Database[DML_S3PPURHGNDMSMTC3FAILNVM].Data,   init = 392,             ev = init
+        VAR DMA_Database[DML_S3PPURHGNDMSMTC4FAILNVM].Data,   init = 393,             ev = init
+        VAR DMA_Database[DML_CTPACTIVE_FLR].Data,             init = 394,             ev = init
+        VAR DMA_Database[DML_CTPVAL].Data,                    init = 395,             ev = init    
+        VAR DMA_Database[DML_STRUT3LHDISCSKEWNVM].Data,       init = 396,             ev = init
+        VAR DMA_Database[DML_S3PPULHGNDMSMTC3FAILNVM].Data,   init = 397,             ev = init
+        VAR DMA_Database[DML_S3PPULHGNDMSMTC4FAILNVM].Data,   init = 398,             ev = init        
+
+        STUB S3PA_S3PosAnomMon_init 1 => (({0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                   0,0,0,0,0,0,0,
+        &                                   TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,PTU_MIN_INT16,PTU_MIN_INT16,FALSE,FALSE,FS_DETECTED_FAILURE,FS_DETECTED_FAILURE,TRUE,TRUE,TRUE,TRUE,
+        &                                   TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            555,0,0,0,0,0}))
+        
+        STUB S3PA_S3PosAnomMon_init 2 => (({0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                   0,0,0,0,0,0,0,        
+        &                                   TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,PTU_MIN_INT16,PTU_MIN_INT16,FALSE,FALSE,FS_DETECTED_FAILURE,FS_DETECTED_FAILURE,TRUE,TRUE,TRUE,TRUE,
+        &                                   TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            555,0,0,0,0,0}))        
+
+        #wrp_call_s3pa_init();
+        
+        VAR DMA_Database[DML_DS3LHSKEWFAILS3PAMNVM].Data,       init = FALSE,              ev = init
+        VAR DMA_Database[DML_DS3RHSKEWFAILS3PAMNVM].Data,       init = TRUE,               ev = init
+        VAR DMA_Database[DML_S3LHANOMFAILUNCONF].Data,          init = TRUE,               ev = init
+        VAR DMA_Database[DML_S3RHANOMFAILUNCONF].Data,          init = TRUE,               ev = init       
+        
+        STUB PUC_Get_OpMode()A350_1000
+                
+        STUB BIT_Is_Set 1 => (0,AWM_DATA_POBOPEN)TCTFarray[0]
+        STUB BIT_Is_Set 2 => (0,AWM_DATA_ADGBLHPOBOPEN)TCTFarray[1]
+        STUB BIT_Is_Set 3 => (0,AWM_DATA_WTBLHOPEN)TCTFarray[2]
+        STUB BIT_Is_Set 4 => (0,AWM_DATA_S3PPULHVAL)TCTFarray[3]
+        STUB BIT_Is_Set 5 => (0,AWM_DATA_FLAPSKEWLHOB)TCTFarray[4]
+
+        STUB BIT_Is_Set 6 => (0,AWM_DATA_ADGBRHPOBOPEN)TCTFarray[5]
+        STUB BIT_Is_Set 7 => (0,AWM_DATA_WTBRHOPEN)TCTFarray[6]
+        STUB BIT_Is_Set 8 => (0,AWM_DATA_S3PPURHVAL)TCTFarray[7]
+        STUB BIT_Is_Set 9 => (0,AWM_DATA_FLAPSKEWRHOB)TCTFarray[8]        
+        
+        
+        STUB PUC_Get_InstMode 1..2 => ()0
+        
+        STUB tpc_getFlapCtpConf3_IB 1..2 => ()-8000
+        
+        STUB tpc_getFlapCtpConf3PS 1..2 => ((0,-8000),(0,-8000))
+        
+        STUB tpc_getFlapCtpConfFULL 1..2 => ((0,-8000),(0,-8000))
+        
+        STUB tpc_getFlapConf3PS_OB 1..2 => ()-8000
+
+        STUB tpc_getFlapCtpConf1PFHLDALTN_IB 1..2 => () -8000
+        
+        STUB tpc_getFlapCtpConf1PFTO_IB 1..2 => () -8000
+        
+        STUB tpc_getFlapCtpConf2_IB 1..2 => () -8000 
+        
+        
+        STUB S3PA_S3PosAnomMon 1=> (({ PTU_MIN_INT16,TRUE,-16384,TRUE,PTU_MIN_INT16,TRUE,PTU_MIN_INT16,TRUE,-16384,TRUE,-16384,TRUE,0,TRUE,
+        &                            TRUE,TRUE,TCTFarray[0],TCTFarray[1],TCTFarray[2],TRUE,TCTFarray[3],PTU_MIN_INT16,TRUE,TCTFarray[4],TRUE,0,
+        &                            -16384,PTU_MIN_INT16,PTU_MIN_INT16,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE,-8000,-8000,-8000,-8000,-8000,-8000,TYP_ETT_FLAP_100,FALSE,
+        &                            397,398,394,-8000,-8000,-8000,395,396,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,         
+        &                            TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,PTU_MIN_INT16,PTU_MIN_INT16,FALSE,FALSE,FS_DETECTED_FAILURE,FS_DETECTED_FAILURE,TRUE,TRUE,TRUE,TRUE,
+        &                            TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE})) 
+        
+        STUB S3PA_S3PosAnomMon 2=> (({ PTU_MIN_INT16,TRUE,-16384,TRUE,PTU_MIN_INT16,TRUE,PTU_MIN_INT16,TRUE,-16384,TRUE,-16384,TRUE,0,TRUE,
+        &                            TRUE,TRUE,TCTFarray[0],TCTFarray[5],TCTFarray[6],TRUE,TCTFarray[7],PTU_MIN_INT16,TRUE,TCTFarray[8],TRUE,0,
+        &                            -16384,PTU_MIN_INT16,PTU_MIN_INT16,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,-8000,-8000,-8000,-8000,-8000,-8000,TYP_ETT_FLAP_100,TRUE,
+        &                            392,393,394,-8000,-8000,-8000,395,391,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,         
+        &                            TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,PTU_MIN_INT16,PTU_MIN_INT16,FALSE,FALSE,FS_DETECTED_FAILURE,FS_DETECTED_FAILURE,TRUE,TRUE,TRUE,TRUE,
+        &                            TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE}))    
+        
+                       
+        STUB DMA_Set (DML_STRUT3LHDISCSKEW,TRUE)
+        STUB DMA_Set (DML_FLAPSKEWLHOB,TRUE)
+        
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC3VALNVM,TRUE)
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC4VALNVM,TRUE)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTVALNVM,TRUE)
+        
+        STUB DMA_Set (DML_S3PPULHPOSFLTNVM,TRUE)
+        STUB DMA_Set (DML_S3PPULHPOSGNDNVM,PTU_MIN_INT16)
+        STUB DMA_Set (DML_S3PPULHCASNVM,PTU_MIN_INT16)
+        
+        STUB DME_Set_Latch (DML_DS3LHSKEWFAILS3PAMNVM,FALSE)
+        
+        STUB DME_Set_Latch (DML_S3LHANOMFAILUNCONF,FALSE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWCONF_FAILURE_STATUS,FS_DETECTED_FAILURE)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWUNCONF_FAILURE_STATUS,FS_DETECTED_FAILURE)
+        
+        STUB DMA_Set (DML_CMDC3LHGND,TRUE)     
+        STUB DMA_Set (DML_CMDC3LHFLT,TRUE)     
+        STUB DMA_Set  (DML_CMDC4LH,TRUE)     
+        STUB DMA_Set (DML_DETCONDLH,TRUE)     
+        STUB DMA_Set (DML_DETCONDFLTC3LH,TRUE)
+        STUB DMA_Set (DML_DETCONDFLTC4LH,TRUE)
+        STUB DMA_Set (DML_DETCONDGNDC3LH,TRUE)
+        STUB DMA_Set (DML_DETCONDGNDC4LH,TRUE)
+        STUB DMA_Set (DML_S3PPULHPOSAVG,TRUE)
+        STUB DMA_Set (DML_S3POSANOMMONLH,TRUE)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC3FAILNVM,TRUE)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC4FAILNVM,TRUE) 
+        STUB DME_Set_Latch (DML_STRUT3LHDISCSKEWNVM,TRUE)         
+
+        STUB DMA_Set (DML_STRUT3RHDISCSKEW,TRUE)
+        STUB DMA_Set (DML_FLAPSKEWRHOB,TRUE)
+        
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC3VALNVM,TRUE)
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC4VALNVM,TRUE)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTVALNVM,TRUE)
+        
+        STUB DMA_Set (DML_S3PPURHPOSFLTNVM,TRUE)
+        STUB DMA_Set (DML_S3PPURHPOSGNDNVM,PTU_MIN_INT16)
+        STUB DMA_Set (DML_S3PPURHCASNVM,PTU_MIN_INT16)
+        
+        STUB DME_Set_Latch (DML_DS3RHSKEWFAILS3PAMNVM,FALSE)
+        
+        STUB DME_Set_Latch  (DML_S3RHANOMFAILUNCONF,FALSE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWCONF_FAILURE_STATUS,FS_DETECTED_FAILURE)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWUNCONF_FAILURE_STATUS,FS_DETECTED_FAILURE)
+        
+        STUB DMA_Set  (DML_CMDC3RHGND,TRUE)     
+        STUB DMA_Set  (DML_CMDC3RHFLT,TRUE)     
+        STUB DMA_Set  (DML_CMDC4RH,TRUE)     
+        STUB DMA_Set (DML_DETCONDRH,TRUE)     
+        STUB DMA_Set (DML_DETCONDFLTC3RH,TRUE)
+        STUB DMA_Set (DML_DETCONDFLTC4RH,TRUE)
+        STUB DMA_Set (DML_DETCONDGNDC3RH,TRUE)
+        STUB DMA_Set (DML_DETCONDGNDC4RH,TRUE)
+        STUB DMA_Set (DML_S3PPURHPOSAVG,TRUE)
+        STUB DMA_Set (DML_S3POSANOMMONRH,TRUE)     
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC3FAILNVM,TRUE)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC4FAILNVM,TRUE)        
+        STUB DME_Set_Latch (DML_STRUT3RHDISCSKEWNVM,TRUE) 
+
+        STUB DMA_Set (DML_S3PAMGNDMSMTC3REQUIRED,TRUE)
+        STUB DMA_Set (DML_S3PAMGNDMSMTCFREQUIRED,TRUE)        
+        
+        #wrp_call_s3pa();
+        -- To incriment the counter.
+        #count=count+1;
+        END ELEMENT
+
+    END TEST -- TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.3     
+
+    TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.4
+    FAMILY nominal
+
+        ELEMENT   
+        
+        VAR DMA_Database[DML_RL111_XCC].Data,                 init = PTU_MAX_UINT32,    ev = init
+        VAR DMA_Database[DML_RL113_XCC].Data,                 init = PTU_MAX_UINT32,    ev = init
+        VAR DMA_Database[DML_XCCL111VAL].Data,                init = FALSE,             ev = init
+        VAR DMA_Database[DML_XCCL113VAL].Data,                init = FALSE,             ev = init
+        VAR DMA_Database[DML_FPPU].Data,                      init = PTU_MAX_INT16,     ev = init
+        VAR DMA_Database[DML_FPPUVAL].Data,                   init = FALSE,             ev = init
+        VAR DMA_Database[DML_DFPPULH].Data,                   init = 16383,             ev = init
+        VAR DMA_Database[DML_DFPPULHVAL].Data,                init = FALSE,             ev = init
+        VAR DMA_Database[DML_DFPPURH].Data,                   init = 16383,             ev = init
+        VAR DMA_Database[DML_DFPPURHVAL].Data,                init = FALSE,             ev = init      
+        VAR DMA_Database[DML_CTP_MA].Data,                    init = PTU_MAX_INT16,     ev = init
+        VAR DMA_Database[DML_CTPACTIVE_F3PF].Data,            init = FALSE,             ev = init
+        VAR DMA_Database[DML_DFSCOMMANDLT].Data,              init = PTU_MAX_INT16,     ev = init
+        VAR DMA_Database[DML_ENGINESOFF].Data,                init = FALSE,             ev = init
+        VAR DMA_Database[DML_CONSOLIDATEDCAS].Data,           init = 16383,             ev = init
+        VAR DMA_Database[DML_CASVAL].Data,                    init = FALSE,             ev = init
+        VAR DMA_Database[DML_CONSOLIDATEDCASAVG].Data,        init = 16383,             ev = init
+        VAR DMA_Database[DML_ACONGND].Data,                   init = FALSE,             ev = init
+        VAR DMA_Database[DML_FLRESELECTIONCTR].Data,          init = PTU_MAX_UINT32,    ev = init
+        VAR DMA_Database[DML_POBOPEN].Data,                   init = FALSE,             ev = init
+        VAR DMA_Database[DML_ADGBLHPOBOPEN].Data,             init = FALSE,             ev = init
+        VAR DMA_Database[DML_WTBLHOPEN].Data,                 init = FALSE,             ev = init
+        VAR DMA_Database[DML_ADGBRHPOBOPEN].Data,             init = FALSE,             ev = init
+        VAR DMA_Database[DML_WTBRHOPEN].Data,                 init = FALSE,             ev = init      
+        VAR DMA_Database[DML_S3PPULH].Data,                   init = PTU_MAX_INT16,     ev = init
+        VAR DMA_Database[DML_S3PPULHVAL].Data,                init = FALSE,             ev = init
+        VAR DMA_Database[DML_S3PPURH].Data,                   init = PTU_MAX_INT16,     ev = init
+        VAR DMA_Database[DML_S3PPURHVAL].Data,                init = FALSE,             ev = init
+        VAR DMA_Database[DML_S3PPULHCASNVM].Data,             init = 16383,             ev = init
+        VAR DMA_Database[DML_S3PPULHPOSFLTNVM].Data,          init = PTU_MAX_INT16,     ev = init
+        VAR DMA_Database[DML_S3PPULHPOSGNDNVM].Data,          init = PTU_MAX_INT16,     ev = init
+        VAR DMA_Database[DML_S3PPULHFLTMSMTC3VALNVM].Data,    init = FALSE,             ev = init
+        VAR DMA_Database[DML_S3PPULHFLTMSMTC4VALNVM].Data,    init = FALSE,             ev = init
+        VAR DMA_Database[DML_S3PPULHGNDMSMTVALNVM].Data,      init = FALSE,             ev = init
+        VAR DMA_Database[DML_S3POSANOMMONLH].Data,            init = FALSE,             ev = init
+        VAR DMA_Database[DML_FLAPSKEWVALLHOB].Data,           init = FALSE,             ev = init 
+        VAR DMA_Database[DML_S3PPURHCASNVM].Data,             init = 16383,             ev = init
+        VAR DMA_Database[DML_S3PPURHPOSFLTNVM].Data,          init = PTU_MAX_INT16,     ev = init
+        VAR DMA_Database[DML_S3PPURHPOSGNDNVM].Data,          init = PTU_MAX_INT16,     ev = init
+        VAR DMA_Database[DML_S3PPURHFLTMSMTC3VALNVM].Data,    init = FALSE,             ev = init
+        VAR DMA_Database[DML_S3PPURHFLTMSMTC4VALNVM].Data,    init = FALSE,             ev = init
+        VAR DMA_Database[DML_S3PPURHGNDMSMTVALNVM].Data,      init = FALSE,             ev = init
+        VAR DMA_Database[DML_S3POSANOMMONRH].Data,            init = FALSE,             ev = init
+        VAR DMA_Database[DML_FLAPSKEWVALRHOB].Data,           init = FALSE,             ev = init  
+        VAR DMA_Database[DML_STRUT3RHDISCSKEWNVM].Data,       init = FALSE,             ev = init
+        VAR DMA_Database[DML_S3PPURHGNDMSMTC3FAILNVM].Data,   init = FALSE,             ev = init
+        VAR DMA_Database[DML_S3PPURHGNDMSMTC4FAILNVM].Data,   init = FALSE,             ev = init
+        VAR DMA_Database[DML_CTPACTIVE_FLR].Data,             init = FALSE,             ev = init
+        VAR DMA_Database[DML_CTPVAL].Data,                    init = FALSE,             ev = init    
+        VAR DMA_Database[DML_STRUT3LHDISCSKEWNVM].Data,       init = FALSE,             ev = init
+        VAR DMA_Database[DML_S3PPULHGNDMSMTC3FAILNVM].Data,    init = FALSE,             ev = init
+        VAR DMA_Database[DML_S3PPULHGNDMSMTC4FAILNVM].Data,    init = FALSE,             ev = init        
+        
+
+        STUB S3PA_S3PosAnomMon_init 1 => (({0,0,0,0,0,0,0,0,0,0,0,
+        &                                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                   TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,PTU_MIN_INT16,PTU_MIN_INT16,FALSE,FALSE,FS_DETECTED_FAILURE,FS_DETECTED_FAILURE,TRUE,TRUE,TRUE,TRUE,
+        &                                   TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE},
+        &                                   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                   0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                   0,0,0,0,0,0,        
+        &                                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                   555,0,0,0,0,0}))
+        
+        STUB S3PA_S3PosAnomMon_init 2 => (({0,0,0,0,0,0,0,0,0,0,0,
+        &                                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                   TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,PTU_MIN_INT16,PTU_MIN_INT16,FALSE,FALSE,FS_DETECTED_FAILURE,FS_DETECTED_FAILURE,TRUE,TRUE,TRUE,TRUE,
+        &                                   TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE},
+        &                                   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                   0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                   0,0,0,0,0,0,        
+        &                                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                   555,0,0,0,0,0}))            
+       
+        #wrp_call_s3pa_init();
+        
+        VAR DMA_Database[DML_DS3LHSKEWFAILS3PAMNVM].Data,       init = FALSE,              ev = init
+        VAR DMA_Database[DML_DS3RHSKEWFAILS3PAMNVM].Data,       init = FALSE,              ev = init
+        VAR DMA_Database[DML_S3LHANOMFAILUNCONF].Data,          init = TRUE,               ev = init
+        VAR DMA_Database[DML_S3RHANOMFAILUNCONF].Data,          init = TRUE,               ev = init       
+        
+        STUB PUC_Get_OpMode()A350_1000
+                
+        STUB BIT_Is_Set 1 => (PTU_MAX_UINT32,AWM_DATA_POBOPEN)FALSE
+        STUB BIT_Is_Set 2 => (PTU_MAX_UINT32,AWM_DATA_ADGBLHPOBOPEN)FALSE
+        STUB BIT_Is_Set 3 => (PTU_MAX_UINT32,AWM_DATA_WTBLHOPEN)FALSE
+        STUB BIT_Is_Set 4 => (PTU_MAX_UINT32,AWM_DATA_S3PPULHVAL)FALSE
+        STUB BIT_Is_Set 5 => (PTU_MAX_UINT32,AWM_DATA_FLAPSKEWLHOB)FALSE
+
+        STUB BIT_Is_Set 6 => (PTU_MAX_UINT32,AWM_DATA_ADGBRHPOBOPEN)FALSE
+        STUB BIT_Is_Set 7 => (PTU_MAX_UINT32,AWM_DATA_WTBRHOPEN)FALSE
+        STUB BIT_Is_Set 8 => (PTU_MAX_UINT32,AWM_DATA_S3PPURHVAL)FALSE
+        STUB BIT_Is_Set 9 => (PTU_MAX_UINT32,AWM_DATA_FLAPSKEWRHOB)FALSE        
+        
+        
+        STUB PUC_Get_InstMode 1..2 => ()0
+        
+        STUB tpc_getFlapCtpConf3_IB 1..2 => ()0x7FFF
+        
+        STUB tpc_getFlapCtpConf3PS 1..2 => ((0,0x7FFF),(0,0x7FFF))
+        
+        STUB tpc_getFlapCtpConfFULL 1..2 => ((0,0x7FFF),(0,0x7FFF))
+        
+        STUB tpc_getFlapConf3PS_OB 1..2 => ()8000
+
+        STUB tpc_getFlapCtpConf1PFHLDALTN_IB 1..2 => () 8000
+        
+        STUB tpc_getFlapCtpConf1PFTO_IB 1..2 => () 8000
+        
+        STUB tpc_getFlapCtpConf2_IB 1..2 => () 8000         
+        
+        STUB S3PA_S3PosAnomMon 1=> (({ PTU_MAX_INT16,FALSE,16383,FALSE,PTU_MAX_INT16,FALSE,PTU_MAX_INT16,FALSE,16383,FALSE,16383,FALSE,PTU_MAX_UINT32,FALSE,
+        &                            FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,PTU_MAX_INT16,FALSE,FALSE,FALSE,0,
+        &                            16383,PTU_MAX_INT16,PTU_MAX_INT16,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,8000,TYP_ETT_FLAP_100,FALSE,
+        &                            FALSE,FALSE,FALSE,8000,8000,8000,FALSE,FALSE,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,PTU_MAX_INT16,PTU_MAX_INT16,FALSE,FALSE,FS_NOT_DETECTABLE_FAILURE,FS_NOT_DETECTABLE_FAILURE,FALSE,FALSE,FALSE,FALSE,
+        &                            FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE})) 
+        
+        STUB S3PA_S3PosAnomMon 2=> (({ PTU_MAX_INT16,FALSE,16383,FALSE,PTU_MAX_INT16,FALSE,PTU_MAX_INT16,FALSE,16383,FALSE,16383,FALSE,PTU_MAX_UINT32,FALSE,
+        &                            FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,PTU_MAX_INT16,FALSE,FALSE,FALSE,0,
+        &                            16383,PTU_MAX_INT16,PTU_MAX_INT16,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,8000,TYP_ETT_FLAP_100,TRUE,
+        &                            FALSE,FALSE,FALSE,8000,8000,8000,FALSE,FALSE,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,PTU_MAX_INT16,PTU_MAX_INT16,FALSE,FALSE,FS_NOT_DETECTABLE_FAILURE,FS_NOT_DETECTABLE_FAILURE,FALSE,FALSE,FALSE,FALSE,
+        &                            FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE}))     
+        
+                        
+        STUB DMA_Set (DML_STRUT3LHDISCSKEW,FALSE)
+        STUB DMA_Set (DML_FLAPSKEWLHOB,FALSE)
+        
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC3VALNVM,FALSE)
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC4VALNVM,FALSE)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTVALNVM,FALSE)
+        
+        STUB DMA_Set (DML_S3PPULHPOSFLTNVM,FALSE)
+        STUB DMA_Set (DML_S3PPULHPOSGNDNVM,PTU_MAX_INT16)
+        STUB DMA_Set (DML_S3PPULHCASNVM,PTU_MAX_INT16)
+        
+        STUB DME_Set_Latch (DML_DS3LHSKEWFAILS3PAMNVM,FALSE)
+        
+        STUB DME_Set_Latch (DML_S3LHANOMFAILUNCONF,FALSE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWCONF_FAILURE_STATUS,FS_NOT_DETECTABLE_FAILURE)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWUNCONF_FAILURE_STATUS,FS_NOT_DETECTABLE_FAILURE)
+        
+        STUB DMA_Set (DML_CMDC3LHGND,FALSE)     
+        STUB DMA_Set (DML_CMDC3LHFLT,FALSE)     
+        STUB DMA_Set (DML_CMDC4LH,FALSE)     
+        STUB DMA_Set (DML_DETCONDLH,FALSE)     
+        STUB DMA_Set (DML_DETCONDFLTC3LH,FALSE)
+        STUB DMA_Set (DML_DETCONDFLTC4LH,FALSE)
+        STUB DMA_Set (DML_DETCONDGNDC3LH,FALSE)
+        STUB DMA_Set (DML_DETCONDGNDC4LH,FALSE)
+        STUB DMA_Set (DML_S3PPULHPOSAVG,FALSE)
+        STUB DMA_Set (DML_S3POSANOMMONLH,FALSE)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC3FAILNVM,FALSE)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC4FAILNVM,FALSE) 
+        STUB DME_Set_Latch (DML_STRUT3LHDISCSKEWNVM,FALSE)          
+                     
+        STUB DMA_Set (DML_STRUT3RHDISCSKEW,FALSE)
+        STUB DMA_Set (DML_FLAPSKEWRHOB,FALSE)
+        
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC3VALNVM,FALSE)
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC4VALNVM,FALSE)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTVALNVM,FALSE)
+        
+        STUB DMA_Set (DML_S3PPURHPOSFLTNVM,FALSE)
+        STUB DMA_Set (DML_S3PPURHPOSGNDNVM,PTU_MAX_INT16)
+        STUB DMA_Set (DML_S3PPURHCASNVM,PTU_MAX_INT16)
+        
+        STUB DME_Set_Latch (DML_DS3RHSKEWFAILS3PAMNVM,FALSE)
+        
+        STUB DME_Set_Latch (DML_S3RHANOMFAILUNCONF,FALSE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWCONF_FAILURE_STATUS,FS_NOT_DETECTABLE_FAILURE)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWUNCONF_FAILURE_STATUS,FS_NOT_DETECTABLE_FAILURE)
+        
+        STUB DMA_Set (DML_CMDC3RHGND,FALSE)     
+        STUB DMA_Set (DML_CMDC3RHFLT,FALSE)     
+        STUB DMA_Set (DML_CMDC4RH,FALSE)     
+        STUB DMA_Set (DML_DETCONDRH,FALSE)     
+        STUB DMA_Set (DML_DETCONDFLTC3RH,FALSE)
+        STUB DMA_Set (DML_DETCONDFLTC4RH,FALSE)
+        STUB DMA_Set (DML_DETCONDGNDC3RH,FALSE)
+        STUB DMA_Set (DML_DETCONDGNDC4RH,FALSE)
+        STUB DMA_Set (DML_S3PPURHPOSAVG,FALSE)
+        STUB DMA_Set (DML_S3POSANOMMONRH,FALSE)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC3FAILNVM,FALSE)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC4FAILNVM,FALSE)        
+        STUB DME_Set_Latch (DML_STRUT3RHDISCSKEWNVM,FALSE)   
+        
+        STUB DMA_Set (DML_S3PAMGNDMSMTC3REQUIRED,FALSE)
+        STUB DMA_Set (DML_S3PAMGNDMSMTCFREQUIRED,FALSE)         
+                     
+        #wrp_call_s3pa();
+        END ELEMENT
+
+    END TEST -- TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.4  
+
+    TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.5
+    FAMILY nominal
+
+       ELEMENT      
+
+       STUB S3PA_S3PosAnomMon_init 1 => ((        
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,PTU_MAX_INT16,PTU_MAX_INT16,FALSE,FALSE,FS_NOT_DETECTABLE_FAILURE,FS_NOT_DETECTABLE_FAILURE,FALSE,FALSE,FALSE,FALSE,
+        &                            FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            555,0,0,0,0,0}))
+        
+        STUB S3PA_S3PosAnomMon_init 2 => ((        
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,PTU_MAX_INT16,PTU_MAX_INT16,FALSE,FALSE,FS_NOT_DETECTABLE_FAILURE,FS_NOT_DETECTABLE_FAILURE,FALSE,FALSE,FALSE,FALSE,
+        &                            FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            555,0,0,0,0,0}))
+        
+        #wrp_call_s3pa_init();
+        
+        VAR DMA_Database[DML_DS3LHSKEWFAILS3PAMNVM].Data,       init = FALSE,               ev = init
+        VAR DMA_Database[DML_DS3RHSKEWFAILS3PAMNVM].Data,       init = FALSE,               ev = init
+        VAR DMA_Database[DML_S3LHANOMFAILUNCONF].Data,          init = FALSE,               ev = init
+        VAR DMA_Database[DML_S3RHANOMFAILUNCONF].Data,          init = TRUE,                ev = init       
+        
+        STUB PUC_Get_OpMode()A350_1000
+                
+        STUB BIT_Is_Set 1 => (113,AWM_DATA_POBOPEN)FALSE
+        STUB BIT_Is_Set 2 => (113,AWM_DATA_ADGBLHPOBOPEN)FALSE
+        STUB BIT_Is_Set 3 => (113,AWM_DATA_WTBLHOPEN)FALSE
+        STUB BIT_Is_Set 4 => (113,AWM_DATA_S3PPULHVAL)FALSE
+        STUB BIT_Is_Set 5 => (111,AWM_DATA_FLAPSKEWLHOB)FALSE
+
+        STUB BIT_Is_Set 6 => (113,AWM_DATA_ADGBRHPOBOPEN)FALSE
+        STUB BIT_Is_Set 7 => (113,AWM_DATA_WTBRHOPEN)FALSE
+        STUB BIT_Is_Set 8 => (113,AWM_DATA_S3PPURHVAL)FALSE
+        STUB BIT_Is_Set 9 => (111,AWM_DATA_FLAPSKEWRHOB)FALSE        
+        
+        
+        STUB PUC_Get_InstMode 1..2 => ()SFCC_NR_2
+        
+        STUB tpc_getFlapCtpConf3_IB 1..2 => ()0
+        
+        STUB tpc_getFlapCtpConf3PS 1..2 => ((0,0),(0,0))
+        
+        STUB tpc_getFlapCtpConfFULL 1..2 => ((0,0),(0,0))
+        
+        STUB tpc_getFlapConf3PS_OB 1..2 => ()0
+
+        STUB tpc_getFlapCtpConf1PFHLDALTN_IB 1..2 => () 0
+        
+        STUB tpc_getFlapCtpConf1PFTO_IB 1..2 => () 0
+        
+        STUB tpc_getFlapCtpConf2_IB 1..2 => () 0         
+        
+        STUB S3PA_S3PosAnomMon 1=> (({100,1,2,3,6,7,8,9,10,11,12,13,14,15,
+        &                            16,17,FALSE,FALSE,FALSE,1113,FALSE,27,28,FALSE,1111,SFCC_NR_2,
+        &                            32,33,34,35,36,37,39,FALSE,FALSE,0,0,0,0,0,0,TYP_ETT_FLAP_100,FALSE,
+        &                            397,398,394,0,0,0,395,396,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            40,41,42,43,44,45,46,47,FALSE,FALSE,FS_LATCHED,FS_LATCHED,48,49,50,51,
+        &                            52,53,54,55,56,57,58,59,60,61,62})) 
+        
+        STUB S3PA_S3PosAnomMon 2=> (({ 100,1,200,300,6,7,8,9,10,11,12,13,14,15,
+        &                            160,170,FALSE,FALSE,FALSE,1113,FALSE,270,280,FALSE,1111,SFCC_NR_2,
+        &                            320,330,340,350,360,370,390,FALSE,TRUE,0,0,0,0,0,0,TYP_ETT_FLAP_100,TRUE,
+        &                            392,393,394,0,0,0,395,391,       
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            58,59,60,61,62,63,64,65,FALSE,FALSE,FS_LATCHED,FS_LATCHED,66,67,68,69,
+        &                            70,71,72,73,74,75,76,77,78,79,80}))    
+                
+        STUB DMA_Set (DML_STRUT3LHDISCSKEW,40)
+        STUB DMA_Set (DML_FLAPSKEWLHOB,41)
+        
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC3VALNVM,42)
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC4VALNVM,43)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTVALNVM,44)
+        
+        STUB DMA_Set (DML_S3PPULHPOSFLTNVM,45)
+        STUB DMA_Set (DML_S3PPULHPOSGNDNVM,46)
+        STUB DMA_Set (DML_S3PPULHCASNVM,47)
+        
+        STUB DME_Set_Latch (DML_DS3LHSKEWFAILS3PAMNVM,FALSE)
+        
+        STUB DME_Set_Latch (DML_S3LHANOMFAILUNCONF,FALSE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWCONF_FAILURE_STATUS,FS_LATCHED)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWUNCONF_FAILURE_STATUS,FS_LATCHED)
+        
+        STUB DMA_Set (DML_CMDC3LHGND,48)     
+        STUB DMA_Set (DML_CMDC3LHFLT,49)     
+        STUB DMA_Set (DML_CMDC4LH,50)     
+        STUB DMA_Set (DML_DETCONDLH,51)     
+        STUB DMA_Set (DML_DETCONDFLTC3LH,52)
+        STUB DMA_Set (DML_DETCONDFLTC4LH,53)
+        STUB DMA_Set (DML_DETCONDGNDC3LH,54)
+        STUB DMA_Set (DML_DETCONDGNDC4LH,55)
+        STUB DMA_Set (DML_S3PPULHPOSAVG,56)
+        STUB DMA_Set (DML_S3POSANOMMONLH,57)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC3FAILNVM,58)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC4FAILNVM,59) 
+        STUB DME_Set_Latch (DML_STRUT3LHDISCSKEWNVM,60)          
+                     
+        STUB DMA_Set (DML_STRUT3RHDISCSKEW,58)
+        STUB DMA_Set (DML_FLAPSKEWRHOB,59)
+        
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC3VALNVM,60)
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC4VALNVM,61)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTVALNVM,62)
+        
+        STUB DMA_Set (DML_S3PPURHPOSFLTNVM,63)
+        STUB DMA_Set (DML_S3PPURHPOSGNDNVM,64)
+        STUB DMA_Set (DML_S3PPURHCASNVM,65)
+        
+        STUB DME_Set_Latch (DML_DS3RHSKEWFAILS3PAMNVM,FALSE)
+        
+        STUB DME_Set_Latch (DML_S3RHANOMFAILUNCONF,FALSE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWCONF_FAILURE_STATUS,FS_LATCHED)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWUNCONF_FAILURE_STATUS,FS_LATCHED)
+        
+        STUB DMA_Set (DML_CMDC3RHGND,66)     
+        STUB DMA_Set (DML_CMDC3RHFLT,67)     
+        STUB DMA_Set (DML_CMDC4RH,68)     
+        STUB DMA_Set (DML_DETCONDRH,69)     
+        STUB DMA_Set (DML_DETCONDFLTC3RH,70)
+        STUB DMA_Set (DML_DETCONDFLTC4RH,71)
+        STUB DMA_Set (DML_DETCONDGNDC3RH,72)
+        STUB DMA_Set (DML_DETCONDGNDC4RH,73)
+        STUB DMA_Set (DML_S3PPURHPOSAVG,74)
+        STUB DMA_Set (DML_S3POSANOMMONRH,75) 
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC3FAILNVM,76)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC4FAILNVM,77)        
+        STUB DME_Set_Latch (DML_STRUT3RHDISCSKEWNVM,78) 
+
+        STUB DMA_Set (DML_S3PAMGNDMSMTC3REQUIRED,1)
+        STUB DMA_Set (DML_S3PAMGNDMSMTCFREQUIRED,1)           
+        
+        #wrp_call_s3pa();
+        END ELEMENT
+
+    END TEST -- TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.5  
+
+    TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.6
+    FAMILY nominal
+
+       ELEMENT      
+
+       STUB S3PA_S3PosAnomMon_init 1 => ((       
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            40,41,42,43,44,45,46,47,FALSE,FALSE,FS_LATCHED,FS_LATCHED,48,49,50,51,
+        &                            52,53,54,55,56,57,58,59,60,61,62},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            555,0,0,0,0,0}))
+        
+        STUB S3PA_S3PosAnomMon_init 2 => ((       
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            58,59,60,61,62,63,64,65,FALSE,FALSE,FS_LATCHED,FS_LATCHED,66,67,68,69,
+        &                            70,71,72,73,74,75,76,77,78,79,80} ,
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            555,0,0,0,0,0}))
+        
+        #wrp_call_s3pa_init();
+        
+        VAR DMA_Database[DML_DS3LHSKEWFAILS3PAMNVM].Data,       init = FALSE,               ev = init
+        VAR DMA_Database[DML_DS3RHSKEWFAILS3PAMNVM].Data,       init = FALSE,               ev = init
+        VAR DMA_Database[DML_S3LHANOMFAILUNCONF].Data,          init = FALSE,               ev = init
+        VAR DMA_Database[DML_S3RHANOMFAILUNCONF].Data,          init = FALSE,                ev = init       
+        
+        STUB PUC_Get_OpMode()A350_1000
+                
+        STUB BIT_Is_Set 1 => (113,AWM_DATA_POBOPEN)FALSE
+        STUB BIT_Is_Set 2 => (113,AWM_DATA_ADGBLHPOBOPEN)FALSE
+        STUB BIT_Is_Set 3 => (113,AWM_DATA_WTBLHOPEN)FALSE
+        STUB BIT_Is_Set 4 => (113,AWM_DATA_S3PPULHVAL)FALSE
+        STUB BIT_Is_Set 5 => (111,AWM_DATA_FLAPSKEWLHOB)FALSE
+
+        STUB BIT_Is_Set 6 => (113,AWM_DATA_ADGBRHPOBOPEN)FALSE
+        STUB BIT_Is_Set 7 => (113,AWM_DATA_WTBRHOPEN)FALSE
+        STUB BIT_Is_Set 8 => (113,AWM_DATA_S3PPURHVAL)FALSE
+        STUB BIT_Is_Set 9 => (111,AWM_DATA_FLAPSKEWRHOB)FALSE        
+        
+        
+        STUB PUC_Get_InstMode 1..2 => ()SFCC_NR_2
+        
+        STUB tpc_getFlapCtpConf3_IB 1..2 => ()0
+        
+        STUB tpc_getFlapCtpConf3PS 1..2 => ((0,0),(0,0))
+        
+        STUB tpc_getFlapCtpConfFULL 1..2 => ((0,0),(0,0))
+        
+        STUB tpc_getFlapConf3PS_OB 1..2 => ()0
+        
+        STUB tpc_getFlapCtpConf1PFHLDALTN_IB 1..2 => () 0
+        
+        STUB tpc_getFlapCtpConf1PFTO_IB 1..2 => () 0
+        
+        STUB tpc_getFlapCtpConf2_IB 1..2 => () 0         
+        
+        STUB S3PA_S3PosAnomMon 1=> (({ 100,1,2,3,6,7,8,9,10,11,12,13,14,15,
+        &                            16,17,FALSE,FALSE,FALSE,1113,FALSE,27,28,FALSE,1111,SFCC_NR_2,
+        &                            32,33,34,35,36,37,39,FALSE,FALSE,0,0,0,0,0,0,TYP_ETT_FLAP_100,FALSE,
+        &                            397,398,394,0,0,0,395,396,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            40,41,42,43,44,45,46,47,FALSE,FALSE,FS_LATCHED,FS_LATCHED,48,49,50,51,
+        &                            52,53,54,55,56,57,58,59,60,61,62})) 
+        
+        STUB S3PA_S3PosAnomMon 2=> (({ 100,1,200,300,6,7,8,9,10,11,12,13,14,15,
+        &                            160,170,FALSE,FALSE,FALSE,1113,FALSE,270,280,FALSE,1111,SFCC_NR_2,
+        &                            320,330,340,350,360,370,390,FALSE,FALSE,0,0,0,0,0,0,TYP_ETT_FLAP_100,TRUE,
+        &                            392,393,394,0,0,0,395,391,       
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            58,59,60,61,62,63,64,65,FALSE,FALSE,FS_LATCHED,FS_LATCHED,66,67,68,69,
+        &                            70,71,72,73,74,75,76,77,78,79,80}))    
+                
+        STUB DMA_Set (DML_STRUT3LHDISCSKEW,40)
+        STUB DMA_Set (DML_FLAPSKEWLHOB,41)
+        
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC3VALNVM,42)
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC4VALNVM,43)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTVALNVM,44)
+        
+        STUB DMA_Set (DML_S3PPULHPOSFLTNVM,45)
+        STUB DMA_Set (DML_S3PPULHPOSGNDNVM,46)
+        STUB DMA_Set (DML_S3PPULHCASNVM,47)
+        
+        STUB DME_Set_Latch (DML_DS3LHSKEWFAILS3PAMNVM,FALSE)
+        
+        STUB DME_Set_Latch (DML_S3LHANOMFAILUNCONF,FALSE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWCONF_FAILURE_STATUS,FS_LATCHED)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWUNCONF_FAILURE_STATUS,FS_LATCHED)
+        
+        STUB DMA_Set (DML_CMDC3LHGND,48)     
+        STUB DMA_Set (DML_CMDC3LHFLT,49)     
+        STUB DMA_Set (DML_CMDC4LH,50)     
+        STUB DMA_Set (DML_DETCONDLH,51)     
+        STUB DMA_Set (DML_DETCONDFLTC3LH,52)
+        STUB DMA_Set (DML_DETCONDFLTC4LH,53)
+        STUB DMA_Set (DML_DETCONDGNDC3LH,54)
+        STUB DMA_Set (DML_DETCONDGNDC4LH,55)
+        STUB DMA_Set (DML_S3PPULHPOSAVG,56)
+        STUB DMA_Set (DML_S3POSANOMMONLH,57)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC3FAILNVM,58)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC4FAILNVM,59) 
+        STUB DME_Set_Latch (DML_STRUT3LHDISCSKEWNVM,60)          
+                     
+        STUB DMA_Set (DML_STRUT3RHDISCSKEW,58)
+        STUB DMA_Set (DML_FLAPSKEWRHOB,59)
+        
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC3VALNVM,60)
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC4VALNVM,61)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTVALNVM,62)
+        
+        STUB DMA_Set  (DML_S3PPURHPOSFLTNVM,63)
+        STUB DMA_Set  (DML_S3PPURHPOSGNDNVM,64)
+        STUB DMA_Set  (DML_S3PPURHCASNVM,65)
+        
+        STUB DME_Set_Latch (DML_DS3RHSKEWFAILS3PAMNVM,FALSE)
+        
+        STUB DME_Set_Latch  (DML_S3RHANOMFAILUNCONF,FALSE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWCONF_FAILURE_STATUS,FS_LATCHED)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWUNCONF_FAILURE_STATUS,FS_LATCHED)
+        
+        STUB DMA_Set (DML_CMDC3RHGND,66)     
+        STUB DMA_Set (DML_CMDC3RHFLT,67)     
+        STUB DMA_Set (DML_CMDC4RH,68)     
+        STUB DMA_Set (DML_DETCONDRH,69)     
+        STUB DMA_Set (DML_DETCONDFLTC3RH,70)
+        STUB DMA_Set (DML_DETCONDFLTC4RH,71)
+        STUB DMA_Set (DML_DETCONDGNDC3RH,72)
+        STUB DMA_Set (DML_DETCONDGNDC4RH,73)
+        STUB DMA_Set (DML_S3PPURHPOSAVG,74)
+        STUB DMA_Set (DML_S3POSANOMMONRH,75) 
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC3FAILNVM,76)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC4FAILNVM,77)        
+        STUB DME_Set_Latch (DML_STRUT3RHDISCSKEWNVM,78)  
+        
+        STUB DMA_Set (DML_S3PAMGNDMSMTC3REQUIRED,1)
+        STUB DMA_Set (DML_S3PAMGNDMSMTCFREQUIRED,1)           
+        
+        #wrp_call_s3pa();
+        END ELEMENT
+
+    END TEST -- TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.6    
+
+    TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.7
+    FAMILY nominal
+
+       ELEMENT      
+
+       STUB S3PA_S3PosAnomMon_init 1 => ((       
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            40,41,42,43,44,45,46,47,FALSE,FALSE,FS_LATCHED,FS_LATCHED,48,49,50,51,
+        &                            52,53,54,55,56,57,58,59,60,61,62},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            555,0,0,0,0,0}))
+        
+        STUB S3PA_S3PosAnomMon_init 2 => ((       
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            58,59,60,61,62,63,64,65,FALSE,FALSE,FS_LATCHED,FS_LATCHED,66,67,68,69,
+        &                            70,71,72,73,74,75,76,77,78,79,80} ,
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            555,0,0,0,0,0}))
+        
+        #wrp_call_s3pa_init();       
+        
+        VAR DMA_Database[DML_DS3LHSKEWFAILS3PAMNVM].Data,       init = FALSE,               ev = init
+        VAR DMA_Database[DML_DS3RHSKEWFAILS3PAMNVM].Data,       init = FALSE,               ev = init
+        VAR DMA_Database[DML_S3LHANOMFAILUNCONF].Data,          init = FALSE,               ev = init
+        VAR DMA_Database[DML_S3RHANOMFAILUNCONF].Data,          init = FALSE,                ev = init       
+        
+        STUB PUC_Get_OpMode()A350_1000
+                
+        STUB BIT_Is_Set 1 => (113,AWM_DATA_POBOPEN)FALSE
+        STUB BIT_Is_Set 2 => (113,AWM_DATA_ADGBLHPOBOPEN)FALSE
+        STUB BIT_Is_Set 3 => (113,AWM_DATA_WTBLHOPEN)FALSE
+        STUB BIT_Is_Set 4 => (113,AWM_DATA_S3PPULHVAL)FALSE
+        STUB BIT_Is_Set 5 => (111,AWM_DATA_FLAPSKEWLHOB)FALSE
+
+        STUB BIT_Is_Set 6 => (113,AWM_DATA_ADGBRHPOBOPEN)FALSE
+        STUB BIT_Is_Set 7 => (113,AWM_DATA_WTBRHOPEN)FALSE
+        STUB BIT_Is_Set 8 => (113,AWM_DATA_S3PPURHVAL)FALSE
+        STUB BIT_Is_Set 9 => (111,AWM_DATA_FLAPSKEWRHOB)FALSE        
+        
+        
+        STUB PUC_Get_InstMode 1..2 => ()SFCC_NR_2
+        
+        STUB tpc_getFlapCtpConf3_IB 1..2 => ()0
+        
+        STUB tpc_getFlapCtpConf3PS 1..2 => ((0,0),(0,0))
+        
+        STUB tpc_getFlapCtpConfFULL 1..2 => ((0,0),(0,0))
+        
+        STUB tpc_getFlapConf3PS_OB 1..2 => ()0
+
+        STUB tpc_getFlapCtpConf1PFHLDALTN_IB 1..2 => () 0
+        
+        STUB tpc_getFlapCtpConf1PFTO_IB 1..2 => () 0
+        
+        STUB tpc_getFlapCtpConf2_IB 1..2 => () 0         
+        
+        STUB S3PA_S3PosAnomMon 1=> (({100,1,2,3,6,7,8,9,10,11,12,13,14,15,
+        &                            16,17,FALSE,FALSE,FALSE,1113,FALSE,27,28,FALSE,1111,SFCC_NR_2,
+        &                            32,33,34,35,36,37,39,FALSE,FALSE,0,0,0,0,0,0,TYP_ETT_FLAP_100,FALSE,
+        &                            397,398,394,0,0,0,395,396,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            40,41,42,43,44,45,46,47,TRUE,FALSE,FS_LATCHED,FS_LATCHED,48,49,50,51,
+        &                            52,53,54,55,56,57,58,59,60,61,62})) 
+        
+        STUB S3PA_S3PosAnomMon 2=> (({ 100,1,200,300,6,7,8,9,10,11,12,13,14,15,
+        &                            160,170,FALSE,FALSE,FALSE,1113,FALSE,270,280,FALSE,1111,SFCC_NR_2,
+        &                            320,330,340,350,360,370,390,FALSE,FALSE,0,0,0,0,0,0,TYP_ETT_FLAP_100,TRUE,
+        &                            392,393,394,0,0,0,395,391,       
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,270,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            58,59,60,61,62,63,64,65,FALSE,FALSE,FS_LATCHED,FS_LATCHED,66,67,68,69,
+        &                            70,71,72,73,74,75,76,77,78,79,80}))   
+                
+        STUB DMA_Set (DML_STRUT3LHDISCSKEW,40)
+        STUB DMA_Set (DML_FLAPSKEWLHOB,41)
+        
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC3VALNVM,42)
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC4VALNVM,43)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTVALNVM,44)
+        
+        STUB DMA_Set (DML_S3PPULHPOSFLTNVM,45)
+        STUB DMA_Set (DML_S3PPULHPOSGNDNVM,46)
+        STUB DMA_Set (DML_S3PPULHCASNVM,47)
+        
+        STUB DME_Set_Latch (DML_DS3LHSKEWFAILS3PAMNVM,TRUE)
+        
+        STUB DME_Set_Latch (DML_S3LHANOMFAILUNCONF,FALSE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWCONF_FAILURE_STATUS,FS_LATCHED)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWUNCONF_FAILURE_STATUS,FS_LATCHED)
+        
+        STUB DMA_Set  (DML_CMDC3LHGND,48)     
+        STUB DMA_Set  (DML_CMDC3LHFLT,49)     
+        STUB DMA_Set  (DML_CMDC4LH,50)     
+        STUB DMA_Set  (DML_DETCONDLH,51)     
+        STUB DMA_Set  (DML_DETCONDFLTC3LH,52)
+        STUB DMA_Set  (DML_DETCONDFLTC4LH,53)
+        STUB DMA_Set  (DML_DETCONDGNDC3LH,54)
+        STUB DMA_Set  (DML_DETCONDGNDC4LH,55)
+        STUB DMA_Set  (DML_S3PPULHPOSAVG,56)
+        STUB DMA_Set  (DML_S3POSANOMMONLH,57)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC3FAILNVM,58)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC4FAILNVM,59) 
+        STUB DME_Set_Latch (DML_STRUT3LHDISCSKEWNVM,60)         
+                     
+        STUB DMA_Set  (DML_STRUT3RHDISCSKEW,58)
+        STUB DMA_Set  (DML_FLAPSKEWRHOB,59)
+        
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC3VALNVM,60)
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC4VALNVM,61)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTVALNVM,62)
+        
+        STUB DMA_Set (DML_S3PPURHPOSFLTNVM,63)
+        STUB DMA_Set (DML_S3PPURHPOSGNDNVM,64)
+        STUB DMA_Set (DML_S3PPURHCASNVM,65)
+        
+        STUB DME_Set_Latch (DML_DS3RHSKEWFAILS3PAMNVM,FALSE)
+        
+        STUB DME_Set_Latch  (DML_S3RHANOMFAILUNCONF,FALSE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWCONF_FAILURE_STATUS,FS_LATCHED)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWUNCONF_FAILURE_STATUS,FS_LATCHED)
+        
+        STUB DMA_Set (DML_CMDC3RHGND,66)     
+        STUB DMA_Set (DML_CMDC3RHFLT,67)     
+        STUB DMA_Set (DML_CMDC4RH,68)     
+        STUB DMA_Set (DML_DETCONDRH,69)     
+        STUB DMA_Set (DML_DETCONDFLTC3RH,70)
+        STUB DMA_Set (DML_DETCONDFLTC4RH,71)
+        STUB DMA_Set (DML_DETCONDGNDC3RH,72)
+        STUB DMA_Set (DML_DETCONDGNDC4RH,73)
+        STUB DMA_Set (DML_S3PPURHPOSAVG,74)
+        STUB DMA_Set (DML_S3POSANOMMONRH,75) 
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC3FAILNVM,76)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC4FAILNVM,77)        
+        STUB DME_Set_Latch (DML_STRUT3RHDISCSKEWNVM,78) 
+
+        STUB DMA_Set (DML_S3PAMGNDMSMTC3REQUIRED,1)
+        STUB DMA_Set (DML_S3PAMGNDMSMTCFREQUIRED,1)         
+        
+        STUB BIT_Assign ((0,10),0,1111)
+        STUB BIT_Assign ((10,11),1,1113)
+        
+        STUB BIT_Assign ((11,12),2,44)
+        STUB BIT_Assign ((12,13),3,62)
+        STUB BIT_Assign ((13,14),4,61)
+        STUB BIT_Assign ((14,15),5,79)
+        STUB BIT_Assign ((15,16),6,62)
+        STUB BIT_Assign ((16,17),7,80)
+        STUB BIT_Assign ((17,18),8,FALSE)
+        STUB BIT_Assign  ((18,19),9,FALSE)
+        STUB BIT_Assign  ((19,20),10,FALSE)
+        STUB BIT_Assign  ((20,21),11,FALSE)
+        STUB BIT_Assign  ((21,22),15,TRUE)
+      
+        STUB DMA_Set (DML_FT3D_DED_1,22) 
+        STUB DMA_Set (DML_FT3D_DED_2,46)
+        STUB DMA_Set (DML_FT3D_DED_3,64)
+        STUB DMA_Set (DML_FT3D_DED_4,45) 
+        STUB DMA_Set (DML_FT3D_DED_5,63) 
+        STUB DMA_Set (DML_FT3D_DED_6,47) 
+        STUB DMA_Set (DML_FT3D_DED_7,65) 
+        STUB DMA_Set (DML_FT3D_DED_8,27) 
+        STUB DMA_Set (DML_FT3D_DED_9,270)          
+
+        
+        #wrp_call_s3pa();
+        END ELEMENT
+
+    END TEST -- TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.7  
+    
+
+    TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.8
+    FAMILY nominal
+
+       ELEMENT      
+
+       STUB S3PA_S3PosAnomMon_init 1 => ((
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            40,41,42,43,44,45,46,47,TRUE,FALSE,FS_LATCHED,FS_LATCHED,48,49,50,51,
+        &                            52,53,54,55,56,57,58,59,60,61,62}       ,
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            555,0,0,0,0,0}))
+        
+        STUB S3PA_S3PosAnomMon_init 2 => ((
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,270,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            58,59,60,61,62,63,64,65,FALSE,FALSE,FS_LATCHED,FS_LATCHED,66,67,68,69,
+        &                            70,71,72,73,74,75,76,77,78,79,80}        ,
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            555,0,0,0,0,0}))
+        
+        #wrp_call_s3pa_init();       
+        
+        VAR DMA_Database[DML_DS3LHSKEWFAILS3PAMNVM].Data,       init = FALSE,               ev = init
+        VAR DMA_Database[DML_DS3RHSKEWFAILS3PAMNVM].Data,       init = FALSE,               ev = init
+        VAR DMA_Database[DML_S3LHANOMFAILUNCONF].Data,          init = FALSE,               ev = init
+        VAR DMA_Database[DML_S3RHANOMFAILUNCONF].Data,          init = FALSE,                ev = init       
+        
+        STUB PUC_Get_OpMode()A350_1000
+                
+        STUB BIT_Is_Set 1 => (113,AWM_DATA_POBOPEN)FALSE
+        STUB BIT_Is_Set 2 => (113,AWM_DATA_ADGBLHPOBOPEN)FALSE
+        STUB BIT_Is_Set 3 => (113,AWM_DATA_WTBLHOPEN)FALSE
+        STUB BIT_Is_Set 4 => (113,AWM_DATA_S3PPULHVAL)FALSE
+        STUB BIT_Is_Set 5 => (111,AWM_DATA_FLAPSKEWLHOB)FALSE
+
+        STUB BIT_Is_Set 6 => (113,AWM_DATA_ADGBRHPOBOPEN)FALSE
+        STUB BIT_Is_Set 7 => (113,AWM_DATA_WTBRHOPEN)FALSE
+        STUB BIT_Is_Set 8 => (113,AWM_DATA_S3PPURHVAL)FALSE
+        STUB BIT_Is_Set 9 => (111,AWM_DATA_FLAPSKEWRHOB)FALSE        
+        
+        
+        STUB PUC_Get_InstMode 1..2 => ()SFCC_NR_2
+        
+        STUB tpc_getFlapCtpConf3_IB 1..2 => ()0
+        
+        STUB tpc_getFlapCtpConf3PS 1..2 => ((0,0),(0,0))
+        
+        STUB tpc_getFlapCtpConfFULL 1..2 => ((0,0),(0,0))
+        
+        STUB tpc_getFlapConf3PS_OB 1..2 => ()0
+
+        STUB tpc_getFlapCtpConf1PFHLDALTN_IB 1..2 => () 0
+        
+        STUB tpc_getFlapCtpConf1PFTO_IB 1..2 => () 0
+        
+        STUB tpc_getFlapCtpConf2_IB 1..2 => () 0           
+        
+        STUB S3PA_S3PosAnomMon 1=> (({ 100,1,2,3,6,7,8,9,10,11,12,13,14,15,
+        &                            16,17,FALSE,FALSE,FALSE,1113,FALSE,27,28,FALSE,1111,SFCC_NR_2,
+        &                            32,33,34,35,36,37,39,FALSE,FALSE,0,0,0,0,0,0,TYP_ETT_FLAP_100,FALSE,
+        &                            397,398,394,0,0,0,395,396,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            40,41,42,43,44,45,46,47,FALSE,TRUE,FS_LATCHED,FS_LATCHED,48,49,50,51,
+        &                            52,53,54,55,56,57,58,59,60,61,62})) 
+        
+        STUB S3PA_S3PosAnomMon 2=> (({ 100,1,200,300,6,7,8,9,10,11,12,13,14,15,
+        &                            160,170,FALSE,FALSE,FALSE,1113,FALSE,270,280,FALSE,1111,SFCC_NR_2,
+        &                            320,330,340,350,360,370,390,FALSE,FALSE,0,0,0,0,0,0,TYP_ETT_FLAP_100,TRUE,
+        &                            392,393,394,0,0,0,395,391,       
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,270,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            58,59,60,61,62,63,64,65,FALSE,FALSE,FS_LATCHED,FS_LATCHED,66,67,68,69,
+        &                            70,71,72,73,74,75,76,77,78,79,80}))    
+                
+        STUB DMA_Set (DML_STRUT3LHDISCSKEW,40)
+        STUB DMA_Set (DML_FLAPSKEWLHOB,41)
+        
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC3VALNVM,42)
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC4VALNVM,43)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTVALNVM,44)
+        
+        STUB DMA_Set (DML_S3PPULHPOSFLTNVM,45)
+        STUB DMA_Set (DML_S3PPULHPOSGNDNVM,46)
+        STUB DMA_Set (DML_S3PPULHCASNVM,47)
+        
+        STUB DME_Set_Latch (DML_DS3LHSKEWFAILS3PAMNVM,FALSE)
+        
+        STUB DME_Set_Latch (DML_S3LHANOMFAILUNCONF,TRUE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWCONF_FAILURE_STATUS,FS_LATCHED)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWUNCONF_FAILURE_STATUS,FS_LATCHED)
+        
+        STUB DMA_Set (DML_CMDC3LHGND,48)     
+        STUB DMA_Set (DML_CMDC3LHFLT,49)     
+        STUB DMA_Set (DML_CMDC4LH,50)     
+        STUB DMA_Set (DML_DETCONDLH,51)     
+        STUB DMA_Set (DML_DETCONDFLTC3LH,52)
+        STUB DMA_Set (DML_DETCONDFLTC4LH,53)
+        STUB DMA_Set (DML_DETCONDGNDC3LH,54)
+        STUB DMA_Set (DML_DETCONDGNDC4LH,55)
+        STUB DMA_Set (DML_S3PPULHPOSAVG,56)
+        STUB DMA_Set (DML_S3POSANOMMONLH,57)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC3FAILNVM,58)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC4FAILNVM,59) 
+        STUB DME_Set_Latch (DML_STRUT3LHDISCSKEWNVM,60)           
+                     
+        STUB DMA_Set (DML_STRUT3RHDISCSKEW,58)
+        STUB DMA_Set (DML_FLAPSKEWRHOB,59)
+        
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC3VALNVM,60)
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC4VALNVM,61)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTVALNVM,62)
+        
+        STUB DMA_Set (DML_S3PPURHPOSFLTNVM,63)
+        STUB DMA_Set (DML_S3PPURHPOSGNDNVM,64)
+        STUB DMA_Set (DML_S3PPURHCASNVM,65)
+        
+        STUB DME_Set_Latch (DML_DS3RHSKEWFAILS3PAMNVM,FALSE)
+        
+        STUB DME_Set_Latch (DML_S3RHANOMFAILUNCONF,FALSE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWCONF_FAILURE_STATUS,FS_LATCHED)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWUNCONF_FAILURE_STATUS,FS_LATCHED)
+        
+        STUB DMA_Set (DML_CMDC3RHGND,66)     
+        STUB DMA_Set (DML_CMDC3RHFLT,67)     
+        STUB DMA_Set (DML_CMDC4RH,68)     
+        STUB DMA_Set (DML_DETCONDRH,69)     
+        STUB DMA_Set (DML_DETCONDFLTC3RH,70)
+        STUB DMA_Set (DML_DETCONDFLTC4RH,71)
+        STUB DMA_Set (DML_DETCONDGNDC3RH,72)
+        STUB DMA_Set (DML_DETCONDGNDC4RH,73)
+        STUB DMA_Set (DML_S3PPURHPOSAVG,74)
+        STUB DMA_Set (DML_S3POSANOMMONRH,75) 
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC3FAILNVM,76)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC4FAILNVM,77)        
+        STUB DME_Set_Latch (DML_STRUT3RHDISCSKEWNVM,78) 
+
+        STUB DMA_Set (DML_S3PAMGNDMSMTC3REQUIRED,1)
+        STUB DMA_Set (DML_S3PAMGNDMSMTCFREQUIRED,1)        
+        
+        STUB BIT_Assign ((0,10),0,1111)
+        STUB BIT_Assign ((10,11),1,1113)
+        
+        STUB BIT_Assign ((11,12),2,44)
+        STUB BIT_Assign ((12,13),3,62)
+        STUB BIT_Assign ((13,14),4,61)
+        STUB BIT_Assign ((14,15),5,79)
+        STUB BIT_Assign ((15,16),6,62)
+        STUB BIT_Assign ((16,17),7,80)
+        STUB BIT_Assign ((17,18),8,FALSE)
+        STUB BIT_Assign  ((18,19),9,FALSE)
+        STUB BIT_Assign  ((19,20),10,FALSE)
+        STUB BIT_Assign  ((20,21),11,FALSE)
+        STUB BIT_Assign  ((21,22),15,TRUE)
+      
+        STUB DMA_Set (DML_FT3D_DED_1,22) 
+        STUB DMA_Set (DML_FT3D_DED_2,46)
+        STUB DMA_Set (DML_FT3D_DED_3,64)
+        STUB DMA_Set (DML_FT3D_DED_4,45) 
+        STUB DMA_Set (DML_FT3D_DED_5,63) 
+        STUB DMA_Set (DML_FT3D_DED_6,47) 
+        STUB DMA_Set (DML_FT3D_DED_7,65) 
+        STUB DMA_Set (DML_FT3D_DED_8,27) 
+        STUB DMA_Set (DML_FT3D_DED_9,270)  
+        
+        #wrp_call_s3pa();
+        END ELEMENT
+
+    END TEST -- TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.8    
+
+    TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.9
+    FAMILY nominal
+
+       ELEMENT      
+
+       STUB S3PA_S3PosAnomMon_init 1 => (({ 0,0,0,0,0,0,0,0,0,0,0,
+        &                                   0,0,0,0,0,0,0,0,0,0,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                   0,0,0,0,0,0,0,
+        &                                   40,41,42,43,44,45,46,47,FALSE,TRUE,FS_LATCHED,FS_LATCHED,48,49,50,51,
+        &                                   52,53,54,55,56,57,58,59,60,61,62},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            555,0,0,0,0,0}))
+        
+        STUB S3PA_S3PosAnomMon_init 2 => (({ 0,0,0,0,0,0,0,0,0,0,0,
+        &                                    0,0,0,0,0,0,0,0,0,0,270,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                                    0,0,0,0,0,0,0,        
+        &                                    58,59,60,61,62,63,64,65,FALSE,FALSE,FS_LATCHED,FS_LATCHED,66,67,68,69,
+        &                                    70,71,72,73,74,75,76,77,78,79,80},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            555,0,0,0,0,0}))
+        
+        #wrp_call_s3pa_init();       
+        
+        VAR DMA_Database[DML_DS3LHSKEWFAILS3PAMNVM].Data,       init = FALSE,               ev = init
+        VAR DMA_Database[DML_DS3RHSKEWFAILS3PAMNVM].Data,       init = FALSE,               ev = init
+        VAR DMA_Database[DML_S3LHANOMFAILUNCONF].Data,          init = FALSE,               ev = init
+        VAR DMA_Database[DML_S3RHANOMFAILUNCONF].Data,          init = FALSE,                ev = init       
+        
+        STUB PUC_Get_OpMode()A350_1000
+                
+        STUB BIT_Is_Set 1 => (113,AWM_DATA_POBOPEN)FALSE
+        STUB BIT_Is_Set 2 => (113,AWM_DATA_ADGBLHPOBOPEN)FALSE
+        STUB BIT_Is_Set 3 => (113,AWM_DATA_WTBLHOPEN)FALSE
+        STUB BIT_Is_Set 4 => (113,AWM_DATA_S3PPULHVAL)FALSE
+        STUB BIT_Is_Set 5 => (111,AWM_DATA_FLAPSKEWLHOB)FALSE
+
+        STUB BIT_Is_Set 6 => (113,AWM_DATA_ADGBRHPOBOPEN)FALSE
+        STUB BIT_Is_Set 7 => (113,AWM_DATA_WTBRHOPEN)FALSE
+        STUB BIT_Is_Set 8 => (113,AWM_DATA_S3PPURHVAL)FALSE
+        STUB BIT_Is_Set 9 => (111,AWM_DATA_FLAPSKEWRHOB)FALSE        
+        
+        
+        STUB PUC_Get_InstMode 1..2 => ()SFCC_NR_2
+        
+        STUB tpc_getFlapCtpConf3_IB 1..2 => ()0
+        
+        STUB tpc_getFlapCtpConf3PS 1..2 => ((0,0),(0,0))
+        
+        STUB tpc_getFlapCtpConfFULL 1..2 => ((0,0),(0,0))
+        
+        STUB tpc_getFlapConf3PS_OB 1..2 => ()0
+        
+        STUB tpc_getFlapCtpConf1PFHLDALTN_IB 1..2 => () 0
+        
+        STUB tpc_getFlapCtpConf1PFTO_IB 1..2 => () 0
+        
+        STUB tpc_getFlapCtpConf2_IB 1..2 => () 0  
+        
+        STUB S3PA_S3PosAnomMon 1=> (({ 100,1,2,3,6,7,8,9,10,11,12,13,14,15,
+        &                            16,17,FALSE,FALSE,FALSE,1113,FALSE,27,28,FALSE,1111,SFCC_NR_2,
+        &                            32,33,34,35,36,37,39,FALSE,FALSE,0,0,0,0,0,0,TYP_ETT_FLAP_100,FALSE,
+        &                            397,398,394,0,0,0,395,396,   
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,
+        &                            40,41,42,43,44,45,46,47,FALSE,FALSE,FS_LATCHED,FS_LATCHED,48,49,50,51,
+        &                            52,53,54,55,56,57,58,59,60,61,62})) 
+        
+        STUB S3PA_S3PosAnomMon 2=> (({ 100,1,200,300,6,7,8,9,10,11,12,13,14,15,
+        &                            160,170,FALSE,FALSE,FALSE,1113,FALSE,270,280,FALSE,1111,SFCC_NR_2,
+        &                            320,330,340,350,360,370,390,FALSE,FALSE,0,0,0,0,0,0,TYP_ETT_FLAP_100,TRUE,
+        &                            392,393,394,0,0,0,395,391,         
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,270,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,        
+        &                            58,59,60,61,62,63,64,65,TRUE,FALSE,FS_LATCHED,FS_LATCHED,66,67,68,69,
+        &                            70,71,72,73,74,75,76,77,78,79,80}))    
+                
+        STUB DMA_Set (DML_STRUT3LHDISCSKEW,40)
+        STUB DMA_Set (DML_FLAPSKEWLHOB,41)
+        
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC3VALNVM,42)
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC4VALNVM,43)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTVALNVM,44)
+        
+        STUB DMA_Set (DML_S3PPULHPOSFLTNVM,45)
+        STUB DMA_Set (DML_S3PPULHPOSGNDNVM,46)
+        STUB DMA_Set (DML_S3PPULHCASNVM,47)
+        
+        STUB DME_Set_Latch (DML_DS3LHSKEWFAILS3PAMNVM,FALSE)
+        
+        STUB DME_Set_Latch (DML_S3LHANOMFAILUNCONF,FALSE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWCONF_FAILURE_STATUS,FS_LATCHED)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWUNCONF_FAILURE_STATUS,FS_LATCHED)
+        
+        STUB DMA_Set (DML_CMDC3LHGND,48)     
+        STUB DMA_Set (DML_CMDC3LHFLT,49)     
+        STUB DMA_Set (DML_CMDC4LH,50)     
+        STUB DMA_Set (DML_DETCONDLH,51)     
+        STUB DMA_Set (DML_DETCONDFLTC3LH,52)
+        STUB DMA_Set (DML_DETCONDFLTC4LH,53)
+        STUB DMA_Set (DML_DETCONDGNDC3LH,54)
+        STUB DMA_Set (DML_DETCONDGNDC4LH,55)
+        STUB DMA_Set (DML_S3PPULHPOSAVG,56)
+        STUB DMA_Set (DML_S3POSANOMMONLH,57)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC3FAILNVM,58)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC4FAILNVM,59) 
+        STUB DME_Set_Latch (DML_STRUT3LHDISCSKEWNVM,60)        
+                     
+        STUB DMA_Set (DML_STRUT3RHDISCSKEW,58)
+        STUB DMA_Set (DML_FLAPSKEWRHOB,59)
+        
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC3VALNVM,60)
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC4VALNVM,61)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTVALNVM,62)
+        
+        STUB DMA_Set (DML_S3PPURHPOSFLTNVM,63)
+        STUB DMA_Set (DML_S3PPURHPOSGNDNVM,64)
+        STUB DMA_Set (DML_S3PPURHCASNVM,65)
+        
+        STUB DME_Set_Latch (DML_DS3RHSKEWFAILS3PAMNVM,TRUE)
+        
+        STUB DME_Set_Latch  (DML_S3RHANOMFAILUNCONF,FALSE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWCONF_FAILURE_STATUS,FS_LATCHED)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWUNCONF_FAILURE_STATUS,FS_LATCHED)
+        
+        STUB DMA_Set (DML_CMDC3RHGND,66)     
+        STUB DMA_Set (DML_CMDC3RHFLT,67)     
+        STUB DMA_Set (DML_CMDC4RH,68)     
+        STUB DMA_Set (DML_DETCONDRH,69)     
+        STUB DMA_Set (DML_DETCONDFLTC3RH,70)
+        STUB DMA_Set (DML_DETCONDFLTC4RH,71)
+        STUB DMA_Set (DML_DETCONDGNDC3RH,72)
+        STUB DMA_Set (DML_DETCONDGNDC4RH,73)
+        STUB DMA_Set (DML_S3PPURHPOSAVG,74)
+        STUB DMA_Set (DML_S3POSANOMMONRH,75)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC3FAILNVM,76)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC4FAILNVM,77)        
+        STUB DME_Set_Latch (DML_STRUT3RHDISCSKEWNVM,78) 
+
+        STUB DMA_Set (DML_S3PAMGNDMSMTC3REQUIRED,1)
+        STUB DMA_Set (DML_S3PAMGNDMSMTCFREQUIRED,1)         
+        
+        STUB BIT_Assign ((0,10),0,1111)
+        STUB BIT_Assign ((10,11),1,1113)
+        
+        STUB BIT_Assign ((11,12),2,44)
+        STUB BIT_Assign ((12,13),3,62)
+        STUB BIT_Assign ((13,14),4,61)
+        STUB BIT_Assign ((14,15),5,79)
+        STUB BIT_Assign ((15,16),6,62)
+        STUB BIT_Assign ((16,17),7,80)
+        STUB BIT_Assign ((17,18),8,FALSE)
+        STUB BIT_Assign ((18,19),9,FALSE)
+        STUB BIT_Assign ((19,20),10,FALSE)
+        STUB BIT_Assign ((20,21),11,FALSE)
+        STUB BIT_Assign ((21,22),15,TRUE)
+      
+        STUB DMA_Set (DML_FT3D_DED_1,22) 
+        STUB DMA_Set (DML_FT3D_DED_2,46)
+        STUB DMA_Set (DML_FT3D_DED_3,64)
+        STUB DMA_Set (DML_FT3D_DED_4,45) 
+        STUB DMA_Set (DML_FT3D_DED_5,63) 
+        STUB DMA_Set (DML_FT3D_DED_6,47) 
+        STUB DMA_Set (DML_FT3D_DED_7,65) 
+        STUB DMA_Set (DML_FT3D_DED_8,27) 
+        STUB DMA_Set (DML_FT3D_DED_9,270)          
+
+        
+        #wrp_call_s3pa();
+        END ELEMENT
+
+    END TEST -- TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.9        
+
+    TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.10
+    FAMILY nominal
+
+       ELEMENT      
+       
+       STUB S3PA_S3PosAnomMon_init 1 => (({ 0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,        
+        &                            40,41,42,43,44,45,46,47,FALSE,FALSE,FS_LATCHED,FS_LATCHED,48,49,50,51,
+        &                            52,53,54,55,56,57,58,59,60,61,62},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            555,0,0,0,0,0}))
+        
+        STUB S3PA_S3PosAnomMon_init 2 => (({ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,270,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,        
+        &                            58,59,60,61,62,63,64,65,TRUE,FALSE,FS_LATCHED,FS_LATCHED,66,67,68,69,
+        &                            70,71,72,73,74,75,76,77,78,79,80},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            555,0,0,0,0,0}))
+        
+        #wrp_call_s3pa_init();       
+        
+        VAR DMA_Database[DML_DS3LHSKEWFAILS3PAMNVM].Data,       init = FALSE,               ev = init
+        VAR DMA_Database[DML_DS3RHSKEWFAILS3PAMNVM].Data,       init = FALSE,               ev = init
+        VAR DMA_Database[DML_S3LHANOMFAILUNCONF].Data,          init = FALSE,               ev = init
+        VAR DMA_Database[DML_S3RHANOMFAILUNCONF].Data,          init = FALSE,                ev = init       
+        
+        STUB PUC_Get_OpMode()A350_1000
+                
+        STUB BIT_Is_Set 1 => (113,AWM_DATA_POBOPEN)FALSE
+        STUB BIT_Is_Set 2 => (113,AWM_DATA_ADGBLHPOBOPEN)FALSE
+        STUB BIT_Is_Set 3 => (113,AWM_DATA_WTBLHOPEN)FALSE
+        STUB BIT_Is_Set 4 => (113,AWM_DATA_S3PPULHVAL)FALSE
+        STUB BIT_Is_Set 5 => (111,AWM_DATA_FLAPSKEWLHOB)FALSE
+
+        STUB BIT_Is_Set 6 => (113,AWM_DATA_ADGBRHPOBOPEN)FALSE
+        STUB BIT_Is_Set 7 => (113,AWM_DATA_WTBRHOPEN)FALSE
+        STUB BIT_Is_Set 8 => (113,AWM_DATA_S3PPURHVAL)FALSE
+        STUB BIT_Is_Set 9 => (111,AWM_DATA_FLAPSKEWRHOB)FALSE        
+        
+        
+        STUB PUC_Get_InstMode 1..2 => ()SFCC_NR_2
+        
+        STUB tpc_getFlapCtpConf3_IB 1..2 => ()0
+        
+        STUB tpc_getFlapCtpConf3PS 1..2 => ((0,0),(0,0))
+        
+        STUB tpc_getFlapCtpConfFULL 1..2 => ((0,0),(0,0))
+        
+        STUB tpc_getFlapConf3PS_OB 1..2 => ()0
+
+        STUB tpc_getFlapCtpConf1PFHLDALTN_IB 1..2 => () 0
+        
+        STUB tpc_getFlapCtpConf1PFTO_IB 1..2 => () 0
+        
+        STUB tpc_getFlapCtpConf2_IB 1..2 => () 0          
+        
+        STUB S3PA_S3PosAnomMon 1=> (({ 100,1,2,3,6,7,8,9,10,11,12,13,14,15,
+        &                            16,17,FALSE,FALSE,FALSE,1113,FALSE,27,28,FALSE,1111,SFCC_NR_2,
+        &                            32,33,34,35,36,37,39,FALSE,FALSE,0,0,0,0,0,0,TYP_ETT_FLAP_100,FALSE,
+        &                            397,398,394,0,0,0,395,396,         
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,        
+        &                            40,41,42,43,44,45,46,47,FALSE,FALSE,FS_LATCHED,FS_LATCHED,48,49,50,51,
+        &                            52,53,54,55,56,57,58,59,60,61,62})) 
+        
+        STUB S3PA_S3PosAnomMon 2=> (({ 100,1,200,300,6,7,8,9,10,11,12,13,14,15,
+        &                            160,170,FALSE,FALSE,FALSE,1113,FALSE,270,280,FALSE,1111,SFCC_NR_2,
+        &                            320,330,340,350,360,370,390,FALSE,FALSE,0,0,0,0,0,0,TYP_ETT_FLAP_100,TRUE,
+        &                            392,393,394,0,0,0,395,391,         
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,270,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,        
+        &                            58,59,60,61,62,63,64,65,FALSE,TRUE,FS_LATCHED,FS_LATCHED,66,67,68,69,
+        &                            70,71,72,73,74,75,76,77,78,79,80}))    
+                
+        STUB DMA_Set (DML_STRUT3LHDISCSKEW,40)
+        STUB DMA_Set (DML_FLAPSKEWLHOB,41)
+        
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC3VALNVM,42)
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC4VALNVM,43)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTVALNVM,44)
+        
+        STUB DMA_Set (DML_S3PPULHPOSFLTNVM,45)
+        STUB DMA_Set (DML_S3PPULHPOSGNDNVM,46)
+        STUB DMA_Set (DML_S3PPULHCASNVM,47)
+        
+        STUB DME_Set_Latch (DML_DS3LHSKEWFAILS3PAMNVM,FALSE)
+        
+        STUB DME_Set_Latch (DML_S3LHANOMFAILUNCONF,FALSE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWCONF_FAILURE_STATUS,FS_LATCHED)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWUNCONF_FAILURE_STATUS,FS_LATCHED)
+        
+        STUB DMA_Set (DML_CMDC3LHGND,48)     
+        STUB DMA_Set (DML_CMDC3LHFLT,49)     
+        STUB DMA_Set (DML_CMDC4LH,50)     
+        STUB DMA_Set (DML_DETCONDLH,51)     
+        STUB DMA_Set (DML_DETCONDFLTC3LH,52)
+        STUB DMA_Set (DML_DETCONDFLTC4LH,53)
+        STUB DMA_Set (DML_DETCONDGNDC3LH,54)
+        STUB DMA_Set (DML_DETCONDGNDC4LH,55)
+        STUB DMA_Set (DML_S3PPULHPOSAVG,56)
+        STUB DMA_Set (DML_S3POSANOMMONLH,57)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC3FAILNVM,58)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC4FAILNVM,59) 
+        STUB DME_Set_Latch (DML_STRUT3LHDISCSKEWNVM,60)         
+                     
+        STUB DMA_Set (DML_STRUT3RHDISCSKEW,58)
+        STUB DMA_Set (DML_FLAPSKEWRHOB,59)
+        
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC3VALNVM,60)
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC4VALNVM,61)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTVALNVM,62)
+        
+        STUB DMA_Set (DML_S3PPURHPOSFLTNVM,63)
+        STUB DMA_Set (DML_S3PPURHPOSGNDNVM,64)
+        STUB DMA_Set (DML_S3PPURHCASNVM,65)
+        
+        STUB DME_Set_Latch (DML_DS3RHSKEWFAILS3PAMNVM,FALSE)
+        
+        STUB DME_Set_Latch (DML_S3RHANOMFAILUNCONF,TRUE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWCONF_FAILURE_STATUS,FS_LATCHED)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWUNCONF_FAILURE_STATUS,FS_LATCHED)
+        
+        STUB DMA_Set (DML_CMDC3RHGND,66)     
+        STUB DMA_Set (DML_CMDC3RHFLT,67)     
+        STUB DMA_Set (DML_CMDC4RH,68)     
+        STUB DMA_Set (DML_DETCONDRH,69)     
+        STUB DMA_Set (DML_DETCONDFLTC3RH,70)
+        STUB DMA_Set (DML_DETCONDFLTC4RH,71)
+        STUB DMA_Set (DML_DETCONDGNDC3RH,72)
+        STUB DMA_Set (DML_DETCONDGNDC4RH,73)
+        STUB DMA_Set (DML_S3PPURHPOSAVG,74)
+        STUB DMA_Set (DML_S3POSANOMMONRH,75) 
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC3FAILNVM,76)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC4FAILNVM,77)        
+        STUB DME_Set_Latch (DML_STRUT3RHDISCSKEWNVM,78) 
+
+        STUB DMA_Set (DML_S3PAMGNDMSMTC3REQUIRED,1)
+        STUB DMA_Set (DML_S3PAMGNDMSMTCFREQUIRED,1)          
+        
+        STUB BIT_Assign ((0,10),0,1111)
+        STUB BIT_Assign ((10,11),1,1113)
+        
+        STUB BIT_Assign ((11,12),2,44)
+        STUB BIT_Assign ((12,13),3,62)
+        STUB BIT_Assign ((13,14),4,61)
+        STUB BIT_Assign ((14,15),5,79)
+        STUB BIT_Assign ((15,16),6,62)
+        STUB BIT_Assign ((16,17),7,80)
+        STUB BIT_Assign ((17,18),8,FALSE)
+        STUB BIT_Assign ((18,19),9,FALSE)
+        STUB BIT_Assign ((19,20),10,FALSE)
+        STUB BIT_Assign ((20,21),11,FALSE)
+        STUB BIT_Assign ((21,22),15,TRUE)
+      
+        STUB DMA_Set (DML_FT3D_DED_1,22) 
+        STUB DMA_Set (DML_FT3D_DED_2,46)
+        STUB DMA_Set (DML_FT3D_DED_3,64)
+        STUB DMA_Set (DML_FT3D_DED_4,45) 
+        STUB DMA_Set (DML_FT3D_DED_5,63) 
+        STUB DMA_Set (DML_FT3D_DED_6,47) 
+        STUB DMA_Set (DML_FT3D_DED_7,65) 
+        STUB DMA_Set (DML_FT3D_DED_8,27) 
+        STUB DMA_Set (DML_FT3D_DED_9,270)  
+
+        
+        #wrp_call_s3pa();
+        END ELEMENT
+
+    END TEST -- TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.10  
+
+    TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.11
+    FAMILY nominal
+
+       ELEMENT      
+
+       STUB S3PA_S3PosAnomMon_init 1 => (({ 0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,        
+        &                            40,41,42,43,44,45,46,47,FALSE,FALSE,FS_LATCHED,FS_LATCHED,48,49,50,51,
+        &                            52,53,54,55,56,57,58,59,60,61,62},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            555,0,0,0,0,0}))
+        
+        STUB S3PA_S3PosAnomMon_init 2 => (({ 0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,270,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,        
+        &                            58,59,60,61,62,63,64,65,FALSE,TRUE,FS_LATCHED,FS_LATCHED,66,67,68,69,
+        &                            70,71,72,73,74,75,76,77,78,79,80},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            555,0,0,0,0,0}))
+        
+        #wrp_call_s3pa_init();
+        
+        VAR DMA_Database[DML_DS3LHSKEWFAILS3PAMNVM].Data,       init = FALSE,               ev = init
+        VAR DMA_Database[DML_DS3RHSKEWFAILS3PAMNVM].Data,       init = FALSE,               ev = init
+        VAR DMA_Database[DML_S3LHANOMFAILUNCONF].Data,          init = FALSE,               ev = init
+        VAR DMA_Database[DML_S3RHANOMFAILUNCONF].Data,          init = TRUE,                ev = init       
+        
+        STUB PUC_Get_OpMode()A350_1000
+                
+        STUB BIT_Is_Set 1 => (113,AWM_DATA_POBOPEN)FALSE
+        STUB BIT_Is_Set 2 => (113,AWM_DATA_ADGBLHPOBOPEN)FALSE
+        STUB BIT_Is_Set 3 => (113,AWM_DATA_WTBLHOPEN)FALSE
+        STUB BIT_Is_Set 4 => (113,AWM_DATA_S3PPULHVAL)FALSE
+        STUB BIT_Is_Set 5 => (111,AWM_DATA_FLAPSKEWLHOB)FALSE
+
+        STUB BIT_Is_Set 6 => (113,AWM_DATA_ADGBRHPOBOPEN)FALSE
+        STUB BIT_Is_Set 7 => (113,AWM_DATA_WTBRHOPEN)FALSE
+        STUB BIT_Is_Set 8 => (113,AWM_DATA_S3PPURHVAL)FALSE
+        STUB BIT_Is_Set 9 => (111,AWM_DATA_FLAPSKEWRHOB)FALSE        
+        
+        
+        STUB PUC_Get_InstMode 1..2 => ()SFCC_NR_2
+        
+        STUB tpc_getFlapCtpConf3_IB 1..2 => ()0
+        
+        STUB tpc_getFlapCtpConf3PS 1..2 => ((0,0),(0,0))
+        
+        STUB tpc_getFlapCtpConfFULL 1..2 => ((0,0),(0,0))
+        
+        STUB tpc_getFlapConf3PS_OB 1..2 => ()0
+        
+        STUB tpc_getFlapCtpConf1PFHLDALTN_IB 1..2 => () 0
+        
+        STUB tpc_getFlapCtpConf1PFTO_IB 1..2 => () 0
+        
+        STUB tpc_getFlapCtpConf2_IB 1..2 => () 0        
+        
+        STUB S3PA_S3PosAnomMon 1=> (({ 100,1,2,3,6,7,8,9,10,11,12,13,14,15,
+        &                            16,17,FALSE,FALSE,FALSE,1113,FALSE,27,28,FALSE,1111,SFCC_NR_2,
+        &                            32,33,34,35,36,37,39,FALSE,FALSE,0,0,0,0,0,0,TYP_ETT_FLAP_100,FALSE,
+        &                            397,398,394,0,0,0,395,396,          
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,        
+        &                            40,41,42,43,44,45,46,47,FALSE,FALSE,FS_LATCHED,FS_LATCHED,48,49,50,51,
+        &                            52,53,54,55,56,57,58,59,60,61,62})) 
+        
+        STUB S3PA_S3PosAnomMon 2=> (({ 100,1,200,300,6,7,8,9,10,11,12,13,14,15,
+        &                            160,170,FALSE,FALSE,FALSE,1113,FALSE,270,280,FALSE,1111,SFCC_NR_2,
+        &                            320,330,340,350,360,370,390,FALSE,TRUE,0,0,0,0,0,0,TYP_ETT_FLAP_100,TRUE,
+        &                            392,393,394,0,0,0,395,391,         
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,        
+        &                            58,59,60,61,62,63,64,65,FALSE,TRUE,FS_LATCHED,FS_LATCHED,66,67,68,69,
+        &                            70,71,72,73,74,75,76,77,78,79,80}))    
+                
+        STUB DMA_Set (DML_STRUT3LHDISCSKEW,40)
+        STUB DMA_Set (DML_FLAPSKEWLHOB,41)
+        
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC3VALNVM,42)
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC4VALNVM,43)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTVALNVM,44)
+        
+        STUB DMA_Set (DML_S3PPULHPOSFLTNVM,45)
+        STUB DMA_Set (DML_S3PPULHPOSGNDNVM,46)
+        STUB DMA_Set (DML_S3PPULHCASNVM,47)
+        
+        STUB DME_Set_Latch (DML_DS3LHSKEWFAILS3PAMNVM,FALSE)
+        
+        STUB DME_Set_Latch (DML_S3LHANOMFAILUNCONF,FALSE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWCONF_FAILURE_STATUS,FS_LATCHED)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWUNCONF_FAILURE_STATUS,FS_LATCHED)
+        
+        STUB DMA_Set (DML_CMDC3LHGND,48)     
+        STUB DMA_Set (DML_CMDC3LHFLT,49)     
+        STUB DMA_Set  (DML_CMDC4LH,50)     
+        STUB DMA_Set (DML_DETCONDLH,51)     
+        STUB DMA_Set (DML_DETCONDFLTC3LH,52)
+        STUB DMA_Set (DML_DETCONDFLTC4LH,53)
+        STUB DMA_Set (DML_DETCONDGNDC3LH,54)
+        STUB DMA_Set (DML_DETCONDGNDC4LH,55)
+        STUB DMA_Set (DML_S3PPULHPOSAVG,56)
+        STUB DMA_Set (DML_S3POSANOMMONLH,57)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC3FAILNVM,58)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC4FAILNVM,59) 
+        STUB DME_Set_Latch (DML_STRUT3LHDISCSKEWNVM,60)          
+                     
+        STUB DMA_Set (DML_STRUT3RHDISCSKEW,58)
+        STUB DMA_Set (DML_FLAPSKEWRHOB,59)
+        
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC3VALNVM,60)
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC4VALNVM,61)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTVALNVM,62)
+        
+        STUB DMA_Set (DML_S3PPURHPOSFLTNVM,63)
+        STUB DMA_Set (DML_S3PPURHPOSGNDNVM,64)
+        STUB DMA_Set (DML_S3PPURHCASNVM,65)
+        
+        STUB DME_Set_Latch (DML_DS3RHSKEWFAILS3PAMNVM,FALSE)
+        
+        STUB DME_Set_Latch  (DML_S3RHANOMFAILUNCONF,TRUE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWCONF_FAILURE_STATUS,FS_LATCHED)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWUNCONF_FAILURE_STATUS,FS_LATCHED)
+        
+        STUB DMA_Set (DML_CMDC3RHGND,66)     
+        STUB DMA_Set (DML_CMDC3RHFLT,67)     
+        STUB DMA_Set (DML_CMDC4RH,68)     
+        STUB DMA_Set (DML_DETCONDRH,69)     
+        STUB DMA_Set (DML_DETCONDFLTC3RH,70)
+        STUB DMA_Set (DML_DETCONDFLTC4RH,71)
+        STUB DMA_Set (DML_DETCONDGNDC3RH,72)
+        STUB DMA_Set (DML_DETCONDGNDC4RH,73)
+        STUB DMA_Set (DML_S3PPURHPOSAVG,74)
+        STUB DMA_Set (DML_S3POSANOMMONRH,75) 
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC3FAILNVM,76)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC4FAILNVM,77)        
+        STUB DME_Set_Latch (DML_STRUT3RHDISCSKEWNVM,78) 
+
+        STUB DMA_Set (DML_S3PAMGNDMSMTC3REQUIRED,1)
+        STUB DMA_Set (DML_S3PAMGNDMSMTCFREQUIRED,1)        
+        
+        #wrp_call_s3pa();
+        END ELEMENT
+
+    END TEST -- TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.11  
+
+    TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.12
+    FAMILY nominal
+
+       ELEMENT      
+
+       STUB S3PA_S3PosAnomMon_init 1 => (({ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,        
+        &                            40,41,42,43,44,45,46,47,FALSE,FALSE,FS_LATCHED,FS_LATCHED,48,49,50,51,
+        &                            52,53,54,55,56,57,58,59,60,61,62},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            555,0,0,0,0,0}))
+        
+        STUB S3PA_S3PosAnomMon_init 2 => (({ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,        
+        &                            58,59,60,61,62,63,64,65,FALSE,TRUE,FS_LATCHED,FS_LATCHED,66,67,68,69,
+        &                            70,71,72,73,74,75,76,77,78,79,80},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            555,0,0,0,0,0}))
+        
+        #wrp_call_s3pa_init();
+        
+        VAR DMA_Database[DML_DS3LHSKEWFAILS3PAMNVM].Data,       init = FALSE,               ev = init
+        VAR DMA_Database[DML_DS3RHSKEWFAILS3PAMNVM].Data,       init = FALSE,               ev = init
+        VAR DMA_Database[DML_S3LHANOMFAILUNCONF].Data,          init = FALSE,               ev = init
+        VAR DMA_Database[DML_S3RHANOMFAILUNCONF].Data,          init = TRUE,                ev = init       
+        
+        STUB PUC_Get_OpMode()A350_1000
+                
+        STUB BIT_Is_Set 1 => (113,AWM_DATA_POBOPEN)FALSE
+        STUB BIT_Is_Set 2 => (113,AWM_DATA_ADGBLHPOBOPEN)FALSE
+        STUB BIT_Is_Set 3 => (113,AWM_DATA_WTBLHOPEN)FALSE
+        STUB BIT_Is_Set 4 => (113,AWM_DATA_S3PPULHVAL)FALSE
+        STUB BIT_Is_Set 5 => (111,AWM_DATA_FLAPSKEWLHOB)FALSE
+
+        STUB BIT_Is_Set 6 => (113,AWM_DATA_ADGBRHPOBOPEN)FALSE
+        STUB BIT_Is_Set 7 => (113,AWM_DATA_WTBRHOPEN)FALSE
+        STUB BIT_Is_Set 8 => (113,AWM_DATA_S3PPURHVAL)FALSE
+        STUB BIT_Is_Set 9 => (111,AWM_DATA_FLAPSKEWRHOB)FALSE        
+        
+        
+        STUB PUC_Get_InstMode 1..2 => ()SFCC_NR_2
+        
+        STUB tpc_getFlapCtpConf3_IB 1..2 => ()0
+        
+        STUB tpc_getFlapCtpConf3PS 1..2 => ((0,0),(0,0))
+        
+        STUB tpc_getFlapCtpConfFULL 1..2 => ((0,0),(0,0))
+        
+        STUB tpc_getFlapConf3PS_OB 1..2 => ()0
+
+        STUB tpc_getFlapCtpConf1PFHLDALTN_IB 1..2 => () 0
+        
+        STUB tpc_getFlapCtpConf1PFTO_IB 1..2 => () 0
+        
+        STUB tpc_getFlapCtpConf2_IB 1..2 => () 0          
+        
+        STUB S3PA_S3PosAnomMon 1=> (({ 100,1,2,3,6,7,8,9,10,11,12,13,14,15,
+        &                            16,17,FALSE,FALSE,FALSE,1113,FALSE,27,28,FALSE,1111,SFCC_NR_2,
+        &                            32,33,34,35,36,37,39,FALSE,FALSE,0,0,0,0,0,0,TYP_ETT_FLAP_100,FALSE,
+        &                            397,398,394,0,0,0,395,396,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,         
+        &                            40,41,42,43,44,45,46,47,FALSE,TRUE,FS_LATCHED,FS_LATCHED,48,49,50,51,
+        &                            52,53,54,55,56,57,58,59,60,61,62})) 
+        
+        STUB S3PA_S3PosAnomMon 2=> (({ 100,1,200,300,6,7,8,9,10,11,12,13,14,15,
+        &                            160,170,FALSE,FALSE,FALSE,1113,FALSE,270,280,FALSE,1111,SFCC_NR_2,
+        &                            320,330,340,350,360,370,390,FALSE,TRUE,0,0,0,0,0,0,TYP_ETT_FLAP_100,TRUE,
+        &                            392,393,394,0,0,0,395,391,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,         
+        &                            58,59,60,61,62,63,64,65,FALSE,FALSE,FS_LATCHED,FS_LATCHED,66,67,68,69,
+        &                            70,71,72,73,74,75,76,77,78,79,80}))    
+                
+        STUB DMA_Set (DML_STRUT3LHDISCSKEW,40)
+        STUB DMA_Set (DML_FLAPSKEWLHOB,41)
+        
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC3VALNVM,42)
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC4VALNVM,43)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTVALNVM,44)
+        
+        STUB DMA_Set (DML_S3PPULHPOSFLTNVM,45)
+        STUB DMA_Set (DML_S3PPULHPOSGNDNVM,46)
+        STUB DMA_Set (DML_S3PPULHCASNVM,47)
+        
+        STUB DME_Set_Latch (DML_DS3LHSKEWFAILS3PAMNVM,FALSE)
+        
+        STUB DME_Set_Latch (DML_S3LHANOMFAILUNCONF,TRUE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWCONF_FAILURE_STATUS,FS_LATCHED)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWUNCONF_FAILURE_STATUS,FS_LATCHED)
+        
+        STUB DMA_Set (DML_CMDC3LHGND,48)     
+        STUB DMA_Set (DML_CMDC3LHFLT,49)     
+        STUB DMA_Set (DML_CMDC4LH,50)     
+        STUB DMA_Set (DML_DETCONDLH,51)     
+        STUB DMA_Set (DML_DETCONDFLTC3LH,52)
+        STUB DMA_Set (DML_DETCONDFLTC4LH,53)
+        STUB DMA_Set (DML_DETCONDGNDC3LH,54)
+        STUB DMA_Set (DML_DETCONDGNDC4LH,55)
+        STUB DMA_Set (DML_S3PPULHPOSAVG,56)
+        STUB DMA_Set (DML_S3POSANOMMONLH,57)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC3FAILNVM,58)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC4FAILNVM,59) 
+        STUB DME_Set_Latch (DML_STRUT3LHDISCSKEWNVM,60)          
+                     
+        STUB DMA_Set (DML_STRUT3RHDISCSKEW,58)
+        STUB DMA_Set (DML_FLAPSKEWRHOB,59)
+        
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC3VALNVM,60)
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC4VALNVM,61)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTVALNVM,62)
+        
+        STUB DMA_Set (DML_S3PPURHPOSFLTNVM,63)
+        STUB DMA_Set (DML_S3PPURHPOSGNDNVM,64)
+        STUB DMA_Set (DML_S3PPURHCASNVM,65)
+        
+        STUB DME_Set_Latch (DML_DS3RHSKEWFAILS3PAMNVM,FALSE)
+        
+        STUB DME_Set_Latch  (DML_S3RHANOMFAILUNCONF,FALSE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWCONF_FAILURE_STATUS,FS_LATCHED)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWUNCONF_FAILURE_STATUS,FS_LATCHED)
+        
+        STUB DMA_Set  (DML_CMDC3RHGND,66)     
+        STUB DMA_Set  (DML_CMDC3RHFLT,67)     
+        STUB DMA_Set  (DML_CMDC4RH,68)     
+        STUB DMA_Set (DML_DETCONDRH,69)     
+        STUB DMA_Set (DML_DETCONDFLTC3RH,70)
+        STUB DMA_Set (DML_DETCONDFLTC4RH,71)
+        STUB DMA_Set (DML_DETCONDGNDC3RH,72)
+        STUB DMA_Set (DML_DETCONDGNDC4RH,73)
+        STUB DMA_Set (DML_S3PPURHPOSAVG,74)
+        STUB DMA_Set (DML_S3POSANOMMONRH,75) 
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC3FAILNVM,76)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC4FAILNVM,77)        
+        STUB DME_Set_Latch (DML_STRUT3RHDISCSKEWNVM,78) 
+
+        STUB DMA_Set (DML_S3PAMGNDMSMTC3REQUIRED,1)
+        STUB DMA_Set (DML_S3PAMGNDMSMTCFREQUIRED,1)         
+        
+        #wrp_call_s3pa();
+        END ELEMENT
+
+    END TEST -- TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.12
+
+    TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.13
+    FAMILY nominal
+
+       ELEMENT      
+
+       STUB S3PA_S3PosAnomMon_init 1 => (({ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,         
+        &                            40,41,42,43,44,45,46,47,FALSE,TRUE,FS_LATCHED,FS_LATCHED,48,49,50,51,
+        &                            52,53,54,55,56,57,58,59,60,61,62},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            555,0,0,0,0,0}))
+        
+        STUB S3PA_S3PosAnomMon_init 2 => (({ 0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,        
+        &                            58,59,60,61,62,63,64,65,FALSE,FALSE,FS_LATCHED,FS_LATCHED,66,67,68,69,
+        &                            70,71,72,73,74,75,76,77,78,79,80},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            555,0,0,0,0,0}))
+        
+        #wrp_call_s3pa_init();
+        
+        VAR DMA_Database[DML_DS3LHSKEWFAILS3PAMNVM].Data,       init = FALSE,               ev = init
+        VAR DMA_Database[DML_DS3RHSKEWFAILS3PAMNVM].Data,       init = FALSE,               ev = init
+        VAR DMA_Database[DML_S3LHANOMFAILUNCONF].Data,          init = FALSE,               ev = init
+        VAR DMA_Database[DML_S3RHANOMFAILUNCONF].Data,          init = TRUE,                ev = init       
+        
+        STUB PUC_Get_OpMode()A350_1000
+                
+        STUB BIT_Is_Set 1 => (113,AWM_DATA_POBOPEN)FALSE
+        STUB BIT_Is_Set 2 => (113,AWM_DATA_ADGBLHPOBOPEN)FALSE
+        STUB BIT_Is_Set 3 => (113,AWM_DATA_WTBLHOPEN)FALSE
+        STUB BIT_Is_Set 4 => (113,AWM_DATA_S3PPULHVAL)FALSE
+        STUB BIT_Is_Set 5 => (111,AWM_DATA_FLAPSKEWLHOB)FALSE
+
+        STUB BIT_Is_Set 6 => (113,AWM_DATA_ADGBRHPOBOPEN)FALSE
+        STUB BIT_Is_Set 7 => (113,AWM_DATA_WTBRHOPEN)FALSE
+        STUB BIT_Is_Set 8 => (113,AWM_DATA_S3PPURHVAL)FALSE
+        STUB BIT_Is_Set 9 => (111,AWM_DATA_FLAPSKEWRHOB)FALSE        
+        
+        
+        STUB PUC_Get_InstMode 1..2 => ()SFCC_NR_2
+        
+        STUB tpc_getFlapCtpConf3_IB 1..2 => ()0
+        
+        STUB tpc_getFlapCtpConf3PS 1..2 => ((0,0),(0,0))
+        
+        STUB tpc_getFlapCtpConfFULL 1..2 => ((0,0),(0,0))
+        
+        STUB tpc_getFlapConf3PS_OB 1..2 => ()0
+
+        STUB tpc_getFlapCtpConf1PFHLDALTN_IB 1..2 => () 0
+        
+        STUB tpc_getFlapCtpConf1PFTO_IB 1..2 => () 0
+        
+        STUB tpc_getFlapCtpConf2_IB 1..2 => () 0        
+        
+        STUB S3PA_S3PosAnomMon 1=> (({ 100,1,2,3,6,7,8,9,10,11,12,13,14,15,
+        &                            16,17,FALSE,FALSE,FALSE,1113,FALSE,27,28,FALSE,1111,SFCC_NR_2,
+        &                            32,33,34,35,36,37,39,FALSE,FALSE,0,0,0,0,0,0,TYP_ETT_FLAP_100,FALSE,
+        &                            397,398,394,0,0,0,395,396,         
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,          
+        &                            40,41,42,43,44,45,46,47,FALSE,FALSE,FS_LATCHED,FS_LATCHED,48,49,50,51,
+        &                            52,53,54,55,56,57,58,59,60,61,62})) 
+        
+        STUB S3PA_S3PosAnomMon 2=> (({ 100,1,200,300,6,7,8,9,10,11,12,13,14,15,
+        &                            160,170,FALSE,FALSE,FALSE,1113,FALSE,270,280,FALSE,1111,SFCC_NR_2,
+        &                            320,330,340,350,360,370,390,FALSE,TRUE,0,0,0,0,0,0,TYP_ETT_FLAP_100,TRUE,
+        &                            392,393,394,0,0,0,395,391,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,          
+        &                            58,59,60,61,62,63,64,65,TRUE,FALSE,FS_LATCHED,FS_LATCHED,66,67,68,69,
+        &                            70,71,72,73,74,75,76,77,78,79,80}))    
+                
+        STUB DMA_Set (DML_STRUT3LHDISCSKEW,40)
+        STUB DMA_Set (DML_FLAPSKEWLHOB,41)
+        
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC3VALNVM,42)
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC4VALNVM,43)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTVALNVM,44)
+        
+        STUB DMA_Set (DML_S3PPULHPOSFLTNVM,45)
+        STUB DMA_Set (DML_S3PPULHPOSGNDNVM,46)
+        STUB DMA_Set (DML_S3PPULHCASNVM,47)
+        
+        STUB DME_Set_Latch (DML_DS3LHSKEWFAILS3PAMNVM,FALSE)
+        
+        STUB DME_Set_Latch (DML_S3LHANOMFAILUNCONF,FALSE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWCONF_FAILURE_STATUS,FS_LATCHED)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWUNCONF_FAILURE_STATUS,FS_LATCHED)
+        
+        STUB DMA_Set (DML_CMDC3LHGND,48)     
+        STUB DMA_Set (DML_CMDC3LHFLT,49)     
+        STUB DMA_Set (DML_CMDC4LH,50)     
+        STUB DMA_Set (DML_DETCONDLH,51)     
+        STUB DMA_Set (DML_DETCONDFLTC3LH,52)
+        STUB DMA_Set (DML_DETCONDFLTC4LH,53)
+        STUB DMA_Set (DML_DETCONDGNDC3LH,54)
+        STUB DMA_Set (DML_DETCONDGNDC4LH,55)
+        STUB DMA_Set (DML_S3PPULHPOSAVG,56)
+        STUB DMA_Set (DML_S3POSANOMMONLH,57)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC3FAILNVM,58)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC4FAILNVM,59) 
+        STUB DME_Set_Latch (DML_STRUT3LHDISCSKEWNVM,60)        
+                     
+        STUB DMA_Set  (DML_STRUT3RHDISCSKEW,58)
+        STUB DMA_Set  (DML_FLAPSKEWRHOB,59)
+        
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC3VALNVM,60)
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC4VALNVM,61)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTVALNVM,62)
+        
+        STUB DMA_Set (DML_S3PPURHPOSFLTNVM,63)
+        STUB DMA_Set (DML_S3PPURHPOSGNDNVM,64)
+        STUB DMA_Set (DML_S3PPURHCASNVM,65)
+        
+        STUB DME_Set_Latch (DML_DS3RHSKEWFAILS3PAMNVM,TRUE)
+        
+        STUB DME_Set_Latch  (DML_S3RHANOMFAILUNCONF,FALSE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWCONF_FAILURE_STATUS,FS_LATCHED)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWUNCONF_FAILURE_STATUS,FS_LATCHED)
+        
+        STUB DMA_Set  (DML_CMDC3RHGND,66)     
+        STUB DMA_Set  (DML_CMDC3RHFLT,67)     
+        STUB DMA_Set  (DML_CMDC4RH,68)     
+        STUB DMA_Set (DML_DETCONDRH,69)     
+        STUB DMA_Set (DML_DETCONDFLTC3RH,70)
+        STUB DMA_Set (DML_DETCONDFLTC4RH,71)
+        STUB DMA_Set (DML_DETCONDGNDC3RH,72)
+        STUB DMA_Set (DML_DETCONDGNDC4RH,73)
+        STUB DMA_Set (DML_S3PPURHPOSAVG,74)
+        STUB DMA_Set (DML_S3POSANOMMONRH,75)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC3FAILNVM,76)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC4FAILNVM,77)        
+        STUB DME_Set_Latch (DML_STRUT3RHDISCSKEWNVM,78) 
+
+        STUB DMA_Set (DML_S3PAMGNDMSMTC3REQUIRED,1)
+        STUB DMA_Set (DML_S3PAMGNDMSMTCFREQUIRED,1)        
+        
+        #wrp_call_s3pa();
+        END ELEMENT
+
+    END TEST -- TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.13
+
+    TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.14
+    FAMILY nominal
+
+       ELEMENT      
+
+       STUB S3PA_S3PosAnomMon_init 1 => (({ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,         
+        &                            40,41,42,43,44,45,46,47,FALSE,FALSE,FS_LATCHED,FS_LATCHED,48,49,50,51,
+        &                            52,53,54,55,56,57,58,59,60,61,62},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            555,0,0,0,0,0}))
+        
+        STUB S3PA_S3PosAnomMon_init 2 => (({ 0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,         
+        &                            58,59,60,61,62,63,64,65,TRUE,FALSE,FS_LATCHED,FS_LATCHED,66,67,68,69,
+        &                            70,71,72,73,74,75,76,77,78,79,80},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            555,0,0,0,0,0}))
+        
+        #wrp_call_s3pa_init();
+        
+        VAR DMA_Database[DML_DS3LHSKEWFAILS3PAMNVM].Data,       init = FALSE,               ev = init
+        VAR DMA_Database[DML_DS3RHSKEWFAILS3PAMNVM].Data,       init = FALSE,               ev = init
+        VAR DMA_Database[DML_S3LHANOMFAILUNCONF].Data,          init = FALSE,               ev = init
+        VAR DMA_Database[DML_S3RHANOMFAILUNCONF].Data,          init = TRUE,                ev = init       
+        
+        STUB PUC_Get_OpMode()A350_1000
+                
+        STUB BIT_Is_Set 1 => (113,AWM_DATA_POBOPEN)FALSE
+        STUB BIT_Is_Set 2 => (113,AWM_DATA_ADGBLHPOBOPEN)FALSE
+        STUB BIT_Is_Set 3 => (113,AWM_DATA_WTBLHOPEN)FALSE
+        STUB BIT_Is_Set 4 => (113,AWM_DATA_S3PPULHVAL)FALSE
+        STUB BIT_Is_Set 5 => (111,AWM_DATA_FLAPSKEWLHOB)FALSE
+
+        STUB BIT_Is_Set 6 => (113,AWM_DATA_ADGBRHPOBOPEN)FALSE
+        STUB BIT_Is_Set 7 => (113,AWM_DATA_WTBRHOPEN)FALSE
+        STUB BIT_Is_Set 8 => (113,AWM_DATA_S3PPURHVAL)FALSE
+        STUB BIT_Is_Set 9 => (111,AWM_DATA_FLAPSKEWRHOB)FALSE        
+        
+        
+        STUB PUC_Get_InstMode 1..2 => ()SFCC_NR_2
+        
+        STUB tpc_getFlapCtpConf3_IB 1..2 => ()0
+        
+        STUB tpc_getFlapCtpConf3PS 1..2 => ((0,0),(0,0))
+        
+        STUB tpc_getFlapCtpConfFULL 1..2 => ((0,0),(0,0))
+        
+        STUB tpc_getFlapConf3PS_OB 1..2 => ()0
+        
+        STUB tpc_getFlapCtpConf1PFHLDALTN_IB 1..2 => () 0
+        
+        STUB tpc_getFlapCtpConf1PFTO_IB 1..2 => () 0
+        
+        STUB tpc_getFlapCtpConf2_IB 1..2 => () 0  
+        
+        STUB S3PA_S3PosAnomMon 1=> (({ 100,1,2,3,6,7,8,9,10,11,12,13,14,15,
+        &                            16,17,FALSE,FALSE,FALSE,1113,FALSE,27,28,FALSE,1111,SFCC_NR_2,
+        &                            32,33,34,35,36,37,39,FALSE,FALSE,0,0,0,0,0,0,TYP_ETT_FLAP_100,FALSE,
+        &                            397,398,394,0,0,0,395,396,          
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,         
+        &                            40,41,42,43,44,45,46,47,FALSE,FALSE,FS_LATCHED,FS_LATCHED,48,49,50,51,
+        &                            52,53,54,55,56,57,FALSE,FALSE,60,61,62})) 
+        
+        STUB S3PA_S3PosAnomMon 2=> (({ 100,1,200,300,6,7,8,9,10,11,12,13,14,15,
+        &                            160,170,FALSE,FALSE,FALSE,1113,FALSE,270,280,FALSE,1111,SFCC_NR_2,
+        &                            320,330,340,350,360,370,390,FALSE,TRUE,0,0,0,0,0,0,TYP_ETT_FLAP_100,TRUE,
+        &                            392,393,394,0,0,0,395,391,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,         
+        &                            58,59,60,61,62,63,64,65,FALSE,TRUE,FS_LATCHED,FS_LATCHED,66,67,68,69,
+        &                            70,71,72,73,74,75,TRUE,TRUE,78,79,80}))    
+                
+        STUB DMA_Set (DML_STRUT3LHDISCSKEW,40)
+        STUB DMA_Set (DML_FLAPSKEWLHOB,41)
+        
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC3VALNVM,42)
+        STUB DMA_Set (DML_S3PPULHFLTMSMTC4VALNVM,43)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTVALNVM,44)
+        
+        STUB DMA_Set (DML_S3PPULHPOSFLTNVM,45)
+        STUB DMA_Set (DML_S3PPULHPOSGNDNVM,46)
+        STUB DMA_Set (DML_S3PPULHCASNVM,47)
+        
+        STUB DME_Set_Latch (DML_DS3LHSKEWFAILS3PAMNVM,FALSE)
+        
+        STUB DME_Set_Latch (DML_S3LHANOMFAILUNCONF,FALSE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWCONF_FAILURE_STATUS,FS_LATCHED)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3LHSKEWUNCONF_FAILURE_STATUS,FS_LATCHED)
+        
+        STUB DMA_Set  (DML_CMDC3LHGND,48)     
+        STUB DMA_Set  (DML_CMDC3LHFLT,49)     
+        STUB DMA_Set  (DML_CMDC4LH,50)     
+        STUB DMA_Set  (DML_DETCONDLH,51)     
+        STUB DMA_Set  (DML_DETCONDFLTC3LH,52)
+        STUB DMA_Set  (DML_DETCONDFLTC4LH,53)
+        STUB DMA_Set  (DML_DETCONDGNDC3LH,54)
+        STUB DMA_Set  (DML_DETCONDGNDC4LH,55)
+        STUB DMA_Set  (DML_S3PPULHPOSAVG,56)
+        STUB DMA_Set  (DML_S3POSANOMMONLH,57)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC3FAILNVM,FALSE)
+        STUB DMA_Set (DML_S3PPULHGNDMSMTC4FAILNVM,FALSE) 
+        STUB DME_Set_Latch (DML_STRUT3LHDISCSKEWNVM,60)        
+                     
+        STUB DMA_Set  (DML_STRUT3RHDISCSKEW,58)
+        STUB DMA_Set  (DML_FLAPSKEWRHOB,59)
+        
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC3VALNVM,60)
+        STUB DMA_Set (DML_S3PPURHFLTMSMTC4VALNVM,61)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTVALNVM,62)
+        
+        STUB DMA_Set  (DML_S3PPURHPOSFLTNVM,63)
+        STUB DMA_Set  (DML_S3PPURHPOSGNDNVM,64)
+        STUB DMA_Set  (DML_S3PPURHCASNVM,65)
+        
+        STUB DME_Set_Latch (DML_DS3RHSKEWFAILS3PAMNVM,FALSE)
+        
+        STUB DME_Set_Latch  (DML_S3RHANOMFAILUNCONF,TRUE)
+        
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWCONF_FAILURE_STATUS,FS_LATCHED)
+        STUB FSE_Store_Failure_Event_DPRAM (DFE_DS3RHSKEWUNCONF_FAILURE_STATUS,FS_LATCHED)
+        
+        STUB DMA_Set (DML_CMDC3RHGND,66)     
+        STUB DMA_Set (DML_CMDC3RHFLT,67)     
+        STUB DMA_Set (DML_CMDC4RH,68)     
+        STUB DMA_Set (DML_DETCONDRH,69)     
+        STUB DMA_Set (DML_DETCONDFLTC3RH,70)
+        STUB DMA_Set (DML_DETCONDFLTC4RH,71)
+        STUB DMA_Set (DML_DETCONDGNDC3RH,72)
+        STUB DMA_Set (DML_DETCONDGNDC4RH,73)
+        STUB DMA_Set (DML_S3PPURHPOSAVG,74)
+        STUB DMA_Set (DML_S3POSANOMMONRH,75) 
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC3FAILNVM,TRUE)
+        STUB DMA_Set (DML_S3PPURHGNDMSMTC4FAILNVM,TRUE)        
+        STUB DME_Set_Latch (DML_STRUT3RHDISCSKEWNVM,78) 
+
+        STUB DMA_Set (DML_S3PAMGNDMSMTC3REQUIRED,1)
+        STUB DMA_Set (DML_S3PAMGNDMSMTCFREQUIRED,1)        
+        
+        #wrp_call_s3pa();
+        END ELEMENT
+
+    END TEST -- TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.14    
+
+    TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.15
+    FAMILY nominal
+
+       ELEMENT      
+
+       STUB S3PA_S3PosAnomMon_init 1 => (({ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,         
+        &                            40,41,42,43,44,45,46,47,FALSE,FALSE,FS_LATCHED,FS_LATCHED,48,49,50,51,
+        &                            52,53,54,55,56,57,FALSE,FALSE,60,61,62},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            555,0,0,0,0,0}))
+        
+        STUB S3PA_S3PosAnomMon_init 2 => (({ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,         
+        &                            58,59,60,61,62,63,64,65,FALSE,TRUE,FS_LATCHED,FS_LATCHED,66,67,68,69,
+        &                            70,71,72,73,74,75,TRUE,TRUE,78,79,80},
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            555,0,0,0,0,0}))
+        
+        #wrp_call_s3pa_init();   
+        
+        STUB PUC_Get_OpMode()A350_800
+        
+        #wrp_call_s3pa();
+        END ELEMENT
+        
+    END TEST -- TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.15
+    
+    TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.16
+    FAMILY nominal
+
+       ELEMENT      
+
+       STUB S3PA_S3PosAnomMon_init 1 => ((        
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}))
+        
+        STUB S3PA_S3PosAnomMon_init 2 => ((
+        &                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,        
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            555,0,0,0,0,0},
+        &                            {0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        &                            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}))
+        
+        #wrp_call_s3pa_init();   
+        
+        STUB PUC_Get_OpMode()A350_900
+        
+        #wrp_call_s3pa();
+        END ELEMENT
+        
+    END TEST -- TEST MTS_OPSW_P2-IVVP-5770.SCADE_Wrapper_Test_Procedure.16 
+
+END SERVICE -- wrp_call_s3pa
+
+

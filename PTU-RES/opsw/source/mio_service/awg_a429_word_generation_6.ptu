@@ -1,0 +1,594 @@
+HEADER <OPSW_DEVELOP_5_17>
+&   <unit_test\testscripts\opsw\source\mio_service\awg_a429_word_generation_6.ptu>,
+&   <PD1000006058_SDD_OPSW_A350_SFCC current 10.3>,
+&   <sourcecode\opsw\source\mio_service\awg_a429_word_generation.c>
+#/******************************************************************************/
+#/*                                                                            */
+#/* Copyright by     :   Diehl Aerospace GmbH Ueberlingen                      */
+#/*                                                                            */
+#/* Module Name      :   awg_a429_word_generation_6.ptu                        */
+#/*                                                                            */
+#/* Created By       :   Saurabh K                                             */
+#/*                                                                            */
+#/* Copyright:                                                                 */
+#/*     This document contains Proprietary Information of                      */
+#/*     Diehl Aerospace GmbH and may only be used by the recipient for         */
+#/*     the prescribed purposes and may neither be reproduced in any form nor  */
+#/*     the document itself or its content divulged to third parties without   */
+#/*     the expressed prior written permission of                              */
+#/*     Diehl Aerospace GmbH. All rights reserved.                             */
+#/*                                                                            */
+#/* Export Compliance:                                                         */
+#/*                                                                            */
+#/*     Transferred in accordance with Community General Export Authorisation  */
+#/*     No. EU001, dated June 22, 2000.                                        */
+#/*     Export license No. D329939                                             */
+#/*                                                                            */
+#/******************************************************************************/
+--------------------------------------------------------------------------------
+--
+-- TESTED FILE INCLUDE DIRECTIVES
+--
+--------------------------------------------------------------------------------
+#  /* IMPORTED MODULES */
+##include "STD_Standard_Types.h"
+##include "PUC_power_up_coding_detection.h"
+##include "AWM_A429_Word_Management.h"
+##include "DML_Data_Manager_Config.h"
+##include "DMA_Data_Manager.h"
+##include "AWG_A429_Word_Generation.h"
+##include "BIT_Operations.h"
+--------------------------------------------------------------------------------
+--
+-- TESTED FILE DECLARATIONS
+--
+--------------------------------------------------------------------------------
+
+-- Declarations of the global variables of the tested file
+   #typedef struct {
+   #uint32 LabelId;
+   #DML_Index_Type Validity_Index;
+   #DML_Index_Type Content_Index;
+   #DML_Index_Type NVM_Index;
+   #AWM_SW_A429_Discrete_Bits_Type First_Databit;
+   #} AWG_Retransmission_Data_Type;
+   
+--------------------------------------------------------------------------------
+   
+BEGIN
+
+--------------------------------------------------------------------------------
+--
+-- STUB DECLARATIONS OF THE TESTED OR INTEGRATED UNITS
+--
+--------------------------------------------------------------------------------
+
+DEFINE STUB awg_a429_word_generation_c 150
+   
+   #DMA_Entry_Type DMA_Database[DML_NUM_ENTRIES]; /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\\os_service/DMA_Data_Manager.h */
+   
+   --Following stubs are commented as they are integrated
+   --#void BIT_Assign(uint32  _inout Word,uint16x  _in Bit_Nr,boolean  _in Value); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\\other/BIT_Operations.h */
+   --#void BIT_Copy_Field_Cleared(uint32  _inout Word,uint16x  _in Lower_Bit_Nr,uint16x  _in Higher_Bit_Nr,uint32  _in Bit_Pattern_Masked); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\\other/BIT_Operations.h */
+   
+   #void DMA_Set(DML_Index_Type  _in Index,int32  _in Src); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\\os_service/dma_data_manager.h */
+   #TYP_Slat_Or_Flap_Type PUC_Get_Chid (void); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\\os_service\\fcp_ab/PUC_power_up_coding_detection.h*/
+   #TYP_SFCC_Nr_Type PUC_Get_InstMode (void); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\\os_service\\fcp_ab/PUC_power_up_coding_detection.h*/
+   #TYP_Cpu_Type PUC_get_Lane_ID (void); /* V:\\A350_SFCC_SW\\sourcecode\\opsw\\source\\os_service\\fcp_ab/PUC_power_up_coding_detection.h*/
+   
+END DEFINE
+
+--------------------------------------------------------------------------------
+--
+-- ENVIRONMENTS DECLARATIONS
+--
+--------------------------------------------------------------------------------
+--
+-- ENVIRONMENTS DECLARATIONS
+   ENVIRONMENT ENV_awg_a429_word_generation_c
+
+      ARRAY DMA_Database[0..DML_NUM_ENTRIES-1],
+      &                                                    init = FALSE,
+      &                                                                   ev = init
+   END ENVIRONMENT -- ENV_awg_a429_word_generation_c
+   USE ENV_awg_a429_word_generation_c
+--
+--------------------------------------------------------------------------------
+-- TESTED FILE ENVIRONNEMENT
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--
+-- SERVICES DECLARATIONS
+--
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+-- Declaration of the service AWG_Generate_A429_Words_120ms
+--------------------------------------------------------------------------------
+SERVICE AWG_Generate_A429_Words_120ms
+SERVICE_TYPE extern
+
+   ENVIRONMENT ENV_AWG_Initialise_Dont_Care
+
+         --Dont care stubs
+         STUB DMA_Set(DML_L010_SLAT_SURFACE_BOOL,0x20000008)
+         STUB DMA_Set(DML_L011_FLAP_SURFACE_BOOL,0x20000009)
+         STUB DMA_Set(DML_L012_SLAT_SURFACE_NUM,0x2000000A)
+         STUB DMA_Set(DML_L013_FLAP_IB_SURFACE_NUM,0x2000000B)
+         STUB DMA_Set(DML_L210_SLAT_LEVER_POS_DISCR,0x20000088)
+         STUB DMA_Set(DML_L211_FLAP_LEVER_POS_DISCR,0x20000089)
+         STUB DMA_Set(DML_L212_SLAT_STATUS_DISCR_1,0x2000008A)
+         STUB DMA_Set(DML_L213_FLAP_STATUS_DISCR_1,0x2000008B)
+         STUB DMA_Set(DML_L214_SLAT_STATUS_DISCR_2,0x2000008C)
+         STUB DMA_Set(DML_L215_FLAP_STATUS_DISCR_2,0x2000008D)
+         STUB DMA_Set(DML_L216_SLAT_COMP_STATUS,0x2000008E)
+         STUB DMA_Set(DML_L217_FLAP_COMP_STATUS,0x2000008F)
+         STUB DMA_Set(DML_L015_FLAP_LHOB_SURFACE_NUM,0x2000000D)
+         STUB DMA_Set(DML_L017_FLAP_RHOB_SURFACE_NUM,0x2000000F)
+         STUB DMA_Set(DML_L021_FLAP_COMM_SURFACE_NUM,0x20000011)
+         STUB DMA_Set(DML_L023_FLAP_COMM_LHOB_SURFACE_NUM,0x20000013)
+         STUB DMA_Set(DML_L025_FLAP_COMM_RHOB_SURFACE_NUM,0x20000015)
+         STUB DMA_Set(DML_L110_SLAT_XCOM_STATUS_1,0x20000048)
+         STUB DMA_Set(DML_L111_FLAP_XCOM_STATUS_1,0x20000049)
+         STUB DMA_Set(DML_L112_SLAT_XCOM_STATUS_2,0x2000004A)
+         STUB DMA_Set(DML_L113_FLAP_XCOM_STATUS_2,0x2000004B)
+         STUB DMA_Set(DML_L115_FLAP_XCOM_STATUS_3,0x2000004D)
+         STUB DMA_Set(DML_L130_SLAT_COMMAND_MESSAGE,0x20000058)
+         STUB DMA_Set(DML_L131_FLAP_COMMAND_MESSAGE,0x20000059)
+         STUB DMA_Set(DML_L132_SLAT_RESPONSE_MESSAGE,0x2000005A)
+         STUB DMA_Set(DML_L133_FLAP_RESPONSE_MESSAGE,0x2000005B)
+         STUB DMA_Set(DML_L213_FLAP_STATUS_DISCR_1_AC,0x2000008B)
+         STUB DMA_Set(DML_L215_FLAP_STATUS_DISCR_2_AC,0x2000008D)
+         STUB DMA_Set(DML_L117_FLAP_XCOM_LSDS1_NUM,0x2000004F)
+         STUB DMA_Set(DML_L121_FLAP_XCOM_LSDS4_NUM,0x20000051)
+
+   END ENVIRONMENT -- ENV_AWG_Initialise_Dont_Care
+
+   TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.1
+   FAMILY nominal
+
+      ELEMENT
+         VAR DMA_Database[DML_PWRINTGTTRANSLE200MS].Data,  init = FALSE,  ev = init
+
+         USE ENV_AWG_Initialise_Dont_Care
+
+         #AWG_Initialise();
+
+      END ELEMENT
+
+      ELEMENT
+         VAR DMA_Database[DML_OPMODEFAIL].Data,            init = FALSE,  ev = init
+         VAR DMA_Database[DML_INSTMODEFAIL].Data,          init = FALSE,  ev = init
+         VAR DMA_Database[DML_OPSW_CYCLE_COUNTER].Data,    init = 9,      ev = init
+
+         VAR DMA_Database[DML_LSDS1LHCURRENTFILTER].Data,  init = 0,      ev = init
+         VAR DMA_Database[DML_LSDS1RHCURRENTFILTER].Data,  init = 0,      ev = init
+         VAR DMA_Database[DML_LSDS4LHCURRENTFILTER].Data,  init = 0,      ev = init
+         VAR DMA_Database[DML_LSDS4RHCURRENTFILTER].Data,  init = 0,      ev = init
+
+         STUB PUC_Get_InstMode()SFCC_NR_1
+
+         STUB DMA_Set (DML_L117_FLAP_XCOM_LSDS1_NUM,0x14F)
+         STUB DMA_Set (DML_L121_FLAP_XCOM_LSDS4_NUM,0x151)
+
+         #AWG_Generate_A429_Words_120ms();
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.1
+
+   TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.2
+   FAMILY nominal
+
+      ELEMENT
+         VAR DMA_Database[DML_PWRINTGTTRANSLE200MS].Data,  init = FALSE,  ev = init
+
+         USE ENV_AWG_Initialise_Dont_Care
+
+         #AWG_Initialise();
+
+      END ELEMENT
+
+      ELEMENT
+         VAR DMA_Database[DML_OPMODEFAIL].Data,            init = FALSE,  ev = init
+         VAR DMA_Database[DML_INSTMODEFAIL].Data,          init = FALSE,  ev = init
+         VAR DMA_Database[DML_OPSW_CYCLE_COUNTER].Data,    init = 9,      ev = init
+
+         VAR DMA_Database[DML_LSDS1LHCURRENTFILTER].Data,  init = 8006,   ev = init
+         VAR DMA_Database[DML_LSDS1RHCURRENTFILTER].Data,  init = 8006,   ev = init
+         VAR DMA_Database[DML_LSDS4LHCURRENTFILTER].Data,  init = 8006,   ev = init
+         VAR DMA_Database[DML_LSDS4RHCURRENTFILTER].Data,  init = 8006,   ev = init
+
+         STUB PUC_Get_InstMode()SFCC_NR_1
+
+         STUB DMA_Set (DML_L117_FLAP_XCOM_LSDS1_NUM,0xFA7D14F)
+         STUB DMA_Set (DML_L121_FLAP_XCOM_LSDS4_NUM,0xFA7D151)
+
+         #AWG_Generate_A429_Words_120ms();
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.2
+
+   TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.3
+   FAMILY nominal
+
+      ELEMENT
+         VAR DMA_Database[DML_PWRINTGTTRANSLE200MS].Data,  init = TRUE,   ev = init
+
+         USE ENV_AWG_Initialise_Dont_Care
+
+         #AWG_Initialise();
+
+      END ELEMENT
+
+      ELEMENT
+         VAR DMA_Database[DML_OPMODEFAIL].Data,            init = FALSE,  ev = init
+         VAR DMA_Database[DML_INSTMODEFAIL].Data,          init = TRUE,   ev = init
+         VAR DMA_Database[DML_OPSW_CYCLE_COUNTER].Data,    init = 7,      ev = init
+
+         VAR DMA_Database[DML_LSDS1LHCURRENTFILTER].Data,  init = 4096,   ev = init
+         VAR DMA_Database[DML_LSDS1RHCURRENTFILTER].Data,  init = 4096,   ev = init
+         VAR DMA_Database[DML_LSDS4LHCURRENTFILTER].Data,  init = 4096,   ev = init
+         VAR DMA_Database[DML_LSDS4RHCURRENTFILTER].Data,  init = 4096,   ev = init
+
+         STUB PUC_Get_InstMode()SFCC_NR_1
+
+         STUB DMA_Set (DML_L117_FLAP_XCOM_LSDS1_NUM,0x6804014F)
+         STUB DMA_Set (DML_L121_FLAP_XCOM_LSDS4_NUM,0x68040151)
+
+         #AWG_Generate_A429_Words_120ms();
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.3
+
+   TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.4
+   FAMILY nominal
+
+      ELEMENT
+         VAR DMA_Database[DML_PWRINTGTTRANSLE200MS].Data,  init = TRUE,   ev = init
+
+         USE ENV_AWG_Initialise_Dont_Care
+
+         #AWG_Initialise();
+
+      END ELEMENT
+
+      ELEMENT
+         VAR DMA_Database[DML_OPMODEFAIL].Data,            init = TRUE,   ev = init
+         VAR DMA_Database[DML_INSTMODEFAIL].Data,          init = FALSE,  ev = init
+         VAR DMA_Database[DML_OPSW_CYCLE_COUNTER].Data,    init = 7,      ev = init
+
+         VAR DMA_Database[DML_LSDS1LHCURRENTFILTER].Data,  init = 2047,   ev = init
+         VAR DMA_Database[DML_LSDS1RHCURRENTFILTER].Data,  init = 2047,   ev = init
+         VAR DMA_Database[DML_LSDS4LHCURRENTFILTER].Data,  init = 2047,   ev = init
+         VAR DMA_Database[DML_LSDS4RHCURRENTFILTER].Data,  init = 2047,   ev = init
+
+         STUB PUC_Get_InstMode()SFCC_NR_1
+
+         STUB DMA_Set (DML_L117_FLAP_XCOM_LSDS1_NUM,0x63F9FD4F)
+         STUB DMA_Set (DML_L121_FLAP_XCOM_LSDS4_NUM,0x63F9FD51)
+
+         #AWG_Generate_A429_Words_120ms();
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.4
+
+   TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.5
+   FAMILY nominal
+
+      ELEMENT
+         VAR DMA_Database[DML_PWRINTGTTRANSLE200MS].Data,  init = FALSE,  ev = init
+
+         USE ENV_AWG_Initialise_Dont_Care
+
+         #AWG_Initialise();
+
+      END ELEMENT
+
+      ELEMENT
+         VAR DMA_Database[DML_OPMODEFAIL].Data,            init = FALSE,  ev = init
+         VAR DMA_Database[DML_INSTMODEFAIL].Data,          init = FALSE,  ev = init
+         VAR DMA_Database[DML_OPSW_CYCLE_COUNTER].Data,    init = 9,      ev = init
+
+         VAR DMA_Database[DML_LSDS1LHCURRENTFILTER].Data,  init = 0,      ev = init
+         VAR DMA_Database[DML_LSDS1RHCURRENTFILTER].Data,  init = 0,      ev = init
+         VAR DMA_Database[DML_LSDS4LHCURRENTFILTER].Data,  init = 0,      ev = init
+         VAR DMA_Database[DML_LSDS4RHCURRENTFILTER].Data,  init = 0,      ev = init
+
+         STUB PUC_Get_InstMode()SFCC_NR_2
+
+         STUB DMA_Set (DML_L117_FLAP_XCOM_LSDS1_NUM,0x24F)
+         STUB DMA_Set (DML_L121_FLAP_XCOM_LSDS4_NUM,0x251)
+
+         #AWG_Generate_A429_Words_120ms();
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.5
+
+   TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.6
+   FAMILY nominal
+
+      ELEMENT
+         VAR DMA_Database[DML_PWRINTGTTRANSLE200MS].Data,  init = FALSE,  ev = init
+
+         USE ENV_AWG_Initialise_Dont_Care
+
+         #AWG_Initialise();
+
+      END ELEMENT
+
+      ELEMENT
+         VAR DMA_Database[DML_OPMODEFAIL].Data,            init = FALSE,  ev = init
+         VAR DMA_Database[DML_INSTMODEFAIL].Data,          init = FALSE,  ev = init
+         VAR DMA_Database[DML_OPSW_CYCLE_COUNTER].Data,    init = 9,      ev = init
+
+         VAR DMA_Database[DML_LSDS1LHCURRENTFILTER].Data,  init = 8006,   ev = init
+         VAR DMA_Database[DML_LSDS1RHCURRENTFILTER].Data,  init = 8006,   ev = init
+         VAR DMA_Database[DML_LSDS4LHCURRENTFILTER].Data,  init = 8006,   ev = init
+         VAR DMA_Database[DML_LSDS4RHCURRENTFILTER].Data,  init = 8006,   ev = init
+
+         STUB PUC_Get_InstMode()SFCC_NR_2
+
+         STUB DMA_Set (DML_L117_FLAP_XCOM_LSDS1_NUM,0xFA7D24F)
+         STUB DMA_Set (DML_L121_FLAP_XCOM_LSDS4_NUM,0xFA7D251)
+
+         #AWG_Generate_A429_Words_120ms();
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.6
+
+   TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.7
+   FAMILY nominal
+
+      ELEMENT
+         VAR DMA_Database[DML_PWRINTGTTRANSLE200MS].Data,  init = TRUE,   ev = init
+
+         USE ENV_AWG_Initialise_Dont_Care
+
+         #AWG_Initialise();
+
+      END ELEMENT
+
+      ELEMENT
+         VAR DMA_Database[DML_OPMODEFAIL].Data,            init = FALSE,  ev = init
+         VAR DMA_Database[DML_INSTMODEFAIL].Data,          init = TRUE,   ev = init
+         VAR DMA_Database[DML_OPSW_CYCLE_COUNTER].Data,    init = 7,      ev = init
+
+         VAR DMA_Database[DML_LSDS1LHCURRENTFILTER].Data,  init = 4096,   ev = init
+         VAR DMA_Database[DML_LSDS1RHCURRENTFILTER].Data,  init = 4096,   ev = init
+         VAR DMA_Database[DML_LSDS4LHCURRENTFILTER].Data,  init = 4096,   ev = init
+         VAR DMA_Database[DML_LSDS4RHCURRENTFILTER].Data,  init = 4096,   ev = init
+
+         STUB PUC_Get_InstMode()SFCC_NR_2
+
+         STUB DMA_Set (DML_L117_FLAP_XCOM_LSDS1_NUM,0x6804024F)
+         STUB DMA_Set (DML_L121_FLAP_XCOM_LSDS4_NUM,0x68040251)
+
+         #AWG_Generate_A429_Words_120ms();
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.7
+
+   TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.8
+   FAMILY nominal
+
+      ELEMENT
+         VAR DMA_Database[DML_PWRINTGTTRANSLE200MS].Data,  init = TRUE,   ev = init
+
+         USE ENV_AWG_Initialise_Dont_Care
+
+         #AWG_Initialise();
+
+      END ELEMENT
+
+      ELEMENT
+         VAR DMA_Database[DML_OPMODEFAIL].Data,            init = TRUE,   ev = init
+         VAR DMA_Database[DML_INSTMODEFAIL].Data,          init = FALSE,  ev = init
+         VAR DMA_Database[DML_OPSW_CYCLE_COUNTER].Data,    init = 7,      ev = init
+
+         VAR DMA_Database[DML_LSDS1LHCURRENTFILTER].Data,  init = 2047,   ev = init
+         VAR DMA_Database[DML_LSDS1RHCURRENTFILTER].Data,  init = 2047,   ev = init
+         VAR DMA_Database[DML_LSDS4LHCURRENTFILTER].Data,  init = 2047,   ev = init
+         VAR DMA_Database[DML_LSDS4RHCURRENTFILTER].Data,  init = 2047,   ev = init
+
+         STUB PUC_Get_InstMode()SFCC_NR_2
+
+         STUB DMA_Set (DML_L117_FLAP_XCOM_LSDS1_NUM,0x63F9FE4F)
+         STUB DMA_Set (DML_L121_FLAP_XCOM_LSDS4_NUM,0x63F9FE51)
+
+         #AWG_Generate_A429_Words_120ms();
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.8
+
+   TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.9
+   FAMILY nominal
+
+      ELEMENT
+         VAR DMA_Database[DML_PWRINTGTTRANSLE200MS].Data,  init = TRUE,   ev = init
+
+         USE ENV_AWG_Initialise_Dont_Care
+
+         #AWG_Initialise();
+
+      END ELEMENT
+
+      ELEMENT
+         VAR DMA_Database[DML_OPMODEFAIL].Data,            init = FALSE,  ev = init
+         VAR DMA_Database[DML_INSTMODEFAIL].Data,          init = FALSE,  ev = init
+         VAR DMA_Database[DML_OPSW_CYCLE_COUNTER].Data,    init = 7,      ev = init
+
+         VAR DMA_Database[DML_LSDS1LHCURRENTFILTER].Data,  init = 2720,   ev = init
+         VAR DMA_Database[DML_LSDS1RHCURRENTFILTER].Data,  init = 2720,   ev = init
+         VAR DMA_Database[DML_LSDS4LHCURRENTFILTER].Data,  init = 2720,   ev = init
+         VAR DMA_Database[DML_LSDS4RHCURRENTFILTER].Data,  init = 2720,   ev = init
+
+         STUB PUC_Get_InstMode()SFCC_NR_1
+
+         STUB DMA_Set (DML_L117_FLAP_XCOM_LSDS1_NUM,0x2552A94F)
+         STUB DMA_Set (DML_L121_FLAP_XCOM_LSDS4_NUM,0x2552A951)
+
+         #AWG_Generate_A429_Words_120ms();
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.9
+
+   TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.10
+   FAMILY nominal
+
+      ELEMENT
+         VAR DMA_Database[DML_PWRINTGTTRANSLE200MS].Data,  init = TRUE,   ev = init
+
+         USE ENV_AWG_Initialise_Dont_Care
+
+         #AWG_Initialise();
+
+      END ELEMENT
+
+      ELEMENT
+         VAR DMA_Database[DML_OPMODEFAIL].Data,            init = FALSE,  ev = init
+         VAR DMA_Database[DML_INSTMODEFAIL].Data,          init = FALSE,  ev = init
+         VAR DMA_Database[DML_OPSW_CYCLE_COUNTER].Data,    init = 8,      ev = init
+
+         VAR DMA_Database[DML_LSDS1LHCURRENTFILTER].Data,  init = 8176,   ev = init
+         VAR DMA_Database[DML_LSDS1RHCURRENTFILTER].Data,  init = 8176,   ev = init
+         VAR DMA_Database[DML_LSDS4LHCURRENTFILTER].Data,  init = 8176,   ev = init
+         VAR DMA_Database[DML_LSDS4RHCURRENTFILTER].Data,  init = 8176,   ev = init
+
+         STUB PUC_Get_InstMode()SFCC_NR_1
+
+         STUB DMA_Set (DML_L117_FLAP_XCOM_LSDS1_NUM,0xFFFFD4F)
+         STUB DMA_Set (DML_L121_FLAP_XCOM_LSDS4_NUM,0xFFFFD51)
+
+         #AWG_Generate_A429_Words_120ms();
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.10
+
+   TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.11
+   FAMILY nominal
+
+      ELEMENT
+         VAR DMA_Database[DML_PWRINTGTTRANSLE200MS].Data,  init = TRUE,   ev = init
+
+         USE ENV_AWG_Initialise_Dont_Care
+
+         #AWG_Initialise();
+
+      END ELEMENT
+
+      ELEMENT
+         VAR DMA_Database[DML_OPMODEFAIL].Data,            init = FALSE,  ev = init
+         VAR DMA_Database[DML_INSTMODEFAIL].Data,          init = FALSE,  ev = init
+         VAR DMA_Database[DML_OPSW_CYCLE_COUNTER].Data,    init = 9,      ev = init
+
+         VAR DMA_Database[DML_LSDS1LHCURRENTFILTER].Data,  init = 0,      ev = init
+         VAR DMA_Database[DML_LSDS1RHCURRENTFILTER].Data,  init = 0,      ev = init
+         VAR DMA_Database[DML_LSDS4LHCURRENTFILTER].Data,  init = 0,      ev = init
+         VAR DMA_Database[DML_LSDS4RHCURRENTFILTER].Data,  init = 0,      ev = init
+
+         STUB PUC_Get_InstMode()SFCC_NR_1
+
+         STUB DMA_Set (DML_L117_FLAP_XCOM_LSDS1_NUM,0x14F)
+         STUB DMA_Set (DML_L121_FLAP_XCOM_LSDS4_NUM,0x151)
+
+         #AWG_Generate_A429_Words_120ms();
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.11
+
+   TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.12
+   FAMILY nominal
+
+      ELEMENT
+         VAR DMA_Database[DML_PWRINTGTTRANSLE200MS].Data,  init = TRUE,   ev = init
+
+         USE ENV_AWG_Initialise_Dont_Care
+
+         #AWG_Initialise();
+
+      END ELEMENT
+
+      ELEMENT
+         VAR DMA_Database[DML_OPMODEFAIL].Data,            init = FALSE,  ev = init
+         VAR DMA_Database[DML_INSTMODEFAIL].Data,          init = FALSE,  ev = init
+         VAR DMA_Database[DML_OPSW_CYCLE_COUNTER].Data,    init = 7,      ev = init
+
+         VAR DMA_Database[DML_LSDS1LHCURRENTFILTER].Data,  init = 2720,   ev = init
+         VAR DMA_Database[DML_LSDS1RHCURRENTFILTER].Data,  init = 2720,   ev = init
+         VAR DMA_Database[DML_LSDS4LHCURRENTFILTER].Data,  init = 2720,   ev = init
+         VAR DMA_Database[DML_LSDS4RHCURRENTFILTER].Data,  init = 2720,   ev = init
+
+         STUB PUC_Get_InstMode()SFCC_NR_2
+
+         STUB DMA_Set (DML_L117_FLAP_XCOM_LSDS1_NUM,0x2552AA4F)
+         STUB DMA_Set (DML_L121_FLAP_XCOM_LSDS4_NUM,0x2552AA51)
+
+         #AWG_Generate_A429_Words_120ms();
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.12
+
+   TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.13
+   FAMILY nominal
+
+      ELEMENT
+         VAR DMA_Database[DML_PWRINTGTTRANSLE200MS].Data,  init = TRUE,   ev = init
+
+         USE ENV_AWG_Initialise_Dont_Care
+
+         #AWG_Initialise();
+
+      END ELEMENT
+
+      ELEMENT
+         VAR DMA_Database[DML_OPMODEFAIL].Data,            init = FALSE,  ev = init
+         VAR DMA_Database[DML_INSTMODEFAIL].Data,          init = FALSE,  ev = init
+         VAR DMA_Database[DML_OPSW_CYCLE_COUNTER].Data,    init = 8,      ev = init
+
+         VAR DMA_Database[DML_LSDS1LHCURRENTFILTER].Data,  init = 8176,   ev = init
+         VAR DMA_Database[DML_LSDS1RHCURRENTFILTER].Data,  init = 8176,   ev = init
+         VAR DMA_Database[DML_LSDS4LHCURRENTFILTER].Data,  init = 8176,   ev = init
+         VAR DMA_Database[DML_LSDS4RHCURRENTFILTER].Data,  init = 8176,   ev = init
+
+         STUB PUC_Get_InstMode()SFCC_NR_2
+
+         STUB DMA_Set (DML_L117_FLAP_XCOM_LSDS1_NUM,0xFFFFE4F)
+         STUB DMA_Set (DML_L121_FLAP_XCOM_LSDS4_NUM,0xFFFFE51)
+
+         #AWG_Generate_A429_Words_120ms();
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.13
+
+   TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.14
+   FAMILY nominal
+
+      ELEMENT
+         VAR DMA_Database[DML_PWRINTGTTRANSLE200MS].Data,  init = TRUE,   ev = init
+
+         USE ENV_AWG_Initialise_Dont_Care
+
+         #AWG_Initialise();
+
+      END ELEMENT
+
+      ELEMENT
+         VAR DMA_Database[DML_OPMODEFAIL].Data,            init = FALSE,  ev = init
+         VAR DMA_Database[DML_INSTMODEFAIL].Data,          init = FALSE,  ev = init
+         VAR DMA_Database[DML_OPSW_CYCLE_COUNTER].Data,    init = 9,      ev = init
+
+         VAR DMA_Database[DML_LSDS1LHCURRENTFILTER].Data,  init = 0,      ev = init
+         VAR DMA_Database[DML_LSDS1RHCURRENTFILTER].Data,  init = 0,      ev = init
+         VAR DMA_Database[DML_LSDS4LHCURRENTFILTER].Data,  init = 0,      ev = init
+         VAR DMA_Database[DML_LSDS4RHCURRENTFILTER].Data,  init = 0,      ev = init
+
+         STUB PUC_Get_InstMode()SFCC_NR_2
+
+         STUB DMA_Set (DML_L117_FLAP_XCOM_LSDS1_NUM,0x24F)
+         STUB DMA_Set (DML_L121_FLAP_XCOM_LSDS4_NUM,0x251)
+
+         #AWG_Generate_A429_Words_120ms();
+      END ELEMENT
+
+   END TEST -- TEST MTS_OPSW_P1-IVVP-4521.Standard_Coupling.14
+
+END SERVICE -- AWG_Generate_A429_Words_120ms

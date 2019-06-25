@@ -1,0 +1,717 @@
+VE 3.0e CCOV CMCDC #i5 7.0.0.0
+FC "WRP_S3PA_S3POSANOMMON.C" "E:\\A350_SFCC_SW\\UNIT_TEST\\TMP_N2\\"
+FD 1470815572
+TC AP BS BT BI BL CO CC
+AP 0 "wrp_call_s3pa_init" "S3PA_S3PosAnomMon_init" 49 49
+AP 1 "wrp_call_s3pa_init" "S3PA_S3PosAnomMon_init" 50 50
+BL 0 simple "wrp_call_s3pa_init" / 47 51
+AP 2 "wrp_call_s3pa" "PUC_Get_OpMode" 62 62
+AP 3 "wrp_call_s3pa" "DMA_Get" 63 63
+AP 4 "wrp_call_s3pa" "DMA_Get" 64 64
+AP 5 "wrp_call_s3pa" "DMA_Get" 65 65
+AP 6 "wrp_call_s3pa" "DMA_Get" 66 66
+CE 0 "wrp_call_s3pa" "OpMode == A350_1000" 68 68
+CE 2 "wrp_call_s3pa" "DS3LHSkewFailS3PAMNVM == 0" 71 71
+CE 4 "wrp_call_s3pa" "DS3RHSkewFailS3PAMNVM == 0" 72 72
+CE 6 "wrp_call_s3pa" "S3LHAnomFailUnconf == 0" 73 73
+CE 8 "wrp_call_s3pa" "S3RHAnomFailUnconf == 0" 74 74
+CC 10 4 2 4 6 8 5 TTTTTTTFTTFXTFXXFXXX 1
+BL 1 simple "wrp_call_s3pa" /then/then 75 77
+BL 2 implicit "wrp_call_s3pa" /then/else 71 77
+AP 7 "wrp_call_s3pa" "DMA_Get" 79 79
+AP 8 "wrp_call_s3pa" "DMA_Get" 80 80
+AP 9 "wrp_call_s3pa" "BIT_Is_Set" 82 82
+AP 10 "wrp_call_s3pa" "DMA_Get" 83 83
+AP 11 "wrp_call_s3pa" "DMA_Get" 84 84
+AP 12 "wrp_call_s3pa" "DMA_Get" 86 86
+AP 13 "wrp_call_s3pa" "DMA_Get" 87 87
+AP 14 "wrp_call_s3pa" "DMA_Get" 88 88
+AP 15 "wrp_call_s3pa" "DMA_Get" 89 89
+AP 16 "wrp_call_s3pa" "DMA_Get" 90 90
+AP 17 "wrp_call_s3pa" "DMA_Get" 91 91
+AP 18 "wrp_call_s3pa" "DMA_Get" 92 92
+AP 19 "wrp_call_s3pa" "DMA_Get" 93 93
+AP 20 "wrp_call_s3pa" "DMA_Get" 94 94
+AP 21 "wrp_call_s3pa" "DMA_Get" 95 95
+AP 22 "wrp_call_s3pa" "DMA_Get" 96 96
+AP 23 "wrp_call_s3pa" "DMA_Get" 97 97
+AP 24 "wrp_call_s3pa" "DMA_Get" 98 98
+AP 25 "wrp_call_s3pa" "DMA_Get" 99 99
+AP 26 "wrp_call_s3pa" "DMA_Get" 100 100
+AP 27 "wrp_call_s3pa" "DMA_Get" 101 101
+AP 28 "wrp_call_s3pa" "BIT_Is_Set" 103 103
+AP 29 "wrp_call_s3pa" "BIT_Is_Set" 104 104
+AP 30 "wrp_call_s3pa" "BIT_Is_Set" 106 106
+AP 31 "wrp_call_s3pa" "DMA_Get" 107 107
+AP 32 "wrp_call_s3pa" "DMA_Get" 108 108
+AP 33 "wrp_call_s3pa" "BIT_Is_Set" 109 109
+AP 34 "wrp_call_s3pa" "PUC_Get_InstMode" 111 111
+AP 35 "wrp_call_s3pa" "DMA_Get" 112 112
+AP 36 "wrp_call_s3pa" "DMA_Get" 113 113
+AP 37 "wrp_call_s3pa" "DMA_Get" 114 114
+AP 38 "wrp_call_s3pa" "DMA_Get" 115 115
+AP 39 "wrp_call_s3pa" "DMA_Get" 116 116
+AP 40 "wrp_call_s3pa" "DMA_Get" 117 117
+AP 41 "wrp_call_s3pa" "DMA_Get" 118 118
+AP 42 "wrp_call_s3pa" "tpc_getFlapCtpConf3_IB" 121 121
+AP 43 "wrp_call_s3pa" "tpc_getFlapCtpConf3PS" 122 124
+AP 44 "wrp_call_s3pa" "tpc_getFlapCtpConfFULL" 125 127
+AP 45 "wrp_call_s3pa" "tpc_getFlapConf3PS_OB" 128 128
+AP 46 "wrp_call_s3pa" "DMA_Get" 131 131
+AP 47 "wrp_call_s3pa" "DMA_Get" 132 132
+AP 48 "wrp_call_s3pa" "DMA_Get" 133 133
+AP 49 "wrp_call_s3pa" "tpc_getFlapCtpConf1PFHLDALTN_IB" 134 134
+AP 50 "wrp_call_s3pa" "tpc_getFlapCtpConf1PFTO_IB" 135 135
+AP 51 "wrp_call_s3pa" "tpc_getFlapCtpConf2_IB" 136 136
+AP 52 "wrp_call_s3pa" "DMA_Get" 137 137
+AP 53 "wrp_call_s3pa" "DMA_Get" 138 138
+AP 54 "wrp_call_s3pa" "DMA_Get" 140 140
+AP 55 "wrp_call_s3pa" "DMA_Get" 141 141
+AP 56 "wrp_call_s3pa" "DMA_Get" 142 142
+AP 57 "wrp_call_s3pa" "DMA_Get" 143 143
+AP 58 "wrp_call_s3pa" "DMA_Get" 144 144
+AP 59 "wrp_call_s3pa" "DMA_Get" 145 145
+AP 60 "wrp_call_s3pa" "DMA_Get" 146 146
+AP 61 "wrp_call_s3pa" "DMA_Get" 147 147
+AP 62 "wrp_call_s3pa" "DMA_Get" 148 148
+AP 63 "wrp_call_s3pa" "DMA_Get" 149 149
+AP 64 "wrp_call_s3pa" "DMA_Get" 150 150
+AP 65 "wrp_call_s3pa" "DMA_Get" 151 151
+AP 66 "wrp_call_s3pa" "DMA_Get" 152 152
+AP 67 "wrp_call_s3pa" "DMA_Get" 153 153
+AP 68 "wrp_call_s3pa" "DMA_Get" 154 154
+AP 69 "wrp_call_s3pa" "DMA_Get" 155 155
+AP 70 "wrp_call_s3pa" "BIT_Is_Set" 157 157
+AP 71 "wrp_call_s3pa" "BIT_Is_Set" 158 158
+AP 72 "wrp_call_s3pa" "BIT_Is_Set" 160 160
+AP 73 "wrp_call_s3pa" "DMA_Get" 161 161
+AP 74 "wrp_call_s3pa" "DMA_Get" 162 162
+AP 75 "wrp_call_s3pa" "BIT_Is_Set" 163 163
+AP 76 "wrp_call_s3pa" "PUC_Get_InstMode" 165 165
+AP 77 "wrp_call_s3pa" "DMA_Get" 166 166
+AP 78 "wrp_call_s3pa" "DMA_Get" 167 167
+AP 79 "wrp_call_s3pa" "DMA_Get" 168 168
+AP 80 "wrp_call_s3pa" "DMA_Get" 169 169
+AP 81 "wrp_call_s3pa" "DMA_Get" 170 170
+AP 82 "wrp_call_s3pa" "DMA_Get" 171 171
+AP 83 "wrp_call_s3pa" "DMA_Get" 172 172
+AP 84 "wrp_call_s3pa" "tpc_getFlapCtpConf3_IB" 175 175
+AP 85 "wrp_call_s3pa" "tpc_getFlapCtpConf3PS" 176 178
+AP 86 "wrp_call_s3pa" "tpc_getFlapCtpConfFULL" 179 181
+AP 87 "wrp_call_s3pa" "tpc_getFlapConf3PS_OB" 182 182
+AP 88 "wrp_call_s3pa" "DMA_Get" 185 185
+AP 89 "wrp_call_s3pa" "DMA_Get" 186 186
+AP 90 "wrp_call_s3pa" "DMA_Get" 187 187
+AP 91 "wrp_call_s3pa" "tpc_getFlapCtpConf1PFHLDALTN_IB" 188 188
+AP 92 "wrp_call_s3pa" "tpc_getFlapCtpConf1PFTO_IB" 189 189
+AP 93 "wrp_call_s3pa" "tpc_getFlapCtpConf2_IB" 190 190
+AP 94 "wrp_call_s3pa" "DMA_Get" 191 191
+AP 95 "wrp_call_s3pa" "DMA_Get" 192 192
+AP 96 "wrp_call_s3pa" "S3PA_S3PosAnomMon" 195 195
+AP 97 "wrp_call_s3pa" "S3PA_S3PosAnomMon" 196 196
+AP 98 "wrp_call_s3pa" "DMA_Set" 200 200
+AP 99 "wrp_call_s3pa" "DMA_Set" 201 201
+AP 100 "wrp_call_s3pa" "DMA_Set" 202 202
+AP 101 "wrp_call_s3pa" "DMA_Set" 203 203
+AP 102 "wrp_call_s3pa" "DMA_Set" 204 204
+AP 103 "wrp_call_s3pa" "DMA_Set" 205 205
+AP 104 "wrp_call_s3pa" "DMA_Set" 206 206
+AP 105 "wrp_call_s3pa" "DMA_Set" 207 207
+AP 106 "wrp_call_s3pa" "DME_Set_Latch" 208 208
+AP 107 "wrp_call_s3pa" "DME_Set_Latch" 209 209
+AP 108 "wrp_call_s3pa" "FSE_Store_Failure_Event_DPRAM" 211 212
+AP 109 "wrp_call_s3pa" "FSE_Store_Failure_Event_DPRAM" 213 214
+AP 110 "wrp_call_s3pa" "DMA_Set" 215 215
+AP 111 "wrp_call_s3pa" "DMA_Set" 216 216
+AP 112 "wrp_call_s3pa" "DMA_Set" 217 217
+AP 113 "wrp_call_s3pa" "DMA_Set" 218 218
+AP 114 "wrp_call_s3pa" "DMA_Set" 219 219
+AP 115 "wrp_call_s3pa" "DMA_Set" 220 220
+AP 116 "wrp_call_s3pa" "DMA_Set" 221 221
+AP 117 "wrp_call_s3pa" "DMA_Set" 222 222
+AP 118 "wrp_call_s3pa" "DMA_Set" 223 223
+AP 119 "wrp_call_s3pa" "DMA_Set" 224 224
+AP 120 "wrp_call_s3pa" "DMA_Set" 225 225
+AP 121 "wrp_call_s3pa" "DMA_Set" 226 226
+AP 122 "wrp_call_s3pa" "DME_Set_Latch" 227 227
+AP 123 "wrp_call_s3pa" "DMA_Set" 229 229
+AP 124 "wrp_call_s3pa" "DMA_Set" 230 230
+AP 125 "wrp_call_s3pa" "DMA_Set" 231 231
+AP 126 "wrp_call_s3pa" "DMA_Set" 232 232
+AP 127 "wrp_call_s3pa" "DMA_Set" 233 233
+AP 128 "wrp_call_s3pa" "DMA_Set" 234 234
+AP 129 "wrp_call_s3pa" "DMA_Set" 235 235
+AP 130 "wrp_call_s3pa" "DMA_Set" 236 236
+AP 131 "wrp_call_s3pa" "DME_Set_Latch" 237 237
+AP 132 "wrp_call_s3pa" "DME_Set_Latch" 238 238
+AP 133 "wrp_call_s3pa" "FSE_Store_Failure_Event_DPRAM" 240 241
+AP 134 "wrp_call_s3pa" "FSE_Store_Failure_Event_DPRAM" 242 243
+AP 135 "wrp_call_s3pa" "DMA_Set" 244 244
+AP 136 "wrp_call_s3pa" "DMA_Set" 245 245
+AP 137 "wrp_call_s3pa" "DMA_Set" 246 246
+AP 138 "wrp_call_s3pa" "DMA_Set" 247 247
+AP 139 "wrp_call_s3pa" "DMA_Set" 248 248
+AP 140 "wrp_call_s3pa" "DMA_Set" 249 249
+AP 141 "wrp_call_s3pa" "DMA_Set" 250 250
+AP 142 "wrp_call_s3pa" "DMA_Set" 251 251
+AP 143 "wrp_call_s3pa" "DMA_Set" 252 252
+AP 144 "wrp_call_s3pa" "DMA_Set" 253 253
+AP 145 "wrp_call_s3pa" "DMA_Set" 254 254
+AP 146 "wrp_call_s3pa" "DMA_Set" 255 255
+AP 147 "wrp_call_s3pa" "DME_Set_Latch" 256 256
+CE 15 "wrp_call_s3pa" "s3pa_lh_struct. ..." 259 259
+CE 17 "wrp_call_s3pa" "s3pa_rh_struct. ..." 260 260
+CC 19 2 15 17 3 TXFTFF 2
+AP 148 "wrp_call_s3pa" "DMA_Set" 259 260
+CE 22 "wrp_call_s3pa" "s3pa_lh_struct. ..." 261 261
+CE 24 "wrp_call_s3pa" "s3pa_rh_struct. ..." 262 262
+CC 26 2 22 24 3 TXFTFF 2
+AP 149 "wrp_call_s3pa" "DMA_Set" 261 262
+CE 29 "wrp_call_s3pa" "s3pa_lh_struct. ..." 264 264
+CE 31 "wrp_call_s3pa" "s3pa_lh_struct. ..." 265 265
+CE 33 "wrp_call_s3pa" "s3pa_rh_struct. ..." 266 266
+CE 35 "wrp_call_s3pa" "s3pa_rh_struct. ..." 267 267
+CE 37 "wrp_call_s3pa" "NVMReset == 0" 268 268
+CC 39 5 29 31 33 35 37 9 TXXXTFTXXTFFTXTFFFTTTXXXFFTXXFFFTXFFFFTFFFFFX 4
+AP 150 "wrp_call_s3pa" "BIT_Assign" 271 271
+AP 151 "wrp_call_s3pa" "BIT_Assign" 272 272
+AP 152 "wrp_call_s3pa" "BIT_Assign" 273 273
+AP 153 "wrp_call_s3pa" "BIT_Assign" 274 274
+AP 154 "wrp_call_s3pa" "BIT_Assign" 275 275
+AP 155 "wrp_call_s3pa" "BIT_Assign" 276 276
+AP 156 "wrp_call_s3pa" "BIT_Assign" 277 277
+AP 157 "wrp_call_s3pa" "BIT_Assign" 278 278
+AP 158 "wrp_call_s3pa" "BIT_Assign" 279 279
+AP 159 "wrp_call_s3pa" "BIT_Assign" 280 280
+AP 160 "wrp_call_s3pa" "BIT_Assign" 281 281
+AP 161 "wrp_call_s3pa" "BIT_Assign" 282 282
+AP 162 "wrp_call_s3pa" "BIT_Assign" 283 283
+AP 163 "wrp_call_s3pa" "DMA_Set" 284 284
+AP 164 "wrp_call_s3pa" "DMA_Set" 285 285
+AP 165 "wrp_call_s3pa" "DMA_Set" 286 286
+AP 166 "wrp_call_s3pa" "DMA_Set" 287 287
+AP 167 "wrp_call_s3pa" "DMA_Set" 288 288
+AP 168 "wrp_call_s3pa" "DMA_Set" 289 289
+AP 169 "wrp_call_s3pa" "DMA_Set" 290 290
+AP 170 "wrp_call_s3pa" "DMA_Set" 291 291
+AP 171 "wrp_call_s3pa" "DMA_Set" 292 292
+BL 3 simple "wrp_call_s3pa" /then/then 269 295
+BL 4 implicit "wrp_call_s3pa" /then/else 264 295
+BL 5 simple "wrp_call_s3pa" /then 69 297
+BL 6 implicit "wrp_call_s3pa" /else 68 297
+BL 7 simple "wrp_call_s3pa" / 55 298
+DC 1846271177
+@RIK
+  ENCODING="System"
+  TOKEN="CCOV CMCDC"
+  SRC="WRP_S3PA_S3POSANOMMON.C"
+  DIR="E:\A350_SFCC_SW\UNIT_TEST\TMP_N2\"
+  DATE=1470815572
+  CHECKSUM=1846271177
+  SUMS
+   ("&Functions",
+    "-&Exits",
+    "Functions and exits"),
+   ("&Calls"=10),
+   ("Statement &blocks"=20,
+    "-&Implicit blocks"=21,
+    "Decisions"=20+21,
+    "&Loops"=22),
+   ("Basic &conditions"=30,
+    "&Modified conditions"=31,
+    "M&ultiple conditions"=32)
+  ERRORS
+    32="a source object was not linked with the right runtime object (check instrumentation mode)",
+    49="a composition of conditions evaluates in an unexpected result, contact your vendor",
+    50="a composition of conditions reached with an unexpected input vector, contact your vendor"
+NODE TYPE=FILE NAME="WRP_S3PA_S3POSANOMMON.C"@@COMMENT@/******************************************************************************/@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/* Copyright by     :   Diehl Aerospace GmbH Ueberlingen                      */@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/* File name        :   wrp_s3pa_s3posanommon.c                               */@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/* Author           :   Gradewald                                             */@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/******************************************************************************/@/COMMENT@
+
+
+@COMMENT@/* IMPORTED MODULES */@/COMMENT@
+
+@COMMENT@#include "scade_types.h"@/COMMENT@
+@COMMENT@#include "DML_Data_Manager_Config.h"@/COMMENT@
+@COMMENT@#include "DMA_Data_Manager.h"@/COMMENT@
+@COMMENT@#include "DME_Data_Manager_Extension.h"@/COMMENT@
+@COMMENT@#include "AWM_A429_Word_Management.h"           /* used to decode the right bits*/@/COMMENT@
+@COMMENT@#include "BIT_Operations.h"                     /* used for BIT Access */@/COMMENT@
+@COMMENT@#include "DFE_Dpram_Fse_Exchange.h"@/COMMENT@
+@COMMENT@#include "FSE_Failure_Status_Exchange.h"@/COMMENT@
+@COMMENT@#include "tpc_target_position_configuration.h"@/COMMENT@
+@COMMENT@#include "PUC_power_up_coding_detection.h"@/COMMENT@
+@COMMENT@#include "s3pa_s3posanommon.h"@/COMMENT@
+@COMMENT@#include "wrp_s3pa_s3posanommon.h"@/COMMENT@
+
+
+@COMMENT@/* CONSTANTS */@/COMMENT@
+
+@COMMENT@/* None */@/COMMENT@
+
+
+@COMMENT@/* DATA TYPES */@/COMMENT@
+
+@COMMENT@/* None */@/COMMENT@
+
+@COMMENT@/* MODULE DATA */@/COMMENT@
+
+static _C_S3PA_S3PosAnomMon s3pa_lh_struct;
+static _C_S3PA_S3PosAnomMon s3pa_rh_struct;
+static boolean NVMReset;
+
+
+@COMMENT@/* ROUTINES */@/COMMENT@
+
+void @NODE TYPE=FUNCTION NAME="wrp_call_s3pa_init"@@LINK NAME="wrp_call_s3pa_init"@wrp_call_s3pa_init (void)
+@BRANCH MARK=TB ID=0 SUM=20@{
+   @COMMENT@/*  Initialise the data object s3pa_lh_struct and s3pa_rh_struct */@/COMMENT@
+   @BRANCH MARK=TA ID=0 SUM=10@@JUMP NAME="S3PA_S3PosAnomMon_init"@S3PA_S3PosAnomMon_init@/JUMP@ (&s3pa_lh_struct)@/BRANCH@;
+   @BRANCH MARK=TA ID=1 SUM=10@@JUMP NAME="S3PA_S3PosAnomMon_init"@S3PA_S3PosAnomMon_init@/JUMP@ (&s3pa_rh_struct)@/BRANCH@;
+}@/BRANCH@@/NODE@
+
+
+void @NODE TYPE=FUNCTION NAME="wrp_call_s3pa"@@LINK NAME="wrp_call_s3pa"@wrp_call_s3pa (void)
+@BRANCH MARK=TB ID=7 SUM=20@{
+   uint32 RL111_Content;
+   uint32 RL113_Content;
+   boolean XCCL111Val;
+   boolean XCCL113Val;
+   boolean RL113_XCC_POBOpen;
+   uint32 DEDTemp = 0uL;
+   TYP_Aircraft_Type OpMode = @BRANCH MARK=TA ID=2 SUM=10@@JUMP NAME="PUC_Get_OpMode"@PUC_Get_OpMode@/JUMP@()@/BRANCH@;
+   boolean DS3LHSkewFailS3PAMNVM = @BRANCH MARK=TA ID=3 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@(DML_DS3LHSKEWFAILS3PAMNVM)@/BRANCH@;
+   boolean DS3RHSkewFailS3PAMNVM = @BRANCH MARK=TA ID=4 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@(DML_DS3RHSKEWFAILS3PAMNVM)@/BRANCH@;
+   boolean S3LHAnomFailUnconf    = @BRANCH MARK=TA ID=5 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@(DML_S3LHANOMFAILUNCONF)@/BRANCH@;
+   boolean S3RHAnomFailUnconf    = @BRANCH MARK=TA ID=6 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@(DML_S3RHANOMFAILUNCONF)@/BRANCH@;
+
+   @DECISION SUM=20+21 ID=5|6@@POPUP@if@-POPUP@@BRANCH MARK=TB ID=6 SUM=21@implicit else@/BRANCH@@/POPUP@ (@POPUP@OpMode EQ A350_1000@-POPUP@basic boolean conditions:
+  @BRANCH MARK=TE ID=0 SUM=30@True@/BRANCH@
+  @BRANCH MARK=TE ID=1 SUM=30@False@/BRANCH@@/POPUP@)
+   @BRANCH MARK=TB ID=5 SUM=20@{
+      @COMMENT@/* Enable writing of Dependent Engineering Data in case of NVM reset */@/COMMENT@
+      @ALT@if( (DS3LHSkewFailS3PAMNVM       EQ FALSE)   AND@-ALT@
+@DECISION SUM=20+21 ID=1|2@@POPUP@if@-POPUP@@BRANCH MARK=TB ID=2 SUM=21@implicit else@/BRANCH@@/POPUP@( @POPUP@(@POPUP@DS3LHSkewFailS3PAMNVM       == 0@-POPUP@basic boolean conditions:
+  @BRANCH MARK=TE ID=2 SUM=30@True@/BRANCH@
+  @BRANCH MARK=TE ID=3 SUM=30@False@/BRANCH@@/POPUP@)   &&@/ALT@
+          @ALT@(DS3RHSkewFailS3PAMNVM       EQ FALSE)   AND@-ALT@
+(@POPUP@DS3RHSkewFailS3PAMNVM       == 0@-POPUP@basic boolean conditions:
+  @BRANCH MARK=TE ID=4 SUM=30@True@/BRANCH@
+  @BRANCH MARK=TE ID=5 SUM=30@False@/BRANCH@@/POPUP@)   &&@/ALT@
+          @ALT@(S3LHAnomFailUnconf          EQ FALSE)   AND@-ALT@
+(@POPUP@S3LHAnomFailUnconf          == 0@-POPUP@basic boolean conditions:
+  @BRANCH MARK=TE ID=6 SUM=30@True@/BRANCH@
+  @BRANCH MARK=TE ID=7 SUM=30@False@/BRANCH@@/POPUP@)   &&@/ALT@
+          @ALT@(S3RHAnomFailUnconf          EQ FALSE) ) @-ALT@
+(@POPUP@S3RHAnomFailUnconf          == 0@-POPUP@basic boolean conditions:
+  @BRANCH MARK=TE ID=8 SUM=30@True@/BRANCH@
+  @BRANCH MARK=TE ID=9 SUM=30@False@/BRANCH@@/POPUP@)@-POPUP@modified and multiple conditions:
+  @BRANCH MARK=TE ID=10&14 SUM=31@DS3LHSkewFailS3PAMNVM == 0@/BRANCH@ needs
+      @BRANCH MARK=TE ID=10 SUM=32@TTTT@/BRANCH@=T,@BRANCH MARK=TE ID=14 SUM=32@FXXX@/BRANCH@=F
+  @BRANCH MARK=TE ID=10&13 SUM=31@DS3RHSkewFailS3PAMNVM == 0@/BRANCH@ needs
+      @BRANCH MARK=TE ID=10 SUM=32@TTTT@/BRANCH@=T,@BRANCH MARK=TE ID=13 SUM=32@TFXX@/BRANCH@=F
+  @BRANCH MARK=TE ID=10&12 SUM=31@S3LHAnomFailUnconf == 0@/BRANCH@ needs
+      @BRANCH MARK=TE ID=10 SUM=32@TTTT@/BRANCH@=T,@BRANCH MARK=TE ID=12 SUM=32@TTFX@/BRANCH@=F
+  @BRANCH MARK=TE ID=10&11 SUM=31@S3RHAnomFailUnconf == 0@/BRANCH@ needs
+      @BRANCH MARK=TE ID=10 SUM=32@TTTT@/BRANCH@=T,@BRANCH MARK=TE ID=11 SUM=32@TTTF@/BRANCH@=F@/POPUP@ ) @/ALT@
+      @BRANCH MARK=TB ID=1 SUM=20@{
+         NVMReset = FALSE;
+      }@/BRANCH@@/DECISION@
+      @COMMENT@/*  Get RL111 and RL113 content  */@/COMMENT@
+      RL111_Content = (uint32) @BRANCH MARK=TA ID=7 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_RL111_XCC)@/BRANCH@;
+      RL113_Content = (uint32) @BRANCH MARK=TA ID=8 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_RL113_XCC)@/BRANCH@;
+      @COMMENT@/*  Get common data  */@/COMMENT@
+      RL113_XCC_POBOpen  = @BRANCH MARK=TA ID=9 SUM=10@@JUMP NAME="BIT_Is_Set"@BIT_Is_Set@/JUMP@ (RL113_Content, (uint16x) AWM_DATA_POBOPEN)@/BRANCH@;
+      XCCL111Val = @BRANCH MARK=TA ID=10 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@(DML_XCCL111VAL)@/BRANCH@;
+      XCCL113Val = @BRANCH MARK=TA ID=11 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@(DML_XCCL113VAL)@/BRANCH@;
+      @COMMENT@/*  Update input members of data object s3pa_lh_struct  */@/COMMENT@
+      s3pa_lh_struct._I0_FlapFPPU                  = @BRANCH MARK=TA ID=12 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_FPPU)@/BRANCH@;
+      s3pa_lh_struct._I1_FlapFPPUVal               = @BRANCH MARK=TA ID=13 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_FPPUVAL)@/BRANCH@;
+      s3pa_lh_struct._I2_DFPPUxH                   = @BRANCH MARK=TA ID=14 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_DFPPULH)@/BRANCH@;
+      s3pa_lh_struct._I3_DFPPUxHVal                = @BRANCH MARK=TA ID=15 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_DFPPULHVAL)@/BRANCH@;
+      s3pa_lh_struct._I4_CTP_MA                    = @BRANCH MARK=TA ID=16 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_CTP_MA)@/BRANCH@;
+      s3pa_lh_struct._I5_CTPActive_F3PF            = @BRANCH MARK=TA ID=17 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_CTPACTIVE_F3PF)@/BRANCH@;
+      s3pa_lh_struct._I6_DFSCommandLT              = @BRANCH MARK=TA ID=18 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_DFSCOMMANDLT)@/BRANCH@;
+      s3pa_lh_struct._I7_EnginesOff                = @BRANCH MARK=TA ID=19 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_ENGINESOFF)@/BRANCH@;
+      s3pa_lh_struct._I8_ConsolidatedCAS           = @BRANCH MARK=TA ID=20 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_CONSOLIDATEDCAS)@/BRANCH@;
+      s3pa_lh_struct._I9_CASVal                    = @BRANCH MARK=TA ID=21 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_CASVAL)@/BRANCH@;
+      s3pa_lh_struct._I10_ConsolidatedCASAvg       = @BRANCH MARK=TA ID=22 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_CONSOLIDATEDCASAVG)@/BRANCH@;
+      s3pa_lh_struct._I11_ACOnGnd                  = @BRANCH MARK=TA ID=23 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_ACONGND)@/BRANCH@;
+      s3pa_lh_struct._I12_FLReselectionCtr         = @BRANCH MARK=TA ID=24 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_FLRESELECTIONCTR)@/BRANCH@;
+      s3pa_lh_struct._I13_POBOpen                  = @BRANCH MARK=TA ID=25 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_POBOPEN)@/BRANCH@;
+      s3pa_lh_struct._I14_ADGBxHPOBOpen            = @BRANCH MARK=TA ID=26 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_ADGBLHPOBOPEN)@/BRANCH@;
+      s3pa_lh_struct._I15_WTBxHOpen                = @BRANCH MARK=TA ID=27 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_WTBLHOPEN)@/BRANCH@;
+      s3pa_lh_struct._I16_RL113_XCC_POBOpen        = RL113_XCC_POBOpen;
+      s3pa_lh_struct._I17_RL113_XCC_ADGBxHOpen     = @BRANCH MARK=TA ID=28 SUM=10@@JUMP NAME="BIT_Is_Set"@BIT_Is_Set@/JUMP@ (RL113_Content, (uint16x) AWM_DATA_ADGBLHPOBOPEN)@/BRANCH@;
+      s3pa_lh_struct._I18_RL113_XCC_WTBxHOpen      = @BRANCH MARK=TA ID=29 SUM=10@@JUMP NAME="BIT_Is_Set"@BIT_Is_Set@/JUMP@ (RL113_Content, (uint16x) AWM_DATA_WTBLHOPEN)@/BRANCH@;
+      s3pa_lh_struct._I19_XCCL113Val               = XCCL113Val;
+      s3pa_lh_struct._I20_RL113_XCC_S3PPUxHVal     = @BRANCH MARK=TA ID=30 SUM=10@@JUMP NAME="BIT_Is_Set"@BIT_Is_Set@/JUMP@ (RL113_Content, (uint16x) AWM_DATA_S3PPULHVAL)@/BRANCH@;
+      s3pa_lh_struct._I21_S3PPUxH                  = @BRANCH MARK=TA ID=31 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_S3PPULH)@/BRANCH@;
+      s3pa_lh_struct._I22_S3PPUxHVal               = @BRANCH MARK=TA ID=32 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_S3PPULHVAL)@/BRANCH@;
+      s3pa_lh_struct._I23_RL111_XCC_FlapSkewxHOB   = @BRANCH MARK=TA ID=33 SUM=10@@JUMP NAME="BIT_Is_Set"@BIT_Is_Set@/JUMP@ (RL111_Content, (uint16x) AWM_DATA_FLAPSKEWLHOB)@/BRANCH@;
+      s3pa_lh_struct._I24_XCCL111Val               = XCCL111Val;
+      s3pa_lh_struct._I25_InstMode                 = (int32)@BRANCH MARK=TA ID=34 SUM=10@@JUMP NAME="PUC_Get_InstMode"@PUC_Get_InstMode@/JUMP@()@/BRANCH@;
+      s3pa_lh_struct._I26_S3PPUxHCASNVM_in         = @BRANCH MARK=TA ID=35 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_S3PPULHCASNVM)@/BRANCH@;
+      s3pa_lh_struct._I27_S3PPUxHPosFLTNVM_in      = @BRANCH MARK=TA ID=36 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_S3PPULHPOSFLTNVM)@/BRANCH@;
+      s3pa_lh_struct._I28_S3PPUxHPosGNDNVM_in      = @BRANCH MARK=TA ID=37 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_S3PPULHPOSGNDNVM)@/BRANCH@;
+      s3pa_lh_struct._I29_S3PPUxHFLTMsmtC3ValNV_in = @BRANCH MARK=TA ID=38 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_S3PPULHFLTMSMTC3VALNVM)@/BRANCH@;
+      s3pa_lh_struct._I30_S3PPUxHFLTMsmtC4ValNV_in = @BRANCH MARK=TA ID=39 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_S3PPULHFLTMSMTC4VALNVM)@/BRANCH@;
+      s3pa_lh_struct._I31_S3PPUxHGNDMsmtValNVM_in  = @BRANCH MARK=TA ID=40 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_S3PPULHGNDMSMTVALNVM)@/BRANCH@;
+      s3pa_lh_struct._I32_FlapSkewValxHOB          = @BRANCH MARK=TA ID=41 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_FLAPSKEWVALLHOB)@/BRANCH@;
+      s3pa_lh_struct._I33_DS3xHSkewFailS3PAMNVM_in = DS3LHSkewFailS3PAMNVM;
+      s3pa_lh_struct._I34_S3xHAnomFailUnconf_in    = S3LHAnomFailUnconf;
+      s3pa_lh_struct._I35_CTP_CONFIG_3_IB          = @BRANCH MARK=TA ID=42 SUM=10@@JUMP NAME="tpc_getFlapCtpConf3_IB"@tpc_getFlapCtpConf3_IB@/JUMP@()@/BRANCH@;
+      @BRANCH MARK=TA ID=43 SUM=10@@JUMP NAME="tpc_getFlapCtpConf3PS"@tpc_getFlapCtpConf3PS@/JUMP@(
+         &s3pa_lh_struct._I36_CTP_CONFIG_3pS_IB,
+         &s3pa_lh_struct._I37_CTP_CONFIG_3pS_OB )@/BRANCH@;
+      @BRANCH MARK=TA ID=44 SUM=10@@JUMP NAME="tpc_getFlapCtpConfFULL"@tpc_getFlapCtpConfFULL@/JUMP@(
+        &s3pa_lh_struct._I38_CTP_CONFIG_FULL_IB,
+        &s3pa_lh_struct._I39_CTP_CONFIG_FULL_OB )@/BRANCH@;
+      s3pa_lh_struct._I40_CONFIG_3pS_OB            = @BRANCH MARK=TA ID=45 SUM=10@@JUMP NAME="tpc_getFlapConf3PS_OB"@tpc_getFlapConf3PS_OB@/JUMP@()@/BRANCH@;
+      s3pa_lh_struct._I41_ETT_Flap                 = TYP_ETT_FLAP_100;
+      s3pa_lh_struct._I42_IsRH                     = FALSE;
+      s3pa_lh_struct._I43_S3PPUxHGNDMC3FailNVM_in  = @BRANCH MARK=TA ID=46 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_S3PPULHGNDMSMTC3FAILNVM)@/BRANCH@;
+      s3pa_lh_struct._I44_S3PPUxHGNDMC4FailNVM_in  = @BRANCH MARK=TA ID=47 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_S3PPULHGNDMSMTC4FAILNVM)@/BRANCH@;
+      s3pa_lh_struct._I45_CTPActive_FLR            = @BRANCH MARK=TA ID=48 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_CTPACTIVE_FLR)@/BRANCH@;
+      s3pa_lh_struct._I46_CTP_CFG_1pf_HLDALTN_IB   = @BRANCH MARK=TA ID=49 SUM=10@@JUMP NAME="tpc_getFlapCtpConf1PFHLDALTN_IB"@tpc_getFlapCtpConf1PFHLDALTN_IB@/JUMP@()@/BRANCH@;
+      s3pa_lh_struct._I47_CTP_CONFIG_1pf_TO_IB     = @BRANCH MARK=TA ID=50 SUM=10@@JUMP NAME="tpc_getFlapCtpConf1PFTO_IB"@tpc_getFlapCtpConf1PFTO_IB@/JUMP@()@/BRANCH@;
+      s3pa_lh_struct._I48_CTP_CONFIG_2_IB          = @BRANCH MARK=TA ID=51 SUM=10@@JUMP NAME="tpc_getFlapCtpConf2_IB"@tpc_getFlapCtpConf2_IB@/JUMP@()@/BRANCH@;
+      s3pa_lh_struct._I49_CTPVal                   = @BRANCH MARK=TA ID=52 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_CTPVAL)@/BRANCH@;
+      s3pa_lh_struct._I50_Strut3xHDiscSkewNVM_in   = @BRANCH MARK=TA ID=53 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_STRUT3LHDISCSKEWNVM)@/BRANCH@;
+      @COMMENT@/*  Update input members of data object s3pa_rh_struct  */@/COMMENT@
+      s3pa_rh_struct._I0_FlapFPPU                  = @BRANCH MARK=TA ID=54 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_FPPU)@/BRANCH@;
+      s3pa_rh_struct._I1_FlapFPPUVal               = @BRANCH MARK=TA ID=55 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_FPPUVAL)@/BRANCH@;
+      s3pa_rh_struct._I2_DFPPUxH                   = @BRANCH MARK=TA ID=56 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_DFPPURH)@/BRANCH@;
+      s3pa_rh_struct._I3_DFPPUxHVal                = @BRANCH MARK=TA ID=57 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_DFPPURHVAL)@/BRANCH@;
+      s3pa_rh_struct._I4_CTP_MA                    = @BRANCH MARK=TA ID=58 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_CTP_MA)@/BRANCH@;
+      s3pa_rh_struct._I5_CTPActive_F3PF            = @BRANCH MARK=TA ID=59 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_CTPACTIVE_F3PF)@/BRANCH@;
+      s3pa_rh_struct._I6_DFSCommandLT              = @BRANCH MARK=TA ID=60 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_DFSCOMMANDLT)@/BRANCH@;
+      s3pa_rh_struct._I7_EnginesOff                = @BRANCH MARK=TA ID=61 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_ENGINESOFF)@/BRANCH@;
+      s3pa_rh_struct._I8_ConsolidatedCAS           = @BRANCH MARK=TA ID=62 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_CONSOLIDATEDCAS)@/BRANCH@;
+      s3pa_rh_struct._I9_CASVal                    = @BRANCH MARK=TA ID=63 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_CASVAL)@/BRANCH@;
+      s3pa_rh_struct._I10_ConsolidatedCASAvg       = @BRANCH MARK=TA ID=64 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_CONSOLIDATEDCASAVG)@/BRANCH@;
+      s3pa_rh_struct._I11_ACOnGnd                  = @BRANCH MARK=TA ID=65 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_ACONGND)@/BRANCH@;
+      s3pa_rh_struct._I12_FLReselectionCtr         = @BRANCH MARK=TA ID=66 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_FLRESELECTIONCTR)@/BRANCH@;
+      s3pa_rh_struct._I13_POBOpen                  = @BRANCH MARK=TA ID=67 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_POBOPEN)@/BRANCH@;
+      s3pa_rh_struct._I14_ADGBxHPOBOpen            = @BRANCH MARK=TA ID=68 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_ADGBRHPOBOPEN)@/BRANCH@;
+      s3pa_rh_struct._I15_WTBxHOpen                = @BRANCH MARK=TA ID=69 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_WTBRHOPEN)@/BRANCH@;
+      s3pa_rh_struct._I16_RL113_XCC_POBOpen        = RL113_XCC_POBOpen;
+      s3pa_rh_struct._I17_RL113_XCC_ADGBxHOpen     = @BRANCH MARK=TA ID=70 SUM=10@@JUMP NAME="BIT_Is_Set"@BIT_Is_Set@/JUMP@ (RL113_Content, (uint16x) AWM_DATA_ADGBRHPOBOPEN)@/BRANCH@;
+      s3pa_rh_struct._I18_RL113_XCC_WTBxHOpen      = @BRANCH MARK=TA ID=71 SUM=10@@JUMP NAME="BIT_Is_Set"@BIT_Is_Set@/JUMP@ (RL113_Content, (uint16x) AWM_DATA_WTBRHOPEN)@/BRANCH@;
+      s3pa_rh_struct._I19_XCCL113Val               = XCCL113Val;
+      s3pa_rh_struct._I20_RL113_XCC_S3PPUxHVal     = @BRANCH MARK=TA ID=72 SUM=10@@JUMP NAME="BIT_Is_Set"@BIT_Is_Set@/JUMP@ (RL113_Content, (uint16x) AWM_DATA_S3PPURHVAL)@/BRANCH@;
+      s3pa_rh_struct._I21_S3PPUxH                  = @BRANCH MARK=TA ID=73 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_S3PPURH)@/BRANCH@;
+      s3pa_rh_struct._I22_S3PPUxHVal               = @BRANCH MARK=TA ID=74 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_S3PPURHVAL)@/BRANCH@;
+      s3pa_rh_struct._I23_RL111_XCC_FlapSkewxHOB   = @BRANCH MARK=TA ID=75 SUM=10@@JUMP NAME="BIT_Is_Set"@BIT_Is_Set@/JUMP@ (RL111_Content, (uint16x) AWM_DATA_FLAPSKEWRHOB)@/BRANCH@;
+      s3pa_rh_struct._I24_XCCL111Val               = XCCL111Val;
+      s3pa_rh_struct._I25_InstMode                 = (int32)@BRANCH MARK=TA ID=76 SUM=10@@JUMP NAME="PUC_Get_InstMode"@PUC_Get_InstMode@/JUMP@()@/BRANCH@;
+      s3pa_rh_struct._I26_S3PPUxHCASNVM_in         = @BRANCH MARK=TA ID=77 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_S3PPURHCASNVM)@/BRANCH@;
+      s3pa_rh_struct._I27_S3PPUxHPosFLTNVM_in      = @BRANCH MARK=TA ID=78 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_S3PPURHPOSFLTNVM)@/BRANCH@;
+      s3pa_rh_struct._I28_S3PPUxHPosGNDNVM_in      = @BRANCH MARK=TA ID=79 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_S3PPURHPOSGNDNVM)@/BRANCH@;
+      s3pa_rh_struct._I29_S3PPUxHFLTMsmtC3ValNV_in = @BRANCH MARK=TA ID=80 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_S3PPURHFLTMSMTC3VALNVM)@/BRANCH@;
+      s3pa_rh_struct._I30_S3PPUxHFLTMsmtC4ValNV_in = @BRANCH MARK=TA ID=81 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_S3PPURHFLTMSMTC4VALNVM)@/BRANCH@;
+      s3pa_rh_struct._I31_S3PPUxHGNDMsmtValNVM_in  = @BRANCH MARK=TA ID=82 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_S3PPURHGNDMSMTVALNVM)@/BRANCH@;
+      s3pa_rh_struct._I32_FlapSkewValxHOB          = @BRANCH MARK=TA ID=83 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_FLAPSKEWVALRHOB)@/BRANCH@;
+      s3pa_rh_struct._I33_DS3xHSkewFailS3PAMNVM_in = DS3RHSkewFailS3PAMNVM;
+      s3pa_rh_struct._I34_S3xHAnomFailUnconf_in    = S3RHAnomFailUnconf;
+      s3pa_rh_struct._I35_CTP_CONFIG_3_IB          = @BRANCH MARK=TA ID=84 SUM=10@@JUMP NAME="tpc_getFlapCtpConf3_IB"@tpc_getFlapCtpConf3_IB@/JUMP@()@/BRANCH@;
+      @BRANCH MARK=TA ID=85 SUM=10@@JUMP NAME="tpc_getFlapCtpConf3PS"@tpc_getFlapCtpConf3PS@/JUMP@(
+         &s3pa_rh_struct._I36_CTP_CONFIG_3pS_IB,
+         &s3pa_rh_struct._I37_CTP_CONFIG_3pS_OB )@/BRANCH@;
+      @BRANCH MARK=TA ID=86 SUM=10@@JUMP NAME="tpc_getFlapCtpConfFULL"@tpc_getFlapCtpConfFULL@/JUMP@(
+         &s3pa_rh_struct._I38_CTP_CONFIG_FULL_IB,
+         &s3pa_rh_struct._I39_CTP_CONFIG_FULL_OB )@/BRANCH@;
+      s3pa_rh_struct._I40_CONFIG_3pS_OB            = @BRANCH MARK=TA ID=87 SUM=10@@JUMP NAME="tpc_getFlapConf3PS_OB"@tpc_getFlapConf3PS_OB@/JUMP@()@/BRANCH@;
+      s3pa_rh_struct._I41_ETT_Flap                 = TYP_ETT_FLAP_100;
+      s3pa_rh_struct._I42_IsRH                     = TRUE;
+      s3pa_rh_struct._I43_S3PPUxHGNDMC3FailNVM_in  = @BRANCH MARK=TA ID=88 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_S3PPURHGNDMSMTC3FAILNVM)@/BRANCH@;
+      s3pa_rh_struct._I44_S3PPUxHGNDMC4FailNVM_in  = @BRANCH MARK=TA ID=89 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_S3PPURHGNDMSMTC4FAILNVM)@/BRANCH@;
+      s3pa_rh_struct._I45_CTPActive_FLR            = @BRANCH MARK=TA ID=90 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_CTPACTIVE_FLR)@/BRANCH@;
+      s3pa_rh_struct._I46_CTP_CFG_1pf_HLDALTN_IB   = @BRANCH MARK=TA ID=91 SUM=10@@JUMP NAME="tpc_getFlapCtpConf1PFHLDALTN_IB"@tpc_getFlapCtpConf1PFHLDALTN_IB@/JUMP@()@/BRANCH@;
+      s3pa_rh_struct._I47_CTP_CONFIG_1pf_TO_IB     = @BRANCH MARK=TA ID=92 SUM=10@@JUMP NAME="tpc_getFlapCtpConf1PFTO_IB"@tpc_getFlapCtpConf1PFTO_IB@/JUMP@()@/BRANCH@;
+      s3pa_rh_struct._I48_CTP_CONFIG_2_IB          = @BRANCH MARK=TA ID=93 SUM=10@@JUMP NAME="tpc_getFlapCtpConf2_IB"@tpc_getFlapCtpConf2_IB@/JUMP@()@/BRANCH@;
+      s3pa_rh_struct._I49_CTPVal                   = @BRANCH MARK=TA ID=94 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_CTPVAL)@/BRANCH@;
+      s3pa_rh_struct._I50_Strut3xHDiscSkewNVM_in   = @BRANCH MARK=TA ID=95 SUM=10@@JUMP NAME="DMA_Get"@DMA_Get@/JUMP@ (DML_STRUT3RHDISCSKEWNVM)@/BRANCH@;
+
+      @COMMENT@/*  Computation step of the SCADE-based module S3PA_S3PosAnomMon  */@/COMMENT@
+      @BRANCH MARK=TA ID=96 SUM=10@@JUMP NAME="S3PA_S3PosAnomMon"@S3PA_S3PosAnomMon@/JUMP@ (&s3pa_lh_struct)@/BRANCH@;
+      @BRANCH MARK=TA ID=97 SUM=10@@JUMP NAME="S3PA_S3PosAnomMon"@S3PA_S3PosAnomMon@/JUMP@ (&s3pa_rh_struct)@/BRANCH@;
+
+      @COMMENT@/*  Store the results of the computation step  */@/COMMENT@
+      @COMMENT@/*  Update of s3pa_lh_struct */@/COMMENT@
+      @BRANCH MARK=TA ID=98 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_STRUT3LHDISCSKEW,               s3pa_lh_struct._O0_Strut3xHDiscSkew)@/BRANCH@;
+      @BRANCH MARK=TA ID=99 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_FLAPSKEWLHOB,                   s3pa_lh_struct._O1_FlapSkewxHOB)@/BRANCH@;
+      @BRANCH MARK=TA ID=100 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_S3PPULHFLTMSMTC3VALNVM,         s3pa_lh_struct._O2_S3PPUxHFLTMsmtC3ValNVM)@/BRANCH@;
+      @BRANCH MARK=TA ID=101 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_S3PPULHFLTMSMTC4VALNVM,         s3pa_lh_struct._O3_S3PPUxHFLTMsmtC4ValNVM)@/BRANCH@;
+      @BRANCH MARK=TA ID=102 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_S3PPULHGNDMSMTVALNVM,           s3pa_lh_struct._O4_S3PPUxHGNDMsmtValNVM)@/BRANCH@;
+      @BRANCH MARK=TA ID=103 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_S3PPULHPOSFLTNVM,               s3pa_lh_struct._O5_S3PPUxHPosFLTNVM)@/BRANCH@;
+      @BRANCH MARK=TA ID=104 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_S3PPULHPOSGNDNVM,               s3pa_lh_struct._O6_S3PPUxHPosGNDNVM)@/BRANCH@;
+      @BRANCH MARK=TA ID=105 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_S3PPULHCASNVM,                  s3pa_lh_struct._O7_S3PPUxHCASNVM)@/BRANCH@;
+      @BRANCH MARK=TA ID=106 SUM=10@@JUMP NAME="DME_Set_Latch"@DME_Set_Latch@/JUMP@ (DML_DS3LHSKEWFAILS3PAMNVM,    s3pa_lh_struct._O8_DS3xHSkewFailS3PAMNVM)@/BRANCH@;
+      @BRANCH MARK=TA ID=107 SUM=10@@JUMP NAME="DME_Set_Latch"@DME_Set_Latch@/JUMP@ (DML_S3LHANOMFAILUNCONF,       s3pa_lh_struct._O9_S3xHAnomFailUnconf)@/BRANCH@;
+      @COMMENT@/* Maintenance Data */@/COMMENT@
+      @BRANCH MARK=TA ID=108 SUM=10@@JUMP NAME="FSE_Store_Failure_Event_DPRAM"@FSE_Store_Failure_Event_DPRAM@/JUMP@ (DFE_DS3LHSKEWCONF_FAILURE_STATUS,
+                                     (TYP_Failure_Status_Type) s3pa_lh_struct._O10_DS3xHSkewConf_FailStat)@/BRANCH@;
+      @BRANCH MARK=TA ID=109 SUM=10@@JUMP NAME="FSE_Store_Failure_Event_DPRAM"@FSE_Store_Failure_Event_DPRAM@/JUMP@ (DFE_DS3LHSKEWUNCONF_FAILURE_STATUS,
+                                     (TYP_Failure_Status_Type) s3pa_lh_struct._O11_DS3xHSkewUnconf_FailStat)@/BRANCH@;
+      @BRANCH MARK=TA ID=110 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_CMDC3LHGND,                     s3pa_lh_struct._O12_CmdC3xHGnd)@/BRANCH@;
+      @BRANCH MARK=TA ID=111 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_CMDC3LHFLT,                     s3pa_lh_struct._O13_CmdC3xHFlt)@/BRANCH@;
+      @BRANCH MARK=TA ID=112 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_CMDC4LH,                        s3pa_lh_struct._O14_CmdC4xH)@/BRANCH@;
+      @BRANCH MARK=TA ID=113 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_DETCONDLH,                      s3pa_lh_struct._O15_DetCondxH)@/BRANCH@;
+      @BRANCH MARK=TA ID=114 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_DETCONDFLTC3LH,                 s3pa_lh_struct._O16_DetCondFltC3xH)@/BRANCH@;
+      @BRANCH MARK=TA ID=115 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_DETCONDFLTC4LH,                 s3pa_lh_struct._O17_DetCondFltC4xH)@/BRANCH@;
+      @BRANCH MARK=TA ID=116 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_DETCONDGNDC3LH,                 s3pa_lh_struct._O18_DetCondGndC3xH)@/BRANCH@;
+      @BRANCH MARK=TA ID=117 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_DETCONDGNDC4LH,                 s3pa_lh_struct._O19_DetCondGndC4xH)@/BRANCH@;
+      @BRANCH MARK=TA ID=118 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_S3PPULHPOSAVG,                  s3pa_lh_struct._O20_S3PPUxHPosAvg)@/BRANCH@;
+      @BRANCH MARK=TA ID=119 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_S3POSANOMMONLH,                 s3pa_lh_struct._O21_S3PosAnomMonxH)@/BRANCH@;
+      @BRANCH MARK=TA ID=120 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_S3PPULHGNDMSMTC3FAILNVM,        s3pa_lh_struct._O22_S3PPUxHGNDMsmtC3FailNVM)@/BRANCH@;
+      @BRANCH MARK=TA ID=121 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_S3PPULHGNDMSMTC4FAILNVM,        s3pa_lh_struct._O23_S3PPUxHGNDMsmtC4FailNVM)@/BRANCH@;
+      @BRANCH MARK=TA ID=122 SUM=10@@JUMP NAME="DME_Set_Latch"@DME_Set_Latch@/JUMP@ (DML_STRUT3LHDISCSKEWNVM,      s3pa_lh_struct._O24_Strut3xHDiscSkewNVM)@/BRANCH@;
+      @COMMENT@/*  Update of s3pa_rh_struct */@/COMMENT@
+      @BRANCH MARK=TA ID=123 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_STRUT3RHDISCSKEW,               s3pa_rh_struct._O0_Strut3xHDiscSkew)@/BRANCH@;
+      @BRANCH MARK=TA ID=124 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_FLAPSKEWRHOB,                   s3pa_rh_struct._O1_FlapSkewxHOB)@/BRANCH@;
+      @BRANCH MARK=TA ID=125 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_S3PPURHFLTMSMTC3VALNVM,         s3pa_rh_struct._O2_S3PPUxHFLTMsmtC3ValNVM)@/BRANCH@;
+      @BRANCH MARK=TA ID=126 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_S3PPURHFLTMSMTC4VALNVM,         s3pa_rh_struct._O3_S3PPUxHFLTMsmtC4ValNVM)@/BRANCH@;
+      @BRANCH MARK=TA ID=127 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_S3PPURHGNDMSMTVALNVM,           s3pa_rh_struct._O4_S3PPUxHGNDMsmtValNVM)@/BRANCH@;
+      @BRANCH MARK=TA ID=128 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_S3PPURHPOSFLTNVM,               s3pa_rh_struct._O5_S3PPUxHPosFLTNVM)@/BRANCH@;
+      @BRANCH MARK=TA ID=129 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_S3PPURHPOSGNDNVM,               s3pa_rh_struct._O6_S3PPUxHPosGNDNVM)@/BRANCH@;
+      @BRANCH MARK=TA ID=130 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_S3PPURHCASNVM,                  s3pa_rh_struct._O7_S3PPUxHCASNVM)@/BRANCH@;
+      @BRANCH MARK=TA ID=131 SUM=10@@JUMP NAME="DME_Set_Latch"@DME_Set_Latch@/JUMP@ (DML_DS3RHSKEWFAILS3PAMNVM,    s3pa_rh_struct._O8_DS3xHSkewFailS3PAMNVM)@/BRANCH@;
+      @BRANCH MARK=TA ID=132 SUM=10@@JUMP NAME="DME_Set_Latch"@DME_Set_Latch@/JUMP@ (DML_S3RHANOMFAILUNCONF,       s3pa_rh_struct._O9_S3xHAnomFailUnconf)@/BRANCH@;
+      @COMMENT@/* Maintenance Data */@/COMMENT@
+      @BRANCH MARK=TA ID=133 SUM=10@@JUMP NAME="FSE_Store_Failure_Event_DPRAM"@FSE_Store_Failure_Event_DPRAM@/JUMP@ (DFE_DS3RHSKEWCONF_FAILURE_STATUS,
+                                     (TYP_Failure_Status_Type) s3pa_rh_struct._O10_DS3xHSkewConf_FailStat)@/BRANCH@;
+      @BRANCH MARK=TA ID=134 SUM=10@@JUMP NAME="FSE_Store_Failure_Event_DPRAM"@FSE_Store_Failure_Event_DPRAM@/JUMP@ (DFE_DS3RHSKEWUNCONF_FAILURE_STATUS,
+                                     (TYP_Failure_Status_Type) s3pa_rh_struct._O11_DS3xHSkewUnconf_FailStat)@/BRANCH@;
+      @BRANCH MARK=TA ID=135 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_CMDC3RHGND,                     s3pa_rh_struct._O12_CmdC3xHGnd)@/BRANCH@;
+      @BRANCH MARK=TA ID=136 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_CMDC3RHFLT,                     s3pa_rh_struct._O13_CmdC3xHFlt)@/BRANCH@;
+      @BRANCH MARK=TA ID=137 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_CMDC4RH,                        s3pa_rh_struct._O14_CmdC4xH)@/BRANCH@;
+      @BRANCH MARK=TA ID=138 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_DETCONDRH,                      s3pa_rh_struct._O15_DetCondxH)@/BRANCH@;
+      @BRANCH MARK=TA ID=139 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_DETCONDFLTC3RH,                 s3pa_rh_struct._O16_DetCondFltC3xH)@/BRANCH@;
+      @BRANCH MARK=TA ID=140 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_DETCONDFLTC4RH,                 s3pa_rh_struct._O17_DetCondFltC4xH)@/BRANCH@;
+      @BRANCH MARK=TA ID=141 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_DETCONDGNDC3RH,                 s3pa_rh_struct._O18_DetCondGndC3xH)@/BRANCH@;
+      @BRANCH MARK=TA ID=142 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_DETCONDGNDC4RH,                 s3pa_rh_struct._O19_DetCondGndC4xH)@/BRANCH@;
+      @BRANCH MARK=TA ID=143 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_S3PPURHPOSAVG,                  s3pa_rh_struct._O20_S3PPUxHPosAvg)@/BRANCH@;
+      @BRANCH MARK=TA ID=144 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_S3POSANOMMONRH,                 s3pa_rh_struct._O21_S3PosAnomMonxH)@/BRANCH@;
+      @BRANCH MARK=TA ID=145 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_S3PPURHGNDMSMTC3FAILNVM,        s3pa_rh_struct._O22_S3PPUxHGNDMsmtC3FailNVM)@/BRANCH@;
+      @BRANCH MARK=TA ID=146 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_S3PPURHGNDMSMTC4FAILNVM,        s3pa_rh_struct._O23_S3PPUxHGNDMsmtC4FailNVM)@/BRANCH@;
+      @BRANCH MARK=TA ID=147 SUM=10@@JUMP NAME="DME_Set_Latch"@DME_Set_Latch@/JUMP@ (DML_STRUT3RHDISCSKEWNVM,      s3pa_rh_struct._O24_Strut3xHDiscSkewNVM)@/BRANCH@;
+
+      @COMMENT@/* Internals */@/COMMENT@
+      @BRANCH MARK=TA ID=148 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_S3PAMGNDMSMTC3REQUIRED,(@POPUP@@POPUP@s3pa_lh_struct._O22_S3PPUxHGNDMsmtC3FailNVM@-POPUP@basic boolean conditions:
+  @BRANCH MARK=TE ID=15 SUM=30@True@/BRANCH@
+  @BRANCH MARK=TE ID=16 SUM=30@False@/BRANCH@@/POPUP@ OR
+                                           @POPUP@s3pa_rh_struct._O22_S3PPUxHGNDMsmtC3FailNVM@-POPUP@basic boolean conditions:
+  @BRANCH MARK=TE ID=17 SUM=30@True@/BRANCH@
+  @BRANCH MARK=TE ID=18 SUM=30@False@/BRANCH@@/POPUP@@-POPUP@modified and multiple conditions:
+  @BRANCH MARK=TE ID=19&21 SUM=31@s3pa_lh_struct._O22_S3PPUxHGNDMsmtC3FailNVM@/BRANCH@ needs
+      @BRANCH MARK=TE ID=19 SUM=32@TX@/BRANCH@=T,@BRANCH MARK=TE ID=21 SUM=32@FF@/BRANCH@=F
+  @BRANCH MARK=TE ID=20&21 SUM=31@s3pa_rh_struct._O22_S3PPUxHGNDMsmtC3FailNVM@/BRANCH@ needs
+      @BRANCH MARK=TE ID=20 SUM=32@FT@/BRANCH@=T,@BRANCH MARK=TE ID=21 SUM=32@FF@/BRANCH@=F@/POPUP@))@/BRANCH@;
+      @BRANCH MARK=TA ID=149 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_S3PAMGNDMSMTCFREQUIRED,(@POPUP@@POPUP@s3pa_lh_struct._O23_S3PPUxHGNDMsmtC4FailNVM@-POPUP@basic boolean conditions:
+  @BRANCH MARK=TE ID=22 SUM=30@True@/BRANCH@
+  @BRANCH MARK=TE ID=23 SUM=30@False@/BRANCH@@/POPUP@ OR
+                                           @POPUP@s3pa_rh_struct._O23_S3PPUxHGNDMsmtC4FailNVM@-POPUP@basic boolean conditions:
+  @BRANCH MARK=TE ID=24 SUM=30@True@/BRANCH@
+  @BRANCH MARK=TE ID=25 SUM=30@False@/BRANCH@@/POPUP@@-POPUP@modified and multiple conditions:
+  @BRANCH MARK=TE ID=26&28 SUM=31@s3pa_lh_struct._O23_S3PPUxHGNDMsmtC4FailNVM@/BRANCH@ needs
+      @BRANCH MARK=TE ID=26 SUM=32@TX@/BRANCH@=T,@BRANCH MARK=TE ID=28 SUM=32@FF@/BRANCH@=F
+  @BRANCH MARK=TE ID=27&28 SUM=31@s3pa_rh_struct._O23_S3PPUxHGNDMsmtC4FailNVM@/BRANCH@ needs
+      @BRANCH MARK=TE ID=27 SUM=32@FT@/BRANCH@=T,@BRANCH MARK=TE ID=28 SUM=32@FF@/BRANCH@=F@/POPUP@))@/BRANCH@;
+      @COMMENT@/* Dependent Engineering Data */@/COMMENT@
+      @ALT@if(( (s3pa_lh_struct._O8_DS3xHSkewFailS3PAMNVM       EQ TRUE)   OR@-ALT@
+@DECISION SUM=20+21 ID=3|4@@POPUP@if@-POPUP@@BRANCH MARK=TB ID=4 SUM=21@implicit else@/BRANCH@@/POPUP@(@POPUP@( (@POPUP@s3pa_lh_struct._O8_DS3xHSkewFailS3PAMNVM       == 1@-POPUP@basic boolean conditions:
+  @BRANCH MARK=TE ID=29 SUM=30@True@/BRANCH@
+  @BRANCH MARK=TE ID=30 SUM=30@False@/BRANCH@@/POPUP@)   ||@/ALT@
+           @ALT@(s3pa_lh_struct._O9_S3xHAnomFailUnconf          EQ TRUE)   OR@-ALT@
+(@POPUP@s3pa_lh_struct._O9_S3xHAnomFailUnconf          == 1@-POPUP@basic boolean conditions:
+  @BRANCH MARK=TE ID=31 SUM=30@True@/BRANCH@
+  @BRANCH MARK=TE ID=32 SUM=30@False@/BRANCH@@/POPUP@)   ||@/ALT@
+           @ALT@(s3pa_rh_struct._O8_DS3xHSkewFailS3PAMNVM       EQ TRUE)   OR@-ALT@
+(@POPUP@s3pa_rh_struct._O8_DS3xHSkewFailS3PAMNVM       == 1@-POPUP@basic boolean conditions:
+  @BRANCH MARK=TE ID=33 SUM=30@True@/BRANCH@
+  @BRANCH MARK=TE ID=34 SUM=30@False@/BRANCH@@/POPUP@)   ||@/ALT@
+           @ALT@(s3pa_rh_struct._O9_S3xHAnomFailUnconf          EQ TRUE) ) AND@-ALT@
+(@POPUP@s3pa_rh_struct._O9_S3xHAnomFailUnconf          == 1@-POPUP@basic boolean conditions:
+  @BRANCH MARK=TE ID=35 SUM=30@True@/BRANCH@
+  @BRANCH MARK=TE ID=36 SUM=30@False@/BRANCH@@/POPUP@) ) &&@/ALT@
+           @ALT@(NVMReset                                       EQ FALSE))@-ALT@
+(@POPUP@NVMReset                                       == 0@-POPUP@basic boolean conditions:
+  @BRANCH MARK=TE ID=37 SUM=30@True@/BRANCH@
+  @BRANCH MARK=TE ID=38 SUM=30@False@/BRANCH@@/POPUP@)@-POPUP@modified and multiple conditions:
+  @BRANCH MARK=TE ID=39&47 SUM=31@s3pa_lh_struct._O8_DS3xHSkewFailS3PAMNVM == 1@/BRANCH@ needs
+      @BRANCH MARK=TE ID=39 SUM=32@TXXXT@/BRANCH@=T,@BRANCH MARK=TE ID=47 SUM=32@FFFFX@/BRANCH@=F
+  @BRANCH MARK=TE ID=40&47 SUM=31@s3pa_lh_struct._O9_S3xHAnomFailUnconf == 1@/BRANCH@ needs
+      @BRANCH MARK=TE ID=40 SUM=32@FTXXT@/BRANCH@=T,@BRANCH MARK=TE ID=47 SUM=32@FFFFX@/BRANCH@=F
+  @BRANCH MARK=TE ID=41&47 SUM=31@s3pa_rh_struct._O8_DS3xHSkewFailS3PAMNVM == 1@/BRANCH@ needs
+      @BRANCH MARK=TE ID=41 SUM=32@FFTXT@/BRANCH@=T,@BRANCH MARK=TE ID=47 SUM=32@FFFFX@/BRANCH@=F
+  @BRANCH MARK=TE ID=42&47 SUM=31@s3pa_rh_struct._O9_S3xHAnomFailUnconf == 1@/BRANCH@ needs
+      @BRANCH MARK=TE ID=42 SUM=32@FFFTT@/BRANCH@=T,@BRANCH MARK=TE ID=47 SUM=32@FFFFX@/BRANCH@=F
+  @BRANCH MARK=TE ID=39&43|40&44|41&45|42&46 SUM=31@NVMReset == 0@/BRANCH@ needs
+      @BRANCH MARK=TE ID=39 SUM=32@TXXXT@/BRANCH@=T,@BRANCH MARK=TE ID=43 SUM=32@TXXXF@/BRANCH@=F
+   or @BRANCH MARK=TE ID=40 SUM=32@FTXXT@/BRANCH@=T,@BRANCH MARK=TE ID=44 SUM=32@FTXXF@/BRANCH@=F
+   or @BRANCH MARK=TE ID=41 SUM=32@FFTXT@/BRANCH@=T,@BRANCH MARK=TE ID=45 SUM=32@FFTXF@/BRANCH@=F
+   or @BRANCH MARK=TE ID=42 SUM=32@FFFTT@/BRANCH@=T,@BRANCH MARK=TE ID=46 SUM=32@FFFTF@/BRANCH@=F@/POPUP@)@/ALT@
+      @BRANCH MARK=TB ID=3 SUM=20@{
+         @COMMENT@/* Dependent Engineering Data */@/COMMENT@
+         @BRANCH MARK=TA ID=150 SUM=10@@JUMP NAME="BIT_Assign"@BIT_Assign@/JUMP@(&DEDTemp,  0, XCCL111Val)@/BRANCH@;
+         @BRANCH MARK=TA ID=151 SUM=10@@JUMP NAME="BIT_Assign"@BIT_Assign@/JUMP@(&DEDTemp,  1, XCCL113Val)@/BRANCH@;
+         @BRANCH MARK=TA ID=152 SUM=10@@JUMP NAME="BIT_Assign"@BIT_Assign@/JUMP@(&DEDTemp,  2, s3pa_lh_struct._O4_S3PPUxHGNDMsmtValNVM)@/BRANCH@;
+         @BRANCH MARK=TA ID=153 SUM=10@@JUMP NAME="BIT_Assign"@BIT_Assign@/JUMP@(&DEDTemp,  3, s3pa_rh_struct._O4_S3PPUxHGNDMsmtValNVM)@/BRANCH@;
+         @BRANCH MARK=TA ID=154 SUM=10@@JUMP NAME="BIT_Assign"@BIT_Assign@/JUMP@(&DEDTemp,  4, s3pa_lh_struct._O25_S3PPUxHFLTMC3ValNVM_DED)@/BRANCH@;
+         @BRANCH MARK=TA ID=155 SUM=10@@JUMP NAME="BIT_Assign"@BIT_Assign@/JUMP@(&DEDTemp,  5, s3pa_rh_struct._O25_S3PPUxHFLTMC3ValNVM_DED)@/BRANCH@;
+         @BRANCH MARK=TA ID=156 SUM=10@@JUMP NAME="BIT_Assign"@BIT_Assign@/JUMP@(&DEDTemp,  6, s3pa_lh_struct._O26_S3PPUxHFLTMC4ValNVM_DED)@/BRANCH@;
+         @BRANCH MARK=TA ID=157 SUM=10@@JUMP NAME="BIT_Assign"@BIT_Assign@/JUMP@(&DEDTemp,  7, s3pa_rh_struct._O26_S3PPUxHFLTMC4ValNVM_DED)@/BRANCH@;
+         @BRANCH MARK=TA ID=158 SUM=10@@JUMP NAME="BIT_Assign"@BIT_Assign@/JUMP@(&DEDTemp,  8, s3pa_lh_struct._I23_RL111_XCC_FlapSkewxHOB)@/BRANCH@;
+         @BRANCH MARK=TA ID=159 SUM=10@@JUMP NAME="BIT_Assign"@BIT_Assign@/JUMP@(&DEDTemp,  9, s3pa_rh_struct._I23_RL111_XCC_FlapSkewxHOB)@/BRANCH@;
+         @BRANCH MARK=TA ID=160 SUM=10@@JUMP NAME="BIT_Assign"@BIT_Assign@/JUMP@(&DEDTemp, 10, s3pa_lh_struct._I20_RL113_XCC_S3PPUxHVal)@/BRANCH@;
+         @BRANCH MARK=TA ID=161 SUM=10@@JUMP NAME="BIT_Assign"@BIT_Assign@/JUMP@(&DEDTemp, 11, s3pa_rh_struct._I20_RL113_XCC_S3PPUxHVal)@/BRANCH@;
+         @BRANCH MARK=TA ID=162 SUM=10@@JUMP NAME="BIT_Assign"@BIT_Assign@/JUMP@(&DEDTemp, 15, TRUE)@/BRANCH@;
+         @BRANCH MARK=TA ID=163 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_FT3D_DED_1, (int32)DEDTemp)@/BRANCH@;
+         @BRANCH MARK=TA ID=164 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_FT3D_DED_2, s3pa_lh_struct._O6_S3PPUxHPosGNDNVM)@/BRANCH@;
+         @BRANCH MARK=TA ID=165 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_FT3D_DED_3, s3pa_rh_struct._O6_S3PPUxHPosGNDNVM)@/BRANCH@;
+         @BRANCH MARK=TA ID=166 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_FT3D_DED_4, s3pa_lh_struct._O5_S3PPUxHPosFLTNVM)@/BRANCH@;
+         @BRANCH MARK=TA ID=167 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_FT3D_DED_5, s3pa_rh_struct._O5_S3PPUxHPosFLTNVM)@/BRANCH@;
+         @BRANCH MARK=TA ID=168 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_FT3D_DED_6, s3pa_lh_struct._O7_S3PPUxHCASNVM)@/BRANCH@;
+         @BRANCH MARK=TA ID=169 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_FT3D_DED_7, s3pa_rh_struct._O7_S3PPUxHCASNVM)@/BRANCH@;
+         @BRANCH MARK=TA ID=170 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_FT3D_DED_8, s3pa_lh_struct._I21_S3PPUxH)@/BRANCH@;
+         @BRANCH MARK=TA ID=171 SUM=10@@JUMP NAME="DMA_Set"@DMA_Set@/JUMP@ (DML_FT3D_DED_9, s3pa_rh_struct._I21_S3PPUxH)@/BRANCH@;
+         @COMMENT@/* Suppress further writing of Dependent Engineering Data */@/COMMENT@
+         NVMReset = TRUE;
+      }@/BRANCH@@/DECISION@
+
+   }@/BRANCH@@/DECISION@
+}@/BRANCH@@/NODE@
+@COMMENT@/* QA C (4700): STXLN - Justified, all inputs and outputs need to be handled */@/COMMENT@ 
+@/NODE /RIK@
+VE 3.0e CCOV CMCDC #i5 7.0.0.0
+FC "DMA_DATA_MANAGER.H" "E:\\A350_SFCC_SW\\SOURCECODE\\OPSW\\SOURCE\\OS_SERVICE\\"
+FD 1471524304
+TC AP BS BT BI BL CO CC
+BL 0 simple "DMA_Get" / 69 72
+DC 608847228
+@RIK
+  ENCODING="System"
+  TOKEN="CCOV CMCDC"
+  SRC="DMA_DATA_MANAGER.H"
+  DIR="E:\A350_SFCC_SW\SOURCECODE\OPSW\SOURCE\OS_SERVICE\"
+  DATE=1471524304
+  CHECKSUM=608847228
+  SUMS
+   ("&Functions",
+    "-&Exits",
+    "Functions and exits"),
+   ("&Calls"=10),
+   ("Statement &blocks"=20,
+    "-&Implicit blocks"=21,
+    "Decisions"=20+21,
+    "&Loops"=22),
+   ("Basic &conditions"=30,
+    "&Modified conditions"=31,
+    "M&ultiple conditions"=32)
+  ERRORS
+    32="a source object was not linked with the right runtime object (check instrumentation mode)",
+    49="a composition of conditions evaluates in an unexpected result, contact your vendor",
+    50="a composition of conditions reached with an unexpected input vector, contact your vendor"
+NODE TYPE=FILE NAME="DMA_DATA_MANAGER.H"@@COMMENT@/******************************************************************************/@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/* Copyright by     :   Diehl Aerospace GmbH Ueberlingen                      */@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/* File name        :   DMA_Data_Manager.h                                    */@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/* Author           :   R. Khan                                               */@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/******************************************************************************/@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/*                      Module Specification                                  */@/COMMENT@
+@COMMENT@/*                      ====================                                  */@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/*  Module overview                                                           */@/COMMENT@
+@COMMENT@/*  ---------------                                                           */@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/*  The module contains the database and functions for accessing the          */@/COMMENT@
+@COMMENT@/*  database.                                                                 */@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/*  Requirements references                                                   */@/COMMENT@
+@COMMENT@/*  -----------------------                                                   */@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+@COMMENT@/*  SDD_OPSW-CI-008                                                           */@/COMMENT@
+@COMMENT@/*  SDD_OPSW-CI-430                                                           */@/COMMENT@
+@COMMENT@/*  SDD_OPSW-CI-431                                                           */@/COMMENT@
+@COMMENT@/*  SDD_OPSW-CI-432                                                           */@/COMMENT@
+@COMMENT@/*  SDD_OPSW-CI-011                                                           */@/COMMENT@
+@COMMENT@/*  SDD_OPSW-CI-012                                                           */@/COMMENT@
+@COMMENT@/*                                                                            */@/COMMENT@
+
+@COMMENT@#ifndef DMA_DATA_MANAGER@/COMMENT@
+@COMMENT@#define DMA_DATA_MANAGER@/COMMENT@
+
+@COMMENT@/* IMPORTED MODULES */@/COMMENT@
+@COMMENT@#include "STD_Standard_Types.h"@/COMMENT@
+@COMMENT@#include "DML_Data_Manager_Config.h"@/COMMENT@
+
+
+@COMMENT@/* CONSTANTS */@/COMMENT@
+@COMMENT@/* None */@/COMMENT@
+
+
+@COMMENT@/* DATA TYPES */@/COMMENT@
+typedef struct
+{
+   int32 Data;             @COMMENT@/* Data in the database.                                     */@/COMMENT@
+   uint16 Is_Manipulated;  @COMMENT@/* Indication, that Data is being manipulated by IPA.        */@/COMMENT@
+   uint16 Mapping;         @COMMENT@/* It contains the number of entry of the manipulation list, */@/COMMENT@
+}
+DMA_Entry_Type;
+
+@COMMENT@/* Because of the inlining of function DMA_Get(), the DB has to be defined in the H-file,     */@/COMMENT@
+@COMMENT@/* which makes the DB visible outside the module. However It is forbidden to access directly  */@/COMMENT@
+@COMMENT@/* the DB, only get and set functions can be used to access the DB.                           */@/COMMENT@
+@COMMENT@/* SCS_11 (D.Global_Data) : justified, extern required for inline of DMA_Get() */@/COMMENT@
+extern DMA_Entry_Type DMA_Database[DML_NUM_ENTRIES];
+@COMMENT@/* QA C (0612) : Since the variables in database must be handled, it is neccessary to have such a great buffer */@/COMMENT@
+
+@COMMENT@/* EXPORTED ROUTINES */@/COMMENT@
+
+void DMA_Init(void);
+
+@COMMENT@/* The function DMA_Get() is inlined to increase the performance.                        */@/COMMENT@
+@COMMENT@/* As the code is linear, it doesn't impact the source code to object code traceability. */@/COMMENT@
+inline int32 @NODE TYPE=FUNCTION NAME="DMA_Get"@@LINK NAME="DMA_Get"@DMA_Get(
+          @COMMENT@/* IN    */@/COMMENT@ DML_Index_Type Index)
+@BRANCH MARK=TB ID=0 SUM=20@{
+   @COMMENT@/* Return value from database. */@/COMMENT@
+   return DMA_Database[Index].Data;@SHORTCUT MARK=TB ID=0@
+}@/BRANCH@@/NODE@
+@COMMENT@/* SCS_1 (C.Justification): Deviation to the SCS as inlining is not ANSI-C, used to improve the run-time. */@/COMMENT@
+
+boolean DMA_Get_Single_Bit(
+            @COMMENT@/* IN    */@/COMMENT@ DML_Index_Type Index,
+            @COMMENT@/* IN    */@/COMMENT@ uint8          Bit_Position);
+
+@COMMENT@@COMMENT@#ifdef OPSW_FCP_A@/COMMENT@
+@COMMENT@/* SCS_7 (G.Conditional_Compilation) : LCRAM alignment on FCP_A (Module common for FCP_A, FCP B and ARE). */@/COMMENT@
+@COMMENT@   #pragma alignfunc (8)@/COMMENT@
+   @COMMENT@/* SCS_8 (G.Pragma) : Supersede linker action, pragma used to ensure that function is aligned on an eight byte boundary, which */@/COMMENT@
+   @COMMENT@/* ensures the best alignment for run-time performance, as core processor reads two 32-bit fetches per clock (8 bytes).        */@/COMMENT@
+@/COMMENT@@COMMENT@#endif@/COMMENT@
+void DMA_Set(
+         @COMMENT@/* IN    */@/COMMENT@ DML_Index_Type Index,
+         @COMMENT@/* IN    */@/COMMENT@ int32 Value);
+
+void DMA_IPA_Manipulate(
+         @COMMENT@/* IN    */@/COMMENT@ DML_Index_Type Index,
+         @COMMENT@/* IN    */@/COMMENT@ int32 Value);
+
+void DMA_Restore_Manipulation(void);
+
+@COMMENT@#endif@/COMMENT@
+@/NODE /RIK@
